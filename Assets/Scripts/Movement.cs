@@ -1,26 +1,33 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class Movement : MonoBehaviour
 {
-    private const float _mvspeed = 5f;
-    private const float _jmpHight = 1f;
+    private const float _mvspeed = .105f;
+    private const float _jmpPower = 250f;
 
+    private bool _canJump = true;
+    
+    [SerializeField] private Transform _transform;
     [SerializeField] private Rigidbody _rb;
-
+    
+    
     private Vector2 _movDir = Vector2.zero;
 
     private PlayerControlls _playerControlls;
     
     private InputAction _move;
     private InputAction _fire;
+    private InputAction _jump;
 
     private void Awake()
     {
+        if(_transform == null) Debug.Log("transform not set!");
         _playerControlls = new();
     }
 
@@ -32,6 +39,10 @@ public class Movement : MonoBehaviour
         _fire = _playerControlls.Player.Fire;
         _fire.Enable();
         _fire.performed += Fire;
+
+        _jump = _playerControlls.Player.Jump;
+        _jump.Enable();
+        _jump.performed += Jump;
     }
 
     private void OnDisable()
@@ -46,6 +57,15 @@ public class Movement : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Ground _))
+        {
+            Debug.Log("ENTERED" + other);
+            _canJump = true;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -54,12 +74,19 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var velocity = _rb.velocity;
-        _rb.velocity = new((-_movDir.x) * _mvspeed,velocity.y,velocity.z);
+        var newX = _transform.position.x + ((-_movDir.x) * _mvspeed);
+        _transform.position = new(newX,((Component)this).transform.position.y,0);
     }
 
     private void Fire(InputAction.CallbackContext context)
     {
         Debug.Log("FIRED");
+    }
+
+    private void Jump(InputAction.CallbackContext context)
+    {
+        if (!_canJump) return;
+        _rb.AddForce(Vector3.up * _jmpPower);
+        _canJump = false;
     }
 }
