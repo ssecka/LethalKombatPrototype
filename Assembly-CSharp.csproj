@@ -43,8 +43,10 @@
   <ItemGroup>
      <Compile Include="Assets\AnimTest.cs" />
      <Compile Include="Assets\Scripts\Movement.cs" />
+     <Compile Include="Assets\Input\playerControlls.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Scripts" />
+     <Folder Include="Assets\Input" />
      <Folder Include="Assets\Scenes" />
      <Reference Include="UnityEngine">
      <HintPath>F:\Unity\2021.3.21f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
