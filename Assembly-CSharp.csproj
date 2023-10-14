@@ -43,6 +43,16 @@
   <ItemGroup>
      <Compile Include="Assets\AnimTest.cs" />
      <Folder Include="Assets" />
+     <Folder Include="Assets\Baseball Bats\Assets" />
+     <Folder Include="Assets\Baseball Bats\Documentation" />
+     <Folder Include="Assets\Baseball Bats\Assets\Models\Materials" />
+     <Folder Include="Assets\Baseball Bats" />
+     <Folder Include="Assets\Baseball Bats\Assets\Prefabs" />
+     <Folder Include="Assets\Baseball Bats\Demo" />
+     <Folder Include="Assets\Baseball Bats\Assets\Models" />
+     <Folder Include="Assets\Baseball Bats\Assets\Materials" />
+     <None Include="Assets\Baseball Bats\Documentation\Documentation.txt" />
+     <Folder Include="Assets\Baseball Bats\Assets\Textures" />
      <Folder Include="Assets\Scenes" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.21f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
