@@ -1,0 +1,5 @@
+Movement:
+
+- refactor to transform from RigidBody
+- Jump (on floor -> hit detection)
+- ducken

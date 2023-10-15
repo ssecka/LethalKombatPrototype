@@ -1,5 +1,6 @@
 # Ignore Artifacts
-Libary/Artifacts/
+Library/Artifacts/
+Libary/PackageCache/
 
 # Ignore Logs
 Logs/
@@ -8,6 +9,12 @@ Logs/
 obj/
 obj/Debug/
 
-#ignore project file
+# ignore project file
 Assembly-CSharp.csproj
 Assembly-CSharp-Editor.csproj
+
+# idea files
+.idea/
+
+# Settings
+UserSettings/
