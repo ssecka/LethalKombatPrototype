@@ -6,3 +6,8 @@ Logs/
 
 # Ignore Build Artifacts
 obj/
+obj/Debug/
+
+#ignore project file
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
