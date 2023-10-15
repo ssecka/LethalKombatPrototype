@@ -1,0 +1,8 @@
+# Ignore Artifacts
+Libary/Artifacts/
+
+# Ignore Logs
+Logs/
+
+# Ignore Build Artifacts
+obj/
