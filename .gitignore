@@ -1,0 +1,21 @@
+# Ignore Artifacts
+Library/Artifacts/
+Library/PackageCache/
+Library/ArtifactDB
+
+
+# Ignore Logs
+Logs/
+
+# Ignore Build Artifacts
+obj/
+obj/Debug/
+
+# idea files
+.idea/
+
+# Settings
+UserSettings/
+
+# Temp
+Temp/

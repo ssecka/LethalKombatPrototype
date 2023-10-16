@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638329855494185959
-    m_Hash: 2333888490
+      ticks: 638330665217293395
+    m_Hash: 2184847052
   m_LockFileStatus:
     m_FilePath: I:/Unity-Projects/LethalCombat/LethalKombatPrototype/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638329855494185959
-    m_Hash: 771241407
+      ticks: 638330665217448396
+    m_Hash: 139256342
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:

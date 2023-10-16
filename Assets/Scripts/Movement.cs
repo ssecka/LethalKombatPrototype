@@ -21,11 +21,9 @@ public class Movement : MonoBehaviour
     
     private Vector2 _movDir = Vector2.zero;
 
-    private PlayerControlls _playerControlls;
-    
-    private InputAction _move;
-    private InputAction _fire;
-    private InputAction _jump;
+    private PlayerInput _playerControlls;
+
+    private InputAction _move, _fire, _jump;
 
     private void Awake()
     {
@@ -37,11 +35,11 @@ public class Movement : MonoBehaviour
     {
         _move = _playerControlls.Player.Move;
         _move.Enable();
-
+        
         _fire = _playerControlls.Player.Fire;
         _fire.Enable();
         _fire.performed += Fire;
-
+        
         _jump = _playerControlls.Player.Jump;
         _jump.Enable();
         _jump.performed += Jump;
@@ -63,7 +61,6 @@ public class Movement : MonoBehaviour
     {
         if (other.TryGetComponent(out Ground _))
         {
-            Debug.Log("ENTERED" + other);
             _canJump = true;
         }
     }

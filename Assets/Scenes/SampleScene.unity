@@ -263,8 +263,6 @@ GameObject:
   - component: {fileID: 299562163}
   - component: {fileID: 299562162}
   - component: {fileID: 299562161}
-  - component: {fileID: 299562166}
-  - component: {fileID: 299562167}
   m_Layer: 0
   m_Name: P2
   m_TagString: Untagged
@@ -366,30 +364,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &299562166
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299562160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c994e9f0d062a1f42baf6dfce2c7f4f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &299562167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299562160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99130293d7d46a940b47d8f8e8c27baf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &429281226
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1851,8 +1825,8 @@ GameObject:
   - component: {fileID: 1409751963}
   - component: {fileID: 1409751962}
   - component: {fileID: 1409751961}
-  - component: {fileID: 1409751960}
   - component: {fileID: 1409751959}
+  - component: {fileID: 1409751965}
   m_Layer: 6
   m_Name: Grounding Dectetion
   m_TagString: Untagged
@@ -1873,18 +1847,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 2.220446e-16, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1409751960
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1409751958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 285446138063eff428f448ed5c1765fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &1409751961
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1966,6 +1928,18 @@ Transform:
   m_Father: {fileID: 1453201566}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1409751965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409751958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19edb8743ef6d8e45b9e33f1a21b3065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1453201565
 GameObject:
   m_ObjectHideFlags: 0
@@ -2212,7 +2186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 17081853f675b9a428a4e6ff5049ea02, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: 73f2c77fa12409f4ea5e541c4be243c6, type: 3}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:

@@ -41,11 +41,10 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Input\PlayerControlls.cs" />
      <Compile Include="Assets\AnimTest.cs" />
      <Compile Include="Assets\Scripts\Movement.cs" />
      <Compile Include="Assets\Scripts\Ground.cs" />
-     <Compile Include="Assets\Scripts\HealthBarScript.cs" />
+     <Compile Include="Assets\Input\PlayerInput.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Baseball Bats\Assets" />
      <Folder Include="Assets\Baseball Bats\Documentation" />
