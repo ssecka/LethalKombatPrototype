@@ -353,6 +353,7 @@
 "Assets/Input/PlayerInput.cs"
 "Assets/Scripts/Ground.cs"
 "Assets/Scripts/Movement.cs"
+"Assets/Scripts/PlayerStats.cs"
 -langversion:9.0
 
 /deterministic

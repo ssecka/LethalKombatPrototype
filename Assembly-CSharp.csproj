@@ -45,6 +45,7 @@
      <Compile Include="Assets\Scripts\Ground.cs" />
      <Compile Include="Assets\AnimTest.cs" />
      <Compile Include="Assets\Scripts\Movement.cs" />
+     <Compile Include="Assets\Scripts\PlayerStats.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Baseball Bats\Assets" />
      <Folder Include="Assets\Baseball Bats\Documentation" />
