@@ -3,6 +3,7 @@ Library/Artifacts/
 Library/PackageCache/
 Library/ArtifactDB
 Library/ShaderCache/
+Library/Bee/artifacts/
 
 # Ignore Logs
 Logs/

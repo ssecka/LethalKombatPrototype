@@ -5,6 +5,7 @@ using UnityEngine;
 public class AnimTest : MonoBehaviour
 {
     private Animator animator;
+    private const bool enabled = false;
 
     private void Start()
     {
@@ -14,6 +15,7 @@ public class AnimTest : MonoBehaviour
 
     private void Update()
     {
+        if (!enabled) return;
         // Check if your bool condition is true, and if so, trigger the animation.
         if (Input.GetKeyDown(KeyCode.A))
         {

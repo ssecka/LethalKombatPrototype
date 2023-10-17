@@ -12,6 +12,8 @@ public class Movement : MonoBehaviour
     private const float JUMPPOWER = 250f;
     private const float GRAVITY_MULTI = 1.015f;
 
+    private Animator _animator;
+
     private int _hp = 1_000;
 
     private bool _canJump = true;
@@ -60,13 +62,17 @@ public class Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Get the Animator component from your character.
+        _animator = GetComponent<Animator>();
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Trigger Entered.");
         if (other.TryGetComponent(out Ground _))
         {
+            Debug.Log("grounded.");
             _canJump = true;
         }
     }
@@ -103,14 +109,16 @@ public class Movement : MonoBehaviour
     {
         Debug.Log("Punch");
         
+        //TODO: Add animation for front punch
+        
         var tForm = _transform;
         var distance = 10f;
         
         // TODO: ADJUST THE DIR FOR THE CURRENT POS.
         var dir = new Vector3(-1,0,0);
-        var position = new Vector3(tForm.position.x + 0.75f,tForm.position.y,tForm.position.z);
+        var position = new Vector3(tForm.position.x + 0.75f,tForm.position.y + 1.25f,tForm.position.z);
         var ray = new Ray(position, dir);
-        var endLine = new Vector3(tForm.position.x + (distance * dir.x), tForm.position.y, tForm.position.z);
+        var endLine = new Vector3(tForm.position.x + (distance * dir.x), tForm.position.y + 1.25f, tForm.position.z);
         
         Debug.DrawLine(position,endLine,Color.red,100f);
         if (Physics.Raycast(ray, out RaycastHit hit, distance))
@@ -129,16 +137,19 @@ public class Movement : MonoBehaviour
     private void LegSweep(InputAction.CallbackContext context)
     {
         Debug.Log("LegSweep");
-        
+
+
+        _animator.SetTrigger("Kick");
+
         var tForm = _transform;
         var distance = 10f;
         
         // TODO: ADJUST THE DIR FOR THE CURRENT POS.
-        var position = new Vector3(tForm.position.x + 0.75f,tForm.position.y-0.5f,tForm.position.z);
+        var position = new Vector3(tForm.position.x + 0.75f,tForm.position.y+0.5f,tForm.position.z);
         var dir = new Vector3(-position.x, position.y, position.z);
         var ray = new Ray(position, dir);
 
-        var endLine = new Vector3(tForm.position.x + (distance * dir.x), tForm.position.y, tForm.position.z);
+        var endLine = new Vector3(tForm.position.x + (distance * dir.x), tForm.position.y + 0.5f, tForm.position.z);
         
         Debug.DrawLine(position,endLine,Color.red,100f);
         if (Physics.Raycast(ray, out RaycastHit hit, distance))
