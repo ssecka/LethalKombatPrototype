@@ -41,24 +41,32 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Input\PlayerInput.cs" />
+     <Compile Include="Assets\Scripts\Ground.cs" />
      <Compile Include="Assets\AnimTest.cs" />
      <Compile Include="Assets\Scripts\Movement.cs" />
-     <Compile Include="Assets\Scripts\Ground.cs" />
-     <Compile Include="Assets\Input\PlayerInput.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Baseball Bats\Assets" />
      <Folder Include="Assets\Baseball Bats\Documentation" />
+     <Folder Include="Assets\NoobGameDev\Health System For Dummies\System\Example Scene\Sprites" />
+     <Folder Include="Assets\NoobGameDev\Health System For Dummies\System\Bar" />
      <Folder Include="Assets\Baseball Bats\Assets\Models\Materials" />
+     <Folder Include="Assets\NoobGameDev\Health System For Dummies\System" />
+     <Folder Include="Assets\NoobGameDev\Health System For Dummies\System\Bar\Prefabs" />
+     <Folder Include="Assets\NoobGameDev\Health System For Dummies\System\Bar\Images" />
      <Folder Include="Assets\Scripts" />
      <Folder Include="Assets\Baseball Bats" />
      <Folder Include="Assets\Baseball Bats\Assets\Prefabs" />
      <Folder Include="Assets\Input" />
+     <Folder Include="Assets\NoobGameDev" />
      <Folder Include="Assets\Baseball Bats\Demo" />
      <Folder Include="Assets\Baseball Bats\Assets\Models" />
+     <Folder Include="Assets\NoobGameDev\Health System For Dummies" />
      <Folder Include="Assets\Baseball Bats\Assets\Materials" />
      <None Include="Assets\Baseball Bats\Documentation\Documentation.txt" />
      <Folder Include="Assets\Baseball Bats\Assets\Textures" />
      <Folder Include="Assets\Scenes" />
+     <Folder Include="Assets\NoobGameDev\Health System For Dummies\System\Example Scene" />
      <Reference Include="UnityEngine">
      <HintPath>F:\Unity\2021.3.21f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>

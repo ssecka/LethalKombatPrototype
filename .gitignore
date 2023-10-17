@@ -2,10 +2,11 @@
 Library/Artifacts/
 Library/PackageCache/
 Library/ArtifactDB
-
+Library/ShaderCache/
 
 # Ignore Logs
 Logs/
+*.log
 
 # Ignore Build Artifacts
 obj/
@@ -19,3 +20,5 @@ UserSettings/
 
 # Temp
 Temp/
+
+todo.txt
