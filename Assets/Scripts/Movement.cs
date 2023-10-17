@@ -110,6 +110,7 @@ public class Movement : MonoBehaviour
         Debug.Log("Punch");
         
         //TODO: Add animation for front punch
+        _animator.SetTrigger("SideKick");
         
         var tForm = _transform;
         var distance = 10f;
