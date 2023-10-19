@@ -1,0 +1,21 @@
+# Ignore Artifacts
+Library/
+
+# Ignore Logs
+Logs/
+*.log
+
+# Ignore Build Artifacts
+obj/
+obj/Debug/
+
+# idea files
+.idea/
+
+# Settings
+UserSettings/
+
+# Temp
+Temp/
+
+todo.txt
