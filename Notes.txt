@@ -1,5 +1,7 @@
 Besprechung 19.10.2023:
 
+Cascadeur mal im midpoint vorstellen
+
 Animationen mit Umotion
 	- können auch nur nachbearbeitet sein
 Schlaganmiationen evt. aufhören falls getrofen
