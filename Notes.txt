@@ -1,0 +1,21 @@
+Besprechung 19.10.2023:
+
+Animationen mit Umotion
+	- können auch nur nachbearbeitet sein
+Schlaganmiationen evt. aufhören falls getrofen
+
+
+Nächster Schritt:
+
+P2:
+	- Treffer check genauer
+	- Erst wenn Animation fertig + richtige Distanz
+
+Kamerasystem (mehr follow und closer up)
+
+Combos ?
+Würfe ?
+Stunslock..
+
+-----------------
+.gitignore unity
