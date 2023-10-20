@@ -14,7 +14,7 @@ public class Movement : MonoBehaviour
 
     private Animator _animator;
 
-    private int _hp = 1_000;
+    //private int _hp = 1_000;
 
     private bool _canJump = true;
 

@@ -6,34 +6,44 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    // Start is called before the first frame update
 
-    private float _hp = 1000;
-    
+    public HealthBarScript HealthBarScript;
+    public int maxhealth = 1000;
+    public int currenthealth;
+
+    // Start is called before the first frame update
     void Start()
     {
-        
+        currenthealth = maxhealth;
+        HealthBarScript.SetMaxHealth(maxhealth);
+
+    }
+    
+    // Update is called once per frame
+    void Update()
+    {
+        //Testing if HealthBars are getting updated(works)
+        /*if (Input.GetKeyDown(KeyCode.M))
+        {
+            TakeDamage(20);
+        }*/
     }
     
     
     public void TakeDamage(int dmgAmount)
     {
-        var remaing = _hp - dmgAmount;
-        if (remaing <= 0)
+        currenthealth -= dmgAmount;
+        if (currenthealth <= 0)
         {
             //throw new NotImplementedException("TODO: Implement Game End");
             Debug.Log("Im Deadge");
         }
         // Play Hit Animation
-        _hp = remaing;
-
-        Debug.Log("New Life: " + _hp);
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         
+        
+        HealthBarScript.SetHealth(currenthealth);
+
+        Debug.Log("New Life: " + currenthealth);
+
     }
 }
