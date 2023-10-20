@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{8787c511-a13d-c397-031f-22ae0fe9028c}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UMotionSourceEditor", "UMotionSourceEditor.csproj", "{f1d97981-8276-8b48-7461-cc1639da3ce5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UMotionSourceApplication", "UMotionSourceApplication.csproj", "{fdac8dc8-8658-8186-27f2-a7846eebd384}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{55438283-660b-5ab6-dddc-8ac577450b31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,6 +16,12 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8787c511-a13d-c397-031f-22ae0fe9028c}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8787c511-a13d-c397-031f-22ae0fe9028c}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{f1d97981-8276-8b48-7461-cc1639da3ce5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{f1d97981-8276-8b48-7461-cc1639da3ce5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{fdac8dc8-8658-8186-27f2-a7846eebd384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{fdac8dc8-8658-8186-27f2-a7846eebd384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55438283-660b-5ab6-dddc-8ac577450b31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55438283-660b-5ab6-dddc-8ac577450b31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
