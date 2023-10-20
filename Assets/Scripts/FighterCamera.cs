@@ -6,8 +6,8 @@ public class FighterCamera : MonoBehaviour
 {
 
     public Transform[] playerTransforms;
-    public float yOffset = 2.0f;
-    public float minDistance = 7.5f;
+    public float yOffset = 1.5f;
+    public float minDistance = 4f;
     private float xMin, xMax, yMin, yMax;
     
     // Start is called before the first frame update

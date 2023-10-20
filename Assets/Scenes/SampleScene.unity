@@ -2083,7 +2083,7 @@ MonoBehaviour:
   - {fileID: 1954040823}
   - {fileID: 1074456791}
   yOffset: 1.5
-  minDistance: 5
+  minDistance: 4
 --- !u!1 &992725399
 GameObject:
   m_ObjectHideFlags: 0
@@ -2252,7 +2252,7 @@ Animator:
   m_GameObject: {fileID: 1074456792}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9e2f6c56ed50d9b45bf780d7af4fc9e5, type: 2}
+  m_Controller: {fileID: 9100000, guid: 68b2c85e4ebccc04e829dae987d121e5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
