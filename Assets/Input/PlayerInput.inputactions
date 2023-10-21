@@ -208,6 +208,17 @@
                 },
                 {
                     "name": "",
+                    "id": "31545170-b254-4c0a-b163-ec7843cbc3eb",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "4b4e14fc-92cb-4f76-b23d-40a2ffbbce98",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -219,11 +230,33 @@
                 },
                 {
                     "name": "",
+                    "id": "f43ca1fc-7eca-4077-a547-a2b1b4db95b1",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Punch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8eeb92f4-306e-4b2f-948e-6941f0ecd78a",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "Leg Sweep",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9d6dd6e9-94d2-4ec1-b6ce-3be8229670b2",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Leg Sweep",
                     "isComposite": false,
                     "isPartOfComposite": false
