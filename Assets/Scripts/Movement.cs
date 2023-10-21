@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,8 +14,6 @@ public class Movement : MonoBehaviour
     private const float GRAVITY_MULTI = 1.015f;
 
     private Animator _animator;
-
-    //private int _hp = 1_000;
 
     private bool _canJump = true;
 
@@ -69,10 +68,8 @@ public class Movement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger Entered.");
         if (other.TryGetComponent(out Ground _))
         {
-            Debug.Log("grounded.");
             _canJump = true;
         }
     }
@@ -105,23 +102,27 @@ public class Movement : MonoBehaviour
 
     #region Attacks
 
+    /// <summary>
+    /// Hotkey: leftclick
+    /// </summary>
+    /// <param name="context"></param>
     private void Punch(InputAction.CallbackContext context)
     {
-        Debug.Log("Punch");
-        
+        GeneralFunctions.PrintDebugStatement("Punch");
+
         //TODO: Add animation for front punch
         _animator.SetTrigger("SideKick");
-        
+
         var tForm = _transform;
-        var distance = 10f;
-        
+        var distance = 2.5f;
+
         // TODO: ADJUST THE DIR FOR THE CURRENT POS.
-        var dir = new Vector3(-1,0,0);
-        var position = new Vector3(tForm.position.x + 0.75f,tForm.position.y + 1.25f,tForm.position.z);
+        var dir = new Vector3(-1, 0, 0);
+        var position = new Vector3(tForm.position.x + 0.75f, tForm.position.y + 1.25f, tForm.position.z);
         var ray = new Ray(position, dir);
         var endLine = new Vector3(tForm.position.x + (distance * dir.x), tForm.position.y + 1.25f, tForm.position.z);
-        
-        Debug.DrawLine(position,endLine,Color.red,100f);
+
+        Debug.DrawLine(position, endLine, Color.red, 100f);
         if (Physics.Raycast(ray, out RaycastHit hit, distance))
         {
             if (hit.transform.gameObject.TryGetComponent(out PlayerStats otherPlayer))
@@ -130,29 +131,33 @@ public class Movement : MonoBehaviour
             }
             else
             {
-                Debug.Log("I hitted :" + hit);
+                GeneralFunctions.PrintDebugStatement("I hitted :" + hit);
             }
         }
     }
 
+    /// <summary>
+    /// Hotkey: Rightclick
+    /// </summary>
+    /// <param name="context"></param>
     private void LegSweep(InputAction.CallbackContext context)
     {
-        Debug.Log("LegSweep");
+        GeneralFunctions.PrintDebugStatement("LegSweep");
 
 
         _animator.SetTrigger("Kick");
 
         var tForm = _transform;
-        var distance = 10f;
-        
+        var distance = 2.5f;
+
         // TODO: ADJUST THE DIR FOR THE CURRENT POS.
-        var position = new Vector3(tForm.position.x + 0.75f,tForm.position.y+0.5f,tForm.position.z);
+        var position = new Vector3(tForm.position.x + 0.75f, tForm.position.y + 0.5f, tForm.position.z);
         var dir = new Vector3(-position.x, position.y, position.z);
         var ray = new Ray(position, dir);
 
         var endLine = new Vector3(tForm.position.x + (distance * dir.x), tForm.position.y + 0.5f, tForm.position.z);
-        
-        Debug.DrawLine(position,endLine,Color.red,100f);
+
+        Debug.DrawLine(position, endLine, Color.red, 100f);
         if (Physics.Raycast(ray, out RaycastHit hit, distance))
         {
             if (hit.transform.gameObject.TryGetComponent(out PlayerStats otherPlayer))
@@ -161,7 +166,7 @@ public class Movement : MonoBehaviour
             }
             else
             {
-                Debug.Log("I hitted :" + hit);
+                GeneralFunctions.PrintDebugStatement("I hitted :" + hit);
             }
         }
     }

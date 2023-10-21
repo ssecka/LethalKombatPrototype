@@ -2211,7 +2211,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!114 &1074456795
 MonoBehaviour:
@@ -2239,7 +2239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a104041370c14742bd6761f3d7c8f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthBarScript: {fileID: 0}
+  HealthBarScript: {fileID: 521221469}
   maxhealth: 1000
   currenthealth: 0
 --- !u!95 &1074456797
@@ -2976,7 +2976,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!136 &1954040825
 CapsuleCollider:
@@ -3004,7 +3004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a104041370c14742bd6761f3d7c8f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthBarScript: {fileID: 0}
+  HealthBarScript: {fileID: 1079602003}
   maxhealth: 1000
   currenthealth: 0
 --- !u!114 &1954040827

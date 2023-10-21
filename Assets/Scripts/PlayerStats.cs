@@ -8,12 +8,13 @@ public class PlayerStats : MonoBehaviour
 {
 
     public HealthBarScript HealthBarScript;
-    public int maxhealth = 1000;
-    public int currenthealth;
+    [SerializeField] private int maxhealth = 1000;
+    [SerializeField] private int currenthealth;
 
     // Start is called before the first frame update
     void Start()
     {
+        HealthBarScript ??= new();
         currenthealth = maxhealth;
         HealthBarScript.SetMaxHealth(maxhealth);
 
@@ -36,14 +37,14 @@ public class PlayerStats : MonoBehaviour
         if (currenthealth <= 0)
         {
             //throw new NotImplementedException("TODO: Implement Game End");
-            Debug.Log("Im Deadge");
+            GeneralFunctions.PrintDebugStatement("Im Deadge");
         }
         // Play Hit Animation
         
         
         HealthBarScript.SetHealth(currenthealth);
 
-        Debug.Log("New Life: " + currenthealth);
+        GeneralFunctions.PrintDebugStatement("New Life: " + currenthealth);
 
     }
 }
