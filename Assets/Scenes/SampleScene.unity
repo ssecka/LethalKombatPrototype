@@ -2227,6 +2227,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transform: {fileID: 1074456791}
   _rb: {fileID: 1074456794}
+  _sideKickAttackPoint: {fileID: 0}
+  _punchAttackPoint: {fileID: 0}
 --- !u!114 &1074456796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2242,6 +2244,7 @@ MonoBehaviour:
   HealthBarScript: {fileID: 521221469}
   maxhealth: 1000
   currenthealth: 0
+  _player: 2
 --- !u!95 &1074456797
 Animator:
   serializedVersion: 5
@@ -2962,6 +2965,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &1580251909
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1580251910}
+  m_Layer: 0
+  m_Name: AttackPoint_Punch
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1580251910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580251909}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.442, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1954040823}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1954040819 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1d4610f226da1b84a8e69cbddc540595, type: 3}
@@ -3038,6 +3072,7 @@ MonoBehaviour:
   HealthBarScript: {fileID: 1079602003}
   maxhealth: 1000
   currenthealth: 0
+  _player: 1
 --- !u!114 &1954040827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3052,3 +3087,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transform: {fileID: 1954040823}
   _rb: {fileID: 1954040824}
+  _sideKickAttackPoint: {fileID: 1236746371}
+  _punchAttackPoint: {fileID: 1580251910}
