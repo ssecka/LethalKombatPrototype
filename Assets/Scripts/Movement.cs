@@ -14,8 +14,6 @@ public class Movement : MonoBehaviour
     private const float JUMPPOWER = 250f;
     private const float GRAVITY_MULTI = 1.015f;
     private const float ATTACK_TOLERANCE_RANGE = 0.2f;
-
-    private int xAttackDir;
     
     private Animator _animator;
 
@@ -25,7 +23,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Rigidbody _rb;
     
     // Keep Public so the Sphere can be seen in the editor
-    public Transform _sideKickAttackPoint;
+    public Transform _sideKickAttackPoint, _punchAttackPoint;
 
     private Vector2 _movDir = Vector2.zero;
 
@@ -37,6 +35,12 @@ public class Movement : MonoBehaviour
     private bool _punchSwitcher = true;
     private static readonly int PunchID = Animator.StringToHash("Punch");
     private static readonly int Jab = Animator.StringToHash("Jab");
+    private float _lastXCord;
+
+    private bool _isMoving = false;
+    private static readonly int FWalking = Animator.StringToHash("FWalking");
+    private static readonly int BWalking = Animator.StringToHash("BWalking");
+    private float _facingMultiplier = 0f;
 
     private void Awake()
     {
@@ -47,6 +51,10 @@ public class Movement : MonoBehaviour
         {
             _playerNumber = stats._player;
         }
+
+        _facingMultiplier = _transform.rotation.y < 0 ? -1 : 0;
+        
+        _lastXCord = _transform.position.x;
     }
 
 
@@ -79,7 +87,6 @@ public class Movement : MonoBehaviour
     {
         // Get the Animator component from your character.
         _animator = GetComponent<Animator>();
-        xAttackDir = _transform.rotation.y < 0 ? -1 : 1;
     }
 
 
@@ -101,11 +108,34 @@ public class Movement : MonoBehaviour
             velocity = new(velocity.x, velocity.y * GRAVITY_MULTI, velocity.z);
             _rb.velocity = velocity;
         }
+
+
     }
 
     private void FixedUpdate()
     {
-        var newX = _transform.position.x + ((-_movDir.x) * MVSPEED);
+        
+        var hlp = _lastXCord - _transform.position.x;
+        if (Math.Abs(hlp) < Math.Pow(10,-6))
+        {
+            _animator.SetBool(FWalking,false);
+            _animator.SetBool(BWalking,false);
+        }
+        _lastXCord = _transform.position.x;
+        
+        var newX = _transform.position.x + ((_facingMultiplier * _movDir.x) * MVSPEED);
+        if (_movDir.x > 0)
+        {
+            _animator.SetBool(FWalking,true);
+            _animator.SetBool(BWalking,false);
+        }
+        else if (_movDir.x < 0)
+        {
+            _animator.SetBool(FWalking,false);
+            _animator.SetBool(BWalking,true);
+        }
+        
+
         _transform.position = new(newX, ((Component)this).transform.position.y, 0);
     }
 
@@ -118,9 +148,10 @@ public class Movement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (_sideKickAttackPoint == null) return;
-        
-        Gizmos.DrawWireSphere(_sideKickAttackPoint.position,ATTACK_TOLERANCE_RANGE);
+        if (_sideKickAttackPoint != null)
+            Gizmos.DrawWireSphere(_sideKickAttackPoint.position,ATTACK_TOLERANCE_RANGE);
+        if(_punchAttackPoint != null)
+            Gizmos.DrawWireSphere(_punchAttackPoint.position,ATTACK_TOLERANCE_RANGE);
     }
 
     #region Attacks
@@ -131,7 +162,7 @@ public class Movement : MonoBehaviour
     /// <param name="context"></param>
     private void Punch(InputAction.CallbackContext context)
     {
-        GeneralFunctions.PrintDebugStatement("Punsh");
+        GeneralFunctions.PrintDebugStatement("Punch");
 
         _punchSwitcher = !_punchSwitcher;
         if (_punchSwitcher)
