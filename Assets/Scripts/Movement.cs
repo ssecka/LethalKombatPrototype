@@ -13,6 +13,8 @@ public class Movement : MonoBehaviour
     private const float JUMPPOWER = 250f;
     private const float GRAVITY_MULTI = 1.015f;
 
+    private int xAttackDir;
+    
     private Animator _animator;
 
     private bool _canJump = true;
@@ -63,6 +65,7 @@ public class Movement : MonoBehaviour
     {
         // Get the Animator component from your character.
         _animator = GetComponent<Animator>();
+        xAttackDir = _transform.rotation.y < 0 ? -1 : 1;
     }
 
 
@@ -108,21 +111,27 @@ public class Movement : MonoBehaviour
     /// <param name="context"></param>
     private void Punch(InputAction.CallbackContext context)
     {
-        GeneralFunctions.PrintDebugStatement("Punch");
+        GeneralFunctions.PrintDebugStatement("Kick");
 
         //TODO: Add animation for front punch
         _animator.SetTrigger("SideKick");
 
         var tForm = _transform;
-        var distance = 2.5f;
+        var distance = .55f;
+        var xOffSet = 0.25f;
 
         // TODO: ADJUST THE DIR FOR THE CURRENT POS.
-        var dir = new Vector3(-1, 0, 0);
-        var position = new Vector3(tForm.position.x + 0.75f, tForm.position.y + 1.25f, tForm.position.z);
-        var ray = new Ray(position, dir);
-        var endLine = new Vector3(tForm.position.x + (distance * dir.x), tForm.position.y + 1.25f, tForm.position.z);
+        var position = new Vector3(tForm.position.x + (xOffSet * xAttackDir), tForm.position.y + 0.75f, tForm.position.z);
+        var ray = new Ray(position, new(xAttackDir,0,0));
+        
+        Debug.DrawLine(
+            position,
+            new(position.x + (xAttackDir * distance),
+                position.y,
+                position.z),
+                Color.cyan,
+            2f);
 
-        Debug.DrawLine(position, endLine, Color.red, 100f);
         if (Physics.Raycast(ray, out RaycastHit hit, distance))
         {
             if (hit.transform.gameObject.TryGetComponent(out PlayerStats otherPlayer))
@@ -148,16 +157,16 @@ public class Movement : MonoBehaviour
         _animator.SetTrigger("Kick");
 
         var tForm = _transform;
-        var distance = 2.5f;
+        var distance = .4f;
 
         // TODO: ADJUST THE DIR FOR THE CURRENT POS.
-        var position = new Vector3(tForm.position.x + 0.75f, tForm.position.y + 0.5f, tForm.position.z);
+        var position = new Vector3(tForm.position.x - 1.5f, tForm.position.y + 0.5f, tForm.position.z);
         var dir = new Vector3(-position.x, position.y, position.z);
-        var ray = new Ray(position, dir);
+        var ray = new Ray(position, new(xAttackDir,0,0));
 
         var endLine = new Vector3(tForm.position.x + (distance * dir.x), tForm.position.y + 0.5f, tForm.position.z);
 
-        Debug.DrawLine(position, endLine, Color.red, 100f);
+        Debug.DrawLine(position, endLine, Color.red, 1);
         if (Physics.Raycast(ray, out RaycastHit hit, distance))
         {
             if (hit.transform.gameObject.TryGetComponent(out PlayerStats otherPlayer))

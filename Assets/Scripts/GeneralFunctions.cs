@@ -20,7 +20,7 @@ public class GeneralFunctions : MonoBehaviour
         var method = frame.GetMethod();
         var methodName = method.Name;
         var className = method.ReflectedType.Name;
-        print(statement + "[CLASS: " + className + " | METHOD: " + methodName +" ]");
+        print(statement + " [ CLASS: " + className + " | METHOD: " + methodName +" ]");
 #else
         return;
 #endif

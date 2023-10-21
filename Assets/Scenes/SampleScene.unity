@@ -1636,12 +1636,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9990363cc6c1b647acbe6a94008971c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 0}
+  healthSlider: {fileID: 1079602004}
   gradient:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
     key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
+    key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -1657,7 +1657,7 @@ MonoBehaviour:
     ctime7: 0
     atime0: 0
     atime1: 65535
-    atime2: 0
+    atime2: 65535
     atime3: 0
     atime4: 0
     atime5: 0
@@ -1666,7 +1666,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  fill: {fileID: 0}
+  fill: {fileID: 368219353}
 --- !u!114 &521221470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2315,7 +2315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9990363cc6c1b647acbe6a94008971c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 0}
+  healthSlider: {fileID: 1079602004}
   gradient:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -2345,7 +2345,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  fill: {fileID: 0}
+  fill: {fileID: 1266583948}
 --- !u!114 &1079602004
 MonoBehaviour:
   m_ObjectHideFlags: 0
