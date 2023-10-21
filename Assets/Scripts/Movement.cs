@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,6 +13,7 @@ public class Movement : MonoBehaviour
     private const float MVSPEED = .105f;
     private const float JUMPPOWER = 250f;
     private const float GRAVITY_MULTI = 1.015f;
+    private const float ATTACK_TOLERANCE_RANGE = 0.2f;
 
     private int xAttackDir;
     
@@ -21,18 +23,30 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private Transform _transform;
     [SerializeField] private Rigidbody _rb;
-
+    
+    // Keep Public so the Sphere can be seen in the editor
+    public Transform _sideKickAttackPoint;
 
     private Vector2 _movDir = Vector2.zero;
 
     private PlayerInput _playerControlls;
 
     private InputAction _move, _punch, _jump, _legSweep;
+    private static readonly int SideKickID = Animator.StringToHash("SideKick");
+    private int _playerNumber = -1;
+    private bool _punchSwitcher = true;
+    private static readonly int PunchID = Animator.StringToHash("Punch");
+    private static readonly int Jab = Animator.StringToHash("Jab");
 
     private void Awake()
     {
         if (_transform == null) Debug.Log("transform not set!");
         _playerControlls = new();
+        
+        if(TryGetComponent(out PlayerStats stats))
+        {
+            _playerNumber = stats._player;
+        }
     }
 
 
@@ -47,7 +61,7 @@ public class Movement : MonoBehaviour
 
         _legSweep = _playerControlls.Player.LegSweep;
         _legSweep.Enable();
-        _legSweep.performed += LegSweep;
+        _legSweep.performed += SideKick;
 
         _jump = _playerControlls.Player.Jump;
         _jump.Enable();
@@ -102,6 +116,12 @@ public class Movement : MonoBehaviour
         _canJump = false;
     }
 
+    private void OnDrawGizmos()
+    {
+        if (_sideKickAttackPoint == null) return;
+        
+        Gizmos.DrawWireSphere(_sideKickAttackPoint.position,ATTACK_TOLERANCE_RANGE);
+    }
 
     #region Attacks
 
@@ -111,37 +131,32 @@ public class Movement : MonoBehaviour
     /// <param name="context"></param>
     private void Punch(InputAction.CallbackContext context)
     {
-        GeneralFunctions.PrintDebugStatement("Kick");
+        GeneralFunctions.PrintDebugStatement("Punsh");
 
-        //TODO: Add animation for front punch
-        _animator.SetTrigger("SideKick");
-
-        var tForm = _transform;
-        var distance = .55f;
-        var xOffSet = 0.25f;
-
-        // TODO: ADJUST THE DIR FOR THE CURRENT POS.
-        var position = new Vector3(tForm.position.x + (xOffSet * xAttackDir), tForm.position.y + 0.75f, tForm.position.z);
-        var ray = new Ray(position, new(xAttackDir,0,0));
-        
-        Debug.DrawLine(
-            position,
-            new(position.x + (xAttackDir * distance),
-                position.y,
-                position.z),
-                Color.cyan,
-            2f);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, distance))
+        _punchSwitcher = !_punchSwitcher;
+        if (_punchSwitcher)
         {
-            if (hit.transform.gameObject.TryGetComponent(out PlayerStats otherPlayer))
+            _animator.SetTrigger(Jab);
+        }
+        else
+        {
+            _animator.SetTrigger(PunchID);
+        }
+
+        // ReSharper disable once Unity.PreferNonAllocApi --> not needed in this usecase
+        var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+
+        foreach (var hitTarget in hitTargets)
+        {
+            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
+                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
-                otherPlayer.TakeDamage(100);
+                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
+                otherPlayer.TakeDamage(100,animator);
+                break;
             }
-            else
-            {
-                GeneralFunctions.PrintDebugStatement("I hitted :" + hit);
-            }
+            
+            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
         }
     }
 
@@ -149,34 +164,27 @@ public class Movement : MonoBehaviour
     /// Hotkey: Rightclick
     /// </summary>
     /// <param name="context"></param>
-    private void LegSweep(InputAction.CallbackContext context)
+    private void SideKick(InputAction.CallbackContext context)
     {
-        GeneralFunctions.PrintDebugStatement("LegSweep");
+        GeneralFunctions.PrintDebugStatement("SideKick");
 
+        //TODO: Add animation for front punch
+        _animator.SetTrigger(SideKickID);
 
-        _animator.SetTrigger("Kick");
+        // ReSharper disable once Unity.PreferNonAllocApi --> not needed in this usecase
+        var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
 
-        var tForm = _transform;
-        var distance = .4f;
-
-        // TODO: ADJUST THE DIR FOR THE CURRENT POS.
-        var position = new Vector3(tForm.position.x - 1.5f, tForm.position.y + 0.5f, tForm.position.z);
-        var dir = new Vector3(-position.x, position.y, position.z);
-        var ray = new Ray(position, new(xAttackDir,0,0));
-
-        var endLine = new Vector3(tForm.position.x + (distance * dir.x), tForm.position.y + 0.5f, tForm.position.z);
-
-        Debug.DrawLine(position, endLine, Color.red, 1);
-        if (Physics.Raycast(ray, out RaycastHit hit, distance))
+        foreach (var hitTarget in hitTargets)
         {
-            if (hit.transform.gameObject.TryGetComponent(out PlayerStats otherPlayer))
+            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
+                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
-                otherPlayer.TakeDamage(250);
+                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
+                otherPlayer.TakeDamage(100,animator);
+                break;
             }
-            else
-            {
-                GeneralFunctions.PrintDebugStatement("I hitted :" + hit);
-            }
+            
+            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
         }
     }
 

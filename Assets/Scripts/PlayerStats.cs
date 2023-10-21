@@ -11,6 +11,8 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int maxhealth = 1000;
     [SerializeField] private int currenthealth;
 
+    [SerializeField] public int _player;  
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +33,7 @@ public class PlayerStats : MonoBehaviour
     }
     
     
-    public void TakeDamage(int dmgAmount)
+    public void TakeDamage(int dmgAmount, Animator animator)
     {
         currenthealth -= dmgAmount;
         if (currenthealth <= 0)
@@ -40,7 +42,8 @@ public class PlayerStats : MonoBehaviour
             GeneralFunctions.PrintDebugStatement("Im Deadge");
         }
         // Play Hit Animation
-        
+
+        animator.SetTrigger("Hit");
         
         HealthBarScript.SetHealth(currenthealth);
 
