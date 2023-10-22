@@ -7,11 +7,15 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
 
+    private const float DAMAGE_BLOCK_COEFFICIENT = 0.1f;
+    
     public HealthBarScript HealthBarScript;
     [SerializeField] private int maxhealth = 1000;
     [SerializeField] private int currenthealth;
+    
+    [SerializeField] public int _player;
 
-    [SerializeField] public int _player;  
+    public bool IsBlocking { get; set; } = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +23,7 @@ public class PlayerStats : MonoBehaviour
         HealthBarScript ??= new();
         currenthealth = maxhealth;
         HealthBarScript.SetMaxHealth(maxhealth);
-
+        
     }
     
     // Update is called once per frame
@@ -35,6 +39,12 @@ public class PlayerStats : MonoBehaviour
     
     public void TakeDamage(int dmgAmount, Animator animator)
     {
+        if (IsBlocking)
+        {
+            var blocked = dmgAmount + DAMAGE_BLOCK_COEFFICIENT;
+            dmgAmount = (int)blocked;
+        };
+        
         currenthealth -= dmgAmount;
         if (currenthealth <= 0)
         {

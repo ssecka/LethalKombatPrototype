@@ -10,10 +10,11 @@ using UnityEngine.Serialization;
 
 public class Movement : MonoBehaviour
 {
-    private const float MVSPEED = .105f;
-    private const float JUMPPOWER = 250f;
+    private const float MOVE_SPEED = .105f;
+    private const float JUMP_POWER = 250f;
     private const float GRAVITY_MULTI = 1.015f;
     private const float ATTACK_TOLERANCE_RANGE = 0.2f;
+    
     
     private Animator _animator;
 
@@ -29,27 +30,34 @@ public class Movement : MonoBehaviour
 
     private PlayerInput _playerControlls;
 
-    private InputAction _move, _punch, _jump, _legSweep;
+    private InputAction _move, _punch, _jump, _sideKick, _block;
+
+    private List<InputAction> _toBeBlocked;
+    
     private static readonly int SideKickID = Animator.StringToHash("SideKick");
     private int _playerNumber = -1;
     private bool _punchSwitcher = true;
     private static readonly int PunchID = Animator.StringToHash("Punch");
     private static readonly int Jab = Animator.StringToHash("Jab");
     private float _lastXCord;
+    private PlayerStats _playerStats;
 
     private bool _isMoving = false;
     private static readonly int FWalking = Animator.StringToHash("FWalking");
     private static readonly int BWalking = Animator.StringToHash("BWalking");
     private float _facingMultiplier = 0f;
+    private static readonly int BlockingID = Animator.StringToHash("Blocking");
 
     private void Awake()
     {
+        _toBeBlocked ??= new();
         if (_transform == null) Debug.Log("transform not set!");
         _playerControlls = new();
         
         if(TryGetComponent(out PlayerStats stats))
         {
             _playerNumber = stats._player;
+            _playerStats = stats; // We need this to set blockingg
         }
 
         _facingMultiplier = _transform.rotation.y < 0 ? -1 : 0;
@@ -60,21 +68,39 @@ public class Movement : MonoBehaviour
 
     private void OnEnable()
     {
+        _toBeBlocked ??= new();
+
         _move = _playerControlls.Player.Move;
         _move.Enable();
-
+        _toBeBlocked.Add(_move);
+        
+        
         _punch = _playerControlls.Player.Punch;
         _punch.Enable();
         _punch.performed += Punch;
+        _toBeBlocked.Add(_punch);
 
-        _legSweep = _playerControlls.Player.LegSweep;
-        _legSweep.Enable();
-        _legSweep.performed += SideKick;
-
+        _sideKick = _playerControlls.Player.LegSweep;
+        _sideKick.Enable();
+        _sideKick.performed += SideKick;
+        _toBeBlocked.Add(_sideKick);
+        
+        
         _jump = _playerControlls.Player.Jump;
         _jump.Enable();
         _jump.performed += Jump;
+        _toBeBlocked.Add(_jump);
+        
+        
+        _block = _playerControlls.Player.Block;
+        _block.Enable();
+        _block.started += _ => UpdateBlocking(true);
+        _block.canceled += _ => UpdateBlocking(false);
+
+        
     }
+
+
 
     private void OnDisable()
     {
@@ -123,7 +149,7 @@ public class Movement : MonoBehaviour
         }
         _lastXCord = _transform.position.x;
         
-        var newX = _transform.position.x + ((_facingMultiplier * _movDir.x) * MVSPEED);
+        var newX = _transform.position.x + ((_facingMultiplier * _movDir.x) * MOVE_SPEED);
         if (_movDir.x > 0)
         {
             _animator.SetBool(FWalking,true);
@@ -142,7 +168,7 @@ public class Movement : MonoBehaviour
     private void Jump(InputAction.CallbackContext context)
     {
         if (!_canJump) return;
-        _rb.AddForce(Vector3.up * JUMPPOWER);
+        _rb.AddForce(Vector3.up * JUMP_POWER);
         _canJump = false;
     }
 
@@ -219,6 +245,16 @@ public class Movement : MonoBehaviour
         }
     }
 
+    private void UpdateBlocking(bool state)
+    {
+        _animator.SetBool(BlockingID,_playerStats.IsBlocking = state);
+        foreach (var v in _toBeBlocked)
+        {
+            if(state) v.Disable();
+            else v.Enable();
+        }
+    }
+    
     #endregion
 }
 
