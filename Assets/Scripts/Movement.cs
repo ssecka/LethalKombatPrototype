@@ -14,7 +14,9 @@ public class Movement : MonoBehaviour
     private const float JUMP_POWER = 250f;
     private const float GRAVITY_MULTI = 1.015f;
     private const float ATTACK_TOLERANCE_RANGE = 0.2f;
-    
+    private const float ATTACK_COOLDOWN_TIME = 0.22f;
+
+    private DateTimeOffset _lastAttackTime = DateTimeOffset.Now;
     
     private Animator _animator;
 
@@ -183,11 +185,29 @@ public class Movement : MonoBehaviour
     #region Attacks
 
     /// <summary>
+    /// Used as cooldown between Attacks
+    /// </summary>
+    /// <returns>true if allowed, false if not</returns>
+    private bool IsNextAttackAllowed()
+    {
+        var curTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        var allowedTime = _lastAttackTime.AddSeconds(ATTACK_COOLDOWN_TIME).ToUnixTimeSeconds();
+        if (curTime > allowedTime)
+        {
+            _lastAttackTime = DateTimeOffset.UtcNow;
+            return true;
+        }
+
+        return false;
+    }
+    
+    /// <summary>
     /// Hotkey: leftclick
     /// </summary>
     /// <param name="context"></param>
     private void Punch(InputAction.CallbackContext context)
     {
+        if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("Punch");
 
         _punchSwitcher = !_punchSwitcher;
@@ -217,12 +237,15 @@ public class Movement : MonoBehaviour
         }
     }
 
+
+
     /// <summary>
     /// Hotkey: Rightclick
     /// </summary>
     /// <param name="context"></param>
     private void SideKick(InputAction.CallbackContext context)
     {
+        if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("SideKick");
 
         //TODO: Add animation for front punch
