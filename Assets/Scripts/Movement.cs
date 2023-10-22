@@ -49,6 +49,7 @@ public class Movement : MonoBehaviour
     private static readonly int BWalking = Animator.StringToHash("BWalking");
     private float _facingMultiplier = 0f;
     private static readonly int BlockingID = Animator.StringToHash("Blocking");
+    private static readonly int JumpID = Animator.StringToHash("Jump");
 
     private void Awake()
     {
@@ -170,6 +171,7 @@ public class Movement : MonoBehaviour
     private void Jump(InputAction.CallbackContext context)
     {
         if (!_canJump) return;
+        _animator.SetTrigger(JumpID);
         _rb.AddForce(Vector3.up * JUMP_POWER);
         _canJump = false;
     }
