@@ -9,6 +9,10 @@ public class PlayerStats : MonoBehaviour
 
     private const float DAMAGE_BLOCK_COEFFICIENT = 0.1f;
     
+    private Animator _animator;
+    
+    private static readonly int Die = Animator.StringToHash("Die");
+    
     public HealthBarScript HealthBarScript;
     [SerializeField] private int maxhealth = 1000;
     [SerializeField] private int currenthealth;
@@ -20,9 +24,13 @@ public class PlayerStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Get the Animator component from your character.
+        _animator = GetComponent<Animator>();
+        
         HealthBarScript ??= new();
         currenthealth = maxhealth;
         HealthBarScript.SetMaxHealth(maxhealth);
+     
         
     }
     
@@ -50,6 +58,7 @@ public class PlayerStats : MonoBehaviour
         {
             //throw new NotImplementedException("TODO: Implement Game End");
             GeneralFunctions.PrintDebugStatement("Im Deadge");
+            _animator.SetTrigger(Die);
         }
         // Play Hit Animation
 
