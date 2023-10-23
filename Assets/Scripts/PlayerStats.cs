@@ -12,6 +12,7 @@ public class PlayerStats : MonoBehaviour
     private Animator _animator;
     
     private static readonly int Die = Animator.StringToHash("Die");
+    private static readonly int Hit = Animator.StringToHash("Hit");
     
     public HealthBarScript HealthBarScript;
     [SerializeField] private int maxhealth = 1000;
@@ -54,6 +55,7 @@ public class PlayerStats : MonoBehaviour
         };
         
         currenthealth -= dmgAmount;
+        
         if (currenthealth <= 0)
         {
             //throw new NotImplementedException("TODO: Implement Game End");
@@ -61,8 +63,7 @@ public class PlayerStats : MonoBehaviour
             _animator.SetTrigger(Die);
         }
         // Play Hit Animation
-
-        animator.SetTrigger("Hit");
+        _animator.SetTrigger(Hit);
         
         HealthBarScript.SetHealth(currenthealth);
 
