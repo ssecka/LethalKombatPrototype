@@ -23,14 +23,14 @@ public class PlayerStats : MonoBehaviour
     public bool IsBlocking { get; set; } = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // Get the Animator component from your character.
         _animator = GetComponent<Animator>();
         
         HealthBarScript ??= new();
         currenthealth = maxhealth;
-        HealthBarScript.SetMaxHealth(maxhealth);
+        HealthBarScript.SetMaxHealth(maxhealth, _player);
      
         
     }
@@ -60,11 +60,11 @@ public class PlayerStats : MonoBehaviour
         {
             //throw new NotImplementedException("TODO: Implement Game End");
             GeneralFunctions.PrintDebugStatement("Im Deadge");
-            _animator.SetTrigger(Die);
+            animator.SetTrigger(Die);
         }
         // Play Hit Animation
         // TODO: INTERRUPT ANIMATION
-        _animator.SetTrigger(Hit);
+        animator.SetTrigger(Hit);
         
         HealthBarScript.SetHealth(currenthealth);
 

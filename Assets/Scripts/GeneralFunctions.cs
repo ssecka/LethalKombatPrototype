@@ -25,7 +25,7 @@ public class GeneralFunctions : MonoBehaviour
         return;
 #endif
     }
-
-
-    public static void PrintDebugStatement(int statement) => PrintDebugStatement(statement.ToString());
+    public static void PrintDebugStatement(object statement) => PrintDebugStatement(statement.ToString());
+    
+    
 }
