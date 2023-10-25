@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Leg Sweep",
+                    "name": "SideKick",
                     "type": "Button",
                     "id": "7b9f2bea-0e3b-453a-b542-3d03deba9995",
                     "expectedControlType": "Button",
@@ -52,12 +52,12 @@
                 },
                 {
                     "name": "Block",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "dc039c9e-2c87-485d-9e87-202f4f2751eb",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -266,7 +266,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Leg Sweep",
+                    "action": "SideKick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -277,7 +277,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Leg Sweep",
+                    "action": "SideKick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

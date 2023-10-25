@@ -63,6 +63,7 @@ public class PlayerStats : MonoBehaviour
             _animator.SetTrigger(Die);
         }
         // Play Hit Animation
+        // TODO: INTERRUPT ANIMATION
         _animator.SetTrigger(Hit);
         
         HealthBarScript.SetHealth(currenthealth);

@@ -64,7 +64,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Leg Sweep"",
+                    ""name"": ""SideKick"",
                     ""type"": ""Button"",
                     ""id"": ""7b9f2bea-0e3b-453a-b542-3d03deba9995"",
                     ""expectedControlType"": ""Button"",
@@ -74,12 +74,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Block"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""dc039c9e-2c87-485d-9e87-202f4f2751eb"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -288,7 +288,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Leg Sweep"",
+                    ""action"": ""SideKick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -299,7 +299,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Leg Sweep"",
+                    ""action"": ""SideKick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -913,7 +913,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Punch = m_Player.FindAction("Punch", throwIfNotFound: true);
-        m_Player_LegSweep = m_Player.FindAction("Leg Sweep", throwIfNotFound: true);
+        m_Player_SideKick = m_Player.FindAction("SideKick", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -992,7 +992,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Punch;
-    private readonly InputAction m_Player_LegSweep;
+    private readonly InputAction m_Player_SideKick;
     private readonly InputAction m_Player_Block;
     public struct PlayerActions
     {
@@ -1002,7 +1002,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Punch => m_Wrapper.m_Player_Punch;
-        public InputAction @LegSweep => m_Wrapper.m_Player_LegSweep;
+        public InputAction @SideKick => m_Wrapper.m_Player_SideKick;
         public InputAction @Block => m_Wrapper.m_Player_Block;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -1025,9 +1025,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Punch.started += instance.OnPunch;
             @Punch.performed += instance.OnPunch;
             @Punch.canceled += instance.OnPunch;
-            @LegSweep.started += instance.OnLegSweep;
-            @LegSweep.performed += instance.OnLegSweep;
-            @LegSweep.canceled += instance.OnLegSweep;
+            @SideKick.started += instance.OnSideKick;
+            @SideKick.performed += instance.OnSideKick;
+            @SideKick.canceled += instance.OnSideKick;
             @Block.started += instance.OnBlock;
             @Block.performed += instance.OnBlock;
             @Block.canceled += instance.OnBlock;
@@ -1047,9 +1047,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Punch.started -= instance.OnPunch;
             @Punch.performed -= instance.OnPunch;
             @Punch.canceled -= instance.OnPunch;
-            @LegSweep.started -= instance.OnLegSweep;
-            @LegSweep.performed -= instance.OnLegSweep;
-            @LegSweep.canceled -= instance.OnLegSweep;
+            @SideKick.started -= instance.OnSideKick;
+            @SideKick.performed -= instance.OnSideKick;
+            @SideKick.canceled -= instance.OnSideKick;
             @Block.started -= instance.OnBlock;
             @Block.performed -= instance.OnBlock;
             @Block.canceled -= instance.OnBlock;
@@ -1239,7 +1239,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnPunch(InputAction.CallbackContext context);
-        void OnLegSweep(InputAction.CallbackContext context);
+        void OnSideKick(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
     }
     public interface IUIActions

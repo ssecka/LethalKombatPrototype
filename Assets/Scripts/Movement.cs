@@ -10,52 +10,73 @@ using UnityEngine.Serialization;
 
 public class Movement : MonoBehaviour
 {
+    #region Constants
+    
     private const float MOVE_SPEED = .105f;
     private const float JUMP_POWER = 250f;
     private const float GRAVITY_MULTI = 1.015f;
     private const float ATTACK_TOLERANCE_RANGE = 0.2f;
     private const float ATTACK_COOLDOWN_TIME = 0.22f;
 
-    private DateTimeOffset _lastAttackTime = DateTimeOffset.Now;
+    #endregion
     
-    private Animator _animator;
-
-    private bool _canJump = true;
-
+    #region Serializeable
+    
     [SerializeField] private Transform _transform;
     [SerializeField] private Rigidbody _rb;
-    
-    // Keep Public so the Sphere can be seen in the editor
     public Transform _sideKickAttackPoint, _punchAttackPoint;
 
-    private Vector2 _movDir = Vector2.zero;
+    #endregion
+    
+    private Animator _animator;
+    
+    private DateTimeOffset _lastAttackTime = DateTimeOffset.Now;
+    private bool _canJump = true;
 
-    private PlayerInput _playerControlls;
-
-    private InputAction _move, _punch, _jump, _sideKick, _block;
-
-    private List<InputAction> _toBeBlocked;
+    #region AnimationIDs
     
     private static readonly int SideKickID = Animator.StringToHash("SideKick");
-    private int _playerNumber = -1;
-    private bool _punchSwitcher = true;
     private static readonly int PunchID = Animator.StringToHash("Punch");
     private static readonly int Jab = Animator.StringToHash("Jab");
-    private float _lastXCord;
-    private PlayerStats _playerStats;
-
-    private bool _isMoving = false;
     private static readonly int FWalking = Animator.StringToHash("FWalking");
     private static readonly int BWalking = Animator.StringToHash("BWalking");
-    private float _facingMultiplier = 0f;
     private static readonly int BlockingID = Animator.StringToHash("Blocking");
     private static readonly int JumpID = Animator.StringToHash("Jump");
+    
+    #endregion
+    
+    private Vector2 _movDir = Vector2.zero;
+    private List<InputAction> _toBeBlocked;
+    private int _playerNumber = -1;
+    private bool _punchSwitcher = true;
+    private float _lastXCord;
+    private PlayerStats _playerStats;
+    private float _facingMultiplier;
+    private bool _isBlocking = false;
+    
 
+    #region Startup
+    
+    #region On/Off    
+    private void OnEnable()
+    {
+        _toBeBlocked ??= new();
+        
+
+        
+    }
+
+    private void OnDisable()
+    {
+        
+    }
+
+    #endregion
+    
     private void Awake()
     {
         _toBeBlocked ??= new();
         if (_transform == null) Debug.Log("transform not set!");
-        _playerControlls = new();
         
         if(TryGetComponent(out PlayerStats stats))
         {
@@ -67,58 +88,33 @@ public class Movement : MonoBehaviour
         
         _lastXCord = _transform.position.x;
     }
-
-
-    private void OnEnable()
-    {
-        _toBeBlocked ??= new();
-
-        _move = _playerControlls.Player.Move;
-        _move.Enable();
-        _toBeBlocked.Add(_move);
-        
-        
-        _punch = _playerControlls.Player.Punch;
-        _punch.Enable();
-        _punch.performed += Punch;
-        _toBeBlocked.Add(_punch);
-
-        _sideKick = _playerControlls.Player.LegSweep;
-        _sideKick.Enable();
-        _sideKick.performed += SideKick;
-        _toBeBlocked.Add(_sideKick);
-        
-        
-        _jump = _playerControlls.Player.Jump;
-        _jump.Enable();
-        _jump.performed += Jump;
-        _toBeBlocked.Add(_jump);
-        
-        
-        _block = _playerControlls.Player.Block;
-        _block.Enable();
-        _block.started += _ => UpdateBlocking(true);
-        _block.canceled += _ => UpdateBlocking(false);
-
-        
-    }
-
-
-
-    private void OnDisable()
-    {
-        _move.Disable();
-        _punch.Disable();
-    }
-
+    
+    
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         // Get the Animator component from your character.
         _animator = GetComponent<Animator>();
     }
+    
+    
+    #endregion
+    
+    /// <summary>
+    /// Used to draw the hit detection spheres
+    /// </summary>
+    private void OnDrawGizmos()
+    {
+        if (_sideKickAttackPoint != null)
+            Gizmos.DrawWireSphere(_sideKickAttackPoint.position,ATTACK_TOLERANCE_RANGE);
+        if(_punchAttackPoint != null)
+            Gizmos.DrawWireSphere(_punchAttackPoint.position,ATTACK_TOLERANCE_RANGE);
+    }
 
-
+    /// <summary>
+    /// Used for the hit detection
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Ground _))
@@ -127,23 +123,28 @@ public class Movement : MonoBehaviour
         }
     }
 
+    
     // Update is called once per frame
     void Update()
     {
-        _movDir = _move.ReadValue<Vector2>();
         if (_rb.velocity.y < 0 && !_canJump)
         {
             var velocity = _rb.velocity;
             velocity = new(velocity.x, velocity.y * GRAVITY_MULTI, velocity.z);
             _rb.velocity = velocity;
         }
-
-
     }
 
     private void FixedUpdate()
     {
-        
+
+        if (_isBlocking)
+        {
+            _animator.SetBool(FWalking,false);
+            _animator.SetBool(BWalking,false);
+            return;
+        }
+
         var hlp = _lastXCord - _transform.position.x;
         if (Math.Abs(hlp) < Math.Pow(10,-6))
         {
@@ -168,24 +169,26 @@ public class Movement : MonoBehaviour
         _transform.position = new(newX, ((Component)this).transform.position.y, 0);
     }
 
-    private void Jump(InputAction.CallbackContext context)
+    public void OnMove(InputAction.CallbackContext context)
     {
+        _movDir = context.ReadValue<Vector2>();
+    }
+
+    public void Jump(InputAction.CallbackContext context)
+    {
+        // Dont allow this action while blocking
+        if (_isBlocking) return;
+        
         if (!_canJump) return;
         _animator.SetTrigger(JumpID);
         _rb.AddForce(Vector3.up * JUMP_POWER);
         _canJump = false;
     }
-
-    private void OnDrawGizmos()
-    {
-        if (_sideKickAttackPoint != null)
-            Gizmos.DrawWireSphere(_sideKickAttackPoint.position,ATTACK_TOLERANCE_RANGE);
-        if(_punchAttackPoint != null)
-            Gizmos.DrawWireSphere(_punchAttackPoint.position,ATTACK_TOLERANCE_RANGE);
-    }
+    
 
     #region Attacks
-
+    
+    
     /// <summary>
     /// Used as cooldown between Attacks
     /// </summary>
@@ -207,8 +210,11 @@ public class Movement : MonoBehaviour
     /// Hotkey: leftclick
     /// </summary>
     /// <param name="context"></param>
-    private void Punch(InputAction.CallbackContext context)
+    public void Punch(InputAction.CallbackContext context)
     {
+        //Blocking --> Dont allow other action meanwhile.
+        if (_isBlocking) return;
+        
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("Punch");
 
@@ -245,8 +251,11 @@ public class Movement : MonoBehaviour
     /// Hotkey: Rightclick
     /// </summary>
     /// <param name="context"></param>
-    private void SideKick(InputAction.CallbackContext context)
+    public void SideKick(InputAction.CallbackContext context)
     {
+        //Blocking --> Dont allow other action meanwhile.
+        if (_isBlocking) return;
+        
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("SideKick");
 
@@ -270,22 +279,22 @@ public class Movement : MonoBehaviour
         }
     }
 
+    public void Block(InputAction.CallbackContext context)
+    {
+        GeneralFunctions.PrintDebugStatement("BREAKPOINT");
+        var state = context.phase;
+        if(state == InputActionPhase.Started) UpdateBlocking(true);
+        else if(state == InputActionPhase.Canceled) UpdateBlocking(false);
+    }
+
     private void UpdateBlocking(bool state)
     {
-        _animator.SetBool(BlockingID,_playerStats.IsBlocking = state);
-        foreach (var v in _toBeBlocked)
-        {
-            if(state) v.Disable();
-            else v.Enable();
-        }
+        _animator.SetBool(BlockingID,state);
+        _animator.SetBool(FWalking,false);
+        _animator.SetBool(BWalking,false);
+        
+        _isBlocking = state;
     }
     
     #endregion
 }
-
-/*
-        var position = new Vector3(tForm.position.x + 0.75f,tForm.position.y,tForm.position.z);
-        var dir = new Vector3(position.x, position.y - 1, position.z);
-        var ray = new Ray(position, dir);
-
-*/
