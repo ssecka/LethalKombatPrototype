@@ -2431,7 +2431,7 @@ GameObject:
   - component: {fileID: 8578282078728012908}
   - component: {fileID: 8578282078728012907}
   m_Layer: 0
-  m_Name: character
+  m_Name: Char_Player1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2445,7 +2445,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8920865362758466828}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 4, y: 0.8, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2520,7 +2520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a104041370c14742bd6761f3d7c8f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthBarScript: {fileID: 0}
+  HealthBarScript: {fileID: 2279642866526885076, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
   maxhealth: 1000
   currenthealth: 0
   _player: 1
