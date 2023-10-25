@@ -1,41 +1,58 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class FighterCamera : MonoBehaviour
 {
 
-    public Transform[] playerTransforms;
+    private Transform[] _playerTransforms;
     public float yOffset = 1.5f;
     public float minDistance = 4f;
     private float xMin, xMax, yMin, yMax;
     
     // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
+        _playerTransforms ??= new Transform[2];
+
+        var debug = GameObject.Find("Player1").transform;
         
+        _playerTransforms[0] ??= GameObject.Find("Player1").transform.GetChild(0).transform;
+        _playerTransforms[1] ??= GameObject.Find("Player1").transform.GetChild(0).transform;
     }
+
+    public void SpawnInPlayer2()
+    {
+        _playerTransforms[1] = GameObject.Find("PlayerManagerComponent").transform.GetChild(0).transform;
+    }
+    
 
     // Update is called once per frame
     void LateUpdate()
     {
-        if(playerTransforms.Length == 0)
+  
+        
+        
+        if(_playerTransforms.Length == 0)
             return;
-        xMin = xMax = playerTransforms[0].position.x;
-        yMin = yMax = playerTransforms[0].position.y;
-        for (int i = 1; i < playerTransforms.Length; i++)
+        xMin = xMax = _playerTransforms[0].position.x;
+        yMin = yMax = _playerTransforms[0].position.y;
+        for (int i = 1; i < _playerTransforms.Length; i++)
         {
-            if (playerTransforms[i].position.x < xMin)
-                xMin = playerTransforms[i].position.x;
+            if (_playerTransforms[i].position.x < xMin)
+                xMin = _playerTransforms[i].position.x;
             
-            if (playerTransforms[i].position.x > xMax)
-                xMax = playerTransforms[i].position.x;
+            if (_playerTransforms[i].position.x > xMax)
+                xMax = _playerTransforms[i].position.x;
             
-            if (playerTransforms[i].position.y < yMin)
-                yMin = playerTransforms[i].position.y;
+            if (_playerTransforms[i].position.y < yMin)
+                yMin = _playerTransforms[i].position.y;
             
-            if (playerTransforms[i].position.y > yMax)
-                yMax = playerTransforms[i].position.y;
+            if (_playerTransforms[i].position.y > yMax)
+                yMax = _playerTransforms[i].position.y;
         }
 
         float xMiddle = (xMin + xMax) / 2;
