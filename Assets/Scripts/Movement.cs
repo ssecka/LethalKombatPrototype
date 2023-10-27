@@ -8,8 +8,8 @@ public class Movement : MonoBehaviour
     #region Constants
     
     private const float MOVE_SPEED = .105f;
-    private const float JUMP_POWER = 250f;
-    private const float GRAVITY_MULTI = 1.015f;
+    private const float JUMP_POWER = 3500f;
+    private const float GRAVITY_MULTI = 1.3f;
     private const float ATTACK_TOLERANCE_RANGE = 0.2f;
     private const float ATTACK_COOLDOWN_TIME = 0.22f;
 
@@ -43,7 +43,6 @@ public class Movement : MonoBehaviour
     private Vector2 _movDir = Vector2.zero;
     private List<InputAction> _toBeBlocked;
     private int _playerNumber = -1;
-    private bool _punchSwitcher = true;
     private float _lastXCord;
     private PlayerStats _playerStats;
     private float _facingMultiplier;
@@ -322,7 +321,7 @@ public class Movement : MonoBehaviour
                 if (JabHitCounter == 0)
                 {     
                     GeneralFunctions.PrintDebugStatement("We hit the other Player!"); 
-                    otherPlayer.TakeDamage(100,animator); 
+                    otherPlayer.TakeDamage(30,animator); 
                     JabHitCounter++; 
                     break;
                 }
@@ -346,7 +345,7 @@ public class Movement : MonoBehaviour
                 if (HookHitHounter == 0)
                 {     
                     GeneralFunctions.PrintDebugStatement("We hit the other Player!"); 
-                    otherPlayer.TakeDamage(100,animator); 
+                    otherPlayer.TakeDamage(40,animator); 
                     HookHitHounter++; 
                     break;
                 }
@@ -370,7 +369,7 @@ public class Movement : MonoBehaviour
                 if (SideKickHitHounter == 0)
                 {     
                     GeneralFunctions.PrintDebugStatement("We hit the other Player!"); 
-                    otherPlayer.TakeDamage(100,animator); 
+                    otherPlayer.TakeDamage(80,animator); 
                     SideKickHitHounter++; 
                     break;
                 }

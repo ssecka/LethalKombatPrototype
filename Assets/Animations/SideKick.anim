@@ -91460,63 +91460,63 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.6
-    functionName: ActivateHitbox
+    functionName: SideKickActivateHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.6333333
-    functionName: ActivateHitbox
+    functionName: SideKickActivateHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.6666667
-    functionName: ActivateHitbox
+    functionName: SideKickActivateHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.7
-    functionName: ActivateHitbox
+    functionName: SideKickActivateHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.73333335
-    functionName: ActivateHitbox
+    functionName: SideKickActivateHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.76666665
-    functionName: ActivateHitbox
+    functionName: SideKickActivateHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.8
-    functionName: ActivateHitbox
+    functionName: SideKickActivateHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.8333333
-    functionName: ActivateHitbox
+    functionName: SideKickActivateHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.0666667
-    functionName: DeactivateHitbox
+    functionName: SideKickDeactivateHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

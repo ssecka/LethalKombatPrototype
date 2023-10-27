@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
 
-    private const float DAMAGE_BLOCK_COEFFICIENT = 0.1f;
+    private const float DAMAGE_BLOCK_COEFFICIENT = 0.4f;
     
     private Animator _animator;
     
