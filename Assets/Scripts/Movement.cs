@@ -263,7 +263,7 @@ public class Movement : MonoBehaviour
         _animator.SetTrigger(SideKickID);
 
         // ReSharper disable once Unity.PreferNonAllocApi --> not needed in this usecase
-        var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+ /*       var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
 
         foreach (var hitTarget in hitTargets)
         {
@@ -276,7 +276,7 @@ public class Movement : MonoBehaviour
             }
             
             //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
-        }
+        } */
     }
 
     public void Block(InputAction.CallbackContext context)
@@ -295,6 +295,33 @@ public class Movement : MonoBehaviour
         
         _isBlocking = state;
     }
+
+    int hitcounter = 0;
+    public void ActivateHitbox()
+    {
+        var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+
+        foreach (var hitTarget in hitTargets)
+        {
+            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
+                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
+            {
+                if (hitcounter == 0)
+                {     
+                    GeneralFunctions.PrintDebugStatement("We hit the other Player!"); 
+                    otherPlayer.TakeDamage(100,animator); 
+                    hitcounter++; 
+                    break;
+                }
+            }
+            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
+        }
+    }
+    public void DeactivateHitbox()
+    {
+        hitcounter = 0;
+    }
+    
     
     #endregion
 }
