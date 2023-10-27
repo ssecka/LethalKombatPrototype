@@ -24,7 +24,7 @@ public class Movement : MonoBehaviour
     
     [SerializeField] private Transform _transform;
     [SerializeField] private Rigidbody _rb;
-    public Transform _sideKickAttackPoint, _punchAttackPoint;
+    public Transform _sideKickAttackPoint, _punchAttackPoint, _hookAttackPoint;
 
     #endregion
     
@@ -108,6 +108,8 @@ public class Movement : MonoBehaviour
         if (_sideKickAttackPoint != null)
             Gizmos.DrawWireSphere(_sideKickAttackPoint.position,ATTACK_TOLERANCE_RANGE);
         if(_punchAttackPoint != null)
+            Gizmos.DrawWireSphere(_punchAttackPoint.position,ATTACK_TOLERANCE_RANGE);
+        if(_hookAttackPoint != null)
             Gizmos.DrawWireSphere(_punchAttackPoint.position,ATTACK_TOLERANCE_RANGE);
     }
 
@@ -217,17 +219,8 @@ public class Movement : MonoBehaviour
         
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("Punch");
-
-        _punchSwitcher = !_punchSwitcher;
-        if (_punchSwitcher)
-        {
-            _animator.SetTrigger(Jab);
-        }
-        else
-        {
-            _animator.SetTrigger(PunchID);
-        }
-
+        _animator.SetTrigger(Jab);
+        
         // ReSharper disable once Unity.PreferNonAllocApi --> not needed in this usecase
         var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
 
@@ -244,8 +237,31 @@ public class Movement : MonoBehaviour
             //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
         }
     }
+    public void Hook(InputAction.CallbackContext context)
+    {
+        //Blocking --> Dont allow other action meanwhile.
+        if (_isBlocking) return;
+        
+        if (!IsNextAttackAllowed()) return;
+        GeneralFunctions.PrintDebugStatement("Punch");
+        _animator.SetTrigger(Jab);
+        
+        // ReSharper disable once Unity.PreferNonAllocApi --> not needed in this usecase
+        var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
 
-
+        foreach (var hitTarget in hitTargets)
+        {
+            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
+                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
+            {
+                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
+                otherPlayer.TakeDamage(100,animator);
+                break;
+            }
+            
+            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
+        }
+    }
 
     /// <summary>
     /// Hotkey: Rightclick
@@ -296,8 +312,58 @@ public class Movement : MonoBehaviour
         _isBlocking = state;
     }
 
-    int hitcounter = 0;
-    public void ActivateHitbox()
+    int JabHitCounter = 0;
+    int HookHitHounter = 0;
+    int SideKickHitHounter = 0;
+    public void JabActivateHitbox()
+    {
+        var hitTargets = Physics.OverlapSphere(_punchAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+
+        foreach (var hitTarget in hitTargets)
+        {
+            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
+                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
+            {
+                if (JabHitCounter == 0)
+                {     
+                    GeneralFunctions.PrintDebugStatement("We hit the other Player!"); 
+                    otherPlayer.TakeDamage(100,animator); 
+                    JabHitCounter++; 
+                    break;
+                }
+            }
+            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
+        }
+    }
+    public void JabDeactivateHitbox()
+    {
+        JabHitCounter = 0;
+    }
+    public void HookActivateHitbox()
+    {
+        var hitTargets = Physics.OverlapSphere(_hookAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+
+        foreach (var hitTarget in hitTargets)
+        {
+            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
+                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
+            {
+                if (HookHitHounter == 0)
+                {     
+                    GeneralFunctions.PrintDebugStatement("We hit the other Player!"); 
+                    otherPlayer.TakeDamage(100,animator); 
+                    HookHitHounter++; 
+                    break;
+                }
+            }
+            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
+        }
+    }
+    public void HookDeactivateHitbox()
+    {
+        SideKickHitHounter = 0;
+    }
+    public void SideKickActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
 
@@ -306,20 +372,20 @@ public class Movement : MonoBehaviour
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
-                if (hitcounter == 0)
+                if (SideKickHitHounter == 0)
                 {     
                     GeneralFunctions.PrintDebugStatement("We hit the other Player!"); 
                     otherPlayer.TakeDamage(100,animator); 
-                    hitcounter++; 
+                    SideKickHitHounter++; 
                     break;
                 }
             }
             //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
         }
     }
-    public void DeactivateHitbox()
+    public void SideKickDeactivateHitbox()
     {
-        hitcounter = 0;
+        SideKickHitHounter = 0;
     }
     
     

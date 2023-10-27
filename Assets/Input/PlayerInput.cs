@@ -64,6 +64,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Hook"",
+                    ""type"": ""Button"",
+                    ""id"": ""55db6dcb-a35b-46b7-b15d-95f50bf27d9c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""SideKick"",
                     ""type"": ""Button"",
                     ""id"": ""7b9f2bea-0e3b-453a-b542-3d03deba9995"",
@@ -322,6 +331,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d27840a7-db7a-422c-8319-877e7f08222c"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Hook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37c1f221-4248-4a97-8bab-e9c1f5381690"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Hook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -913,6 +944,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Punch = m_Player.FindAction("Punch", throwIfNotFound: true);
+        m_Player_Hook = m_Player.FindAction("Hook", throwIfNotFound: true);
         m_Player_SideKick = m_Player.FindAction("SideKick", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
         // UI
@@ -992,6 +1024,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Punch;
+    private readonly InputAction m_Player_Hook;
     private readonly InputAction m_Player_SideKick;
     private readonly InputAction m_Player_Block;
     public struct PlayerActions
@@ -1002,6 +1035,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Punch => m_Wrapper.m_Player_Punch;
+        public InputAction @Hook => m_Wrapper.m_Player_Hook;
         public InputAction @SideKick => m_Wrapper.m_Player_SideKick;
         public InputAction @Block => m_Wrapper.m_Player_Block;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1025,6 +1059,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Punch.started += instance.OnPunch;
             @Punch.performed += instance.OnPunch;
             @Punch.canceled += instance.OnPunch;
+            @Hook.started += instance.OnHook;
+            @Hook.performed += instance.OnHook;
+            @Hook.canceled += instance.OnHook;
             @SideKick.started += instance.OnSideKick;
             @SideKick.performed += instance.OnSideKick;
             @SideKick.canceled += instance.OnSideKick;
@@ -1047,6 +1084,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Punch.started -= instance.OnPunch;
             @Punch.performed -= instance.OnPunch;
             @Punch.canceled -= instance.OnPunch;
+            @Hook.started -= instance.OnHook;
+            @Hook.performed -= instance.OnHook;
+            @Hook.canceled -= instance.OnHook;
             @SideKick.started -= instance.OnSideKick;
             @SideKick.performed -= instance.OnSideKick;
             @SideKick.canceled -= instance.OnSideKick;
@@ -1239,6 +1279,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnPunch(InputAction.CallbackContext context);
+        void OnHook(InputAction.CallbackContext context);
         void OnSideKick(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
     }
