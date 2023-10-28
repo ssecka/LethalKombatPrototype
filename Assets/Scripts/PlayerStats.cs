@@ -6,6 +6,8 @@ public class PlayerStats : MonoBehaviour
     private const float DAMAGE_BLOCK_COEFFICIENT = 0.4f;
     
     private Animator _animator;
+
+    private HitFreezeSystem _hitFreezeSystem;
     
     private static readonly int Die = Animator.StringToHash("Die");
     private static readonly int Hit = Animator.StringToHash("Hit");
@@ -23,7 +25,8 @@ public class PlayerStats : MonoBehaviour
     {
         // Get the Animator component from your character.
         _animator = GetComponent<Animator>();
-        
+        _hitFreezeSystem ??= GameObject.Find("PlayerEnvironmentSystem").GetComponent<HitFreezeSystem>();
+
         HealthBarScript ??= new();
         currenthealth = maxhealth;
         HealthBarScript.SetMaxHealth(maxhealth, _player);
@@ -49,8 +52,10 @@ public class PlayerStats : MonoBehaviour
             var blocked = dmgAmount + DAMAGE_BLOCK_COEFFICIENT;
             dmgAmount = (int)blocked;
         };
-        
         currenthealth -= dmgAmount;
+        HealthBarScript.SetHealth(currenthealth);
+
+        _hitFreezeSystem.Freeze();
         
         if (currenthealth <= 0)
         {
@@ -62,7 +67,6 @@ public class PlayerStats : MonoBehaviour
         // TODO: INTERRUPT ANIMATION
         animator.SetTrigger(Hit);
         
-        HealthBarScript.SetHealth(currenthealth);
 
         GeneralFunctions.PrintDebugStatement("New Life: " + currenthealth);
 
