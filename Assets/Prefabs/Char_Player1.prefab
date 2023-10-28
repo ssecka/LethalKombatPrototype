@@ -2600,7 +2600,19 @@ MonoBehaviour:
     m_ActionId: 3fa521f0-7238-4b27-bb8c-167b408e378a
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8837867533244136399}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+        m_MethodName: Hook
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 55db6dcb-a35b-46b7-b15d-95f50bf27d9c
     m_ActionName: Player/Hook[/Keyboard/l]
   m_NeverAutoSwitchControlSchemes: 0
