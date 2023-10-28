@@ -306,9 +306,9 @@ public class Movement : MonoBehaviour
         _isBlocking = state;
     }
 
-    int JabHitCounter = 0;
-    int HookHitHounter = 0;
-    int SideKickHitHounter = 0;
+    bool JabAlreadyHit = false;
+    bool HookAlreadyHit = false;
+    bool SideKickAlreadyHit = false;
     public void JabActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_punchAttackPoint.position, ATTACK_TOLERANCE_RANGE);
@@ -318,11 +318,11 @@ public class Movement : MonoBehaviour
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
-                if (JabHitCounter == 0)
+                if (JabAlreadyHit == false)
                 {     
                     GeneralFunctions.PrintDebugStatement("We hit the other Player!"); 
                     otherPlayer.TakeDamage(30,animator); 
-                    JabHitCounter++; 
+                    JabAlreadyHit = true; 
                     break;
                 }
             }
@@ -331,7 +331,7 @@ public class Movement : MonoBehaviour
     }
     public void JabDeactivateHitbox()
     {
-        JabHitCounter = 0;
+        JabAlreadyHit = false;
     }
     public void HookActivateHitbox()
     {
@@ -342,11 +342,11 @@ public class Movement : MonoBehaviour
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
-                if (HookHitHounter == 0)
+                if (HookAlreadyHit == false)
                 {     
                     GeneralFunctions.PrintDebugStatement("We hit the other Player!"); 
                     otherPlayer.TakeDamage(40,animator); 
-                    HookHitHounter++; 
+                    HookAlreadyHit = true;
                     break;
                 }
             }
@@ -355,7 +355,7 @@ public class Movement : MonoBehaviour
     }
     public void HookDeactivateHitbox()
     {
-        SideKickHitHounter = 0;
+        HookAlreadyHit = false;
     }
     public void SideKickActivateHitbox()
     {
@@ -366,11 +366,11 @@ public class Movement : MonoBehaviour
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
-                if (SideKickHitHounter == 0)
+                if (SideKickAlreadyHit == false)
                 {     
                     GeneralFunctions.PrintDebugStatement("We hit the other Player!"); 
                     otherPlayer.TakeDamage(80,animator); 
-                    SideKickHitHounter++; 
+                    SideKickAlreadyHit = true;
                     break;
                 }
             }
@@ -379,7 +379,7 @@ public class Movement : MonoBehaviour
     }
     public void SideKickDeactivateHitbox()
     {
-        SideKickHitHounter = 0;
+        SideKickAlreadyHit = false;
     }
     
     
