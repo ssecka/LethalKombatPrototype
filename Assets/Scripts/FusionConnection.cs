@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 {
+    private int playerCount = 0;
+
+    
+    
     private const string MAIN_CAMERA_SYSTEM = "Main Camera";
     public bool connectOnAwake;
     [HideInInspector] public NetworkRunner networkRunner;
@@ -38,43 +42,25 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         });
     }
 
-    /*private NetworkRunner _runner;
-    async void StartGame(GameMode mode)
-    {
-        _runner = gameObject.GetComponent<NetworkRunner>();
-        _runner.ProvideInput = true;
-
-        await _runner.StartGame(new StartGameArgs()
-        {
-            GameMode = mode,
-            SessionName = "TestRoom",
-            Scene = SceneManager.GetActiveScene().buildIndex,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
-    }
-
-    private void OnGUI()
-    {
-        if (_runner == null)
-        {
-            if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
-            {
-                StartGame(GameMode.Host);
-            }
-
-            if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
-            {
-                StartGame(GameMode.Client);
-            }
-        }
-    }*/
-
-    public void OnConnectedToServer(NetworkRunner runner)
+    /*public void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
         NetworkObject playerObject = runner.Spawn(playerPrefab, Vector3.zero);
         runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+    }*/
+    public void OnConnectedToServer(NetworkRunner runner)
+    {
+        Debug.Log("OnConnectedToServer");
+
+        // Increment the player count when a new player connects
+        playerCount++;
+
+        // Spawn the player at a different position based on their order of connection
+        Vector3 spawnPosition = (playerCount == 1) ? new Vector3(4.5f, 0.5f, 0) : new Vector3(-4.5f, 0.5f, 0);
+        NetworkObject playerObject = runner.Spawn(playerPrefab, spawnPosition);
+        runner.SetPlayerObject(runner.LocalPlayer, playerObject);
     }
+
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {

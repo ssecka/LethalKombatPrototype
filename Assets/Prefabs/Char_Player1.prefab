@@ -2429,7 +2429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a104041370c14742bd6761f3d7c8f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthBarScript: {fileID: 7179899993919353936, guid: e1cbc8c7dffc16c4a97e516c126c6d2c, type: 3}
+  HealthBarScript: {fileID: 4381932809218752520, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
   maxhealth: 1000
   currenthealth: 0
   _player: 2
