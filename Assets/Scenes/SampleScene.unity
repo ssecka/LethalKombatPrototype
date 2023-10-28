@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -265,10 +265,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Char_Player2
       objectReference: {fileID: 0}
+    - target: {fileID: 8837867533244136392, guid: 8d9fd87d02d4dd1469735c0ea108d2ea, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8837867533244136398, guid: 8d9fd87d02d4dd1469735c0ea108d2ea, type: 3}
       propertyPath: HealthBarScript
       value: 
       objectReference: {fileID: 3954924586874837374, guid: e1cbc8c7dffc16c4a97e516c126c6d2c, type: 3}
+    - target: {fileID: 8837867533244136399, guid: 8d9fd87d02d4dd1469735c0ea108d2ea, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9019813742697388053, guid: 8d9fd87d02d4dd1469735c0ea108d2ea, type: 3}
       propertyPath: m_RootOrder
       value: 0

@@ -19,7 +19,7 @@ public class Movement : MonoBehaviour
     
     [SerializeField] private Transform _transform;
     [SerializeField] private Rigidbody _rb;
-    public Transform _sideKickAttackPoint, _punchAttackPoint, _hookAttackPoint;
+    public Transform _lefthandAttackPoint, _righthandAttackPoint, _leftlegAttackPoint, _rightlegAttackPoint;
 
     #endregion
     
@@ -99,12 +99,14 @@ public class Movement : MonoBehaviour
     /// </summary>
     private void OnDrawGizmos()
     {
-        if (_sideKickAttackPoint != null)
-            Gizmos.DrawWireSphere(_sideKickAttackPoint.position,ATTACK_TOLERANCE_RANGE);
-        if(_punchAttackPoint != null)
-            Gizmos.DrawWireSphere(_punchAttackPoint.position,ATTACK_TOLERANCE_RANGE);
-        if(_hookAttackPoint != null)
-            Gizmos.DrawWireSphere(_punchAttackPoint.position,ATTACK_TOLERANCE_RANGE);
+        if (_lefthandAttackPoint != null)
+            Gizmos.DrawWireSphere(_lefthandAttackPoint.position,ATTACK_TOLERANCE_RANGE);
+        if(_righthandAttackPoint != null)
+            Gizmos.DrawWireSphere(_righthandAttackPoint.position,ATTACK_TOLERANCE_RANGE);
+        if(_leftlegAttackPoint != null)
+            Gizmos.DrawWireCube(_leftlegAttackPoint.position,new Vector3(.23f, .5f, .23f));
+        if(_rightlegAttackPoint != null)
+            Gizmos.DrawWireCube(_rightlegAttackPoint.position,new Vector3(.23f, .5f, .23f));
     }
 
     /// <summary>
@@ -212,25 +214,14 @@ public class Movement : MonoBehaviour
         if (_isBlocking) return;
         
         if (!IsNextAttackAllowed()) return;
-        GeneralFunctions.PrintDebugStatement("Punch");
+        GeneralFunctions.PrintDebugStatement("Jab");
         _animator.SetTrigger(Jab);
-        
-        // ReSharper disable once Unity.PreferNonAllocApi --> not needed in this usecase
-        var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
-
-        foreach (var hitTarget in hitTargets)
-        {
-            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
-                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
-            {
-                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                otherPlayer.TakeDamage(100,animator);
-                break;
-            }
-            
-            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
-        }
     }
+    
+    /// <summary>
+    /// Hotkey: L
+    /// </summary>
+    /// <param name="context"></param>
     public void Hook(InputAction.CallbackContext context)
     {
         //Blocking --> Dont allow other action meanwhile.
@@ -238,23 +229,7 @@ public class Movement : MonoBehaviour
         
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("Punch");
-        _animator.SetTrigger(Jab);
-        
-        // ReSharper disable once Unity.PreferNonAllocApi --> not needed in this usecase
-        var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
-
-        foreach (var hitTarget in hitTargets)
-        {
-            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
-                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
-            {
-                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                otherPlayer.TakeDamage(100,animator);
-                break;
-            }
-            
-            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
-        }
+        _animator.SetTrigger(PunchID);
     }
 
     /// <summary>
@@ -268,25 +243,7 @@ public class Movement : MonoBehaviour
         
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("SideKick");
-
-        //TODO: Add animation for front punch
         _animator.SetTrigger(SideKickID);
-
-        // ReSharper disable once Unity.PreferNonAllocApi --> not needed in this usecase
- /*       var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
-
-        foreach (var hitTarget in hitTargets)
-        {
-            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer._player != _playerNumber) && 
-                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
-            {
-                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                otherPlayer.TakeDamage(100,animator);
-                break;
-            }
-            
-            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
-        } */
     }
 
     public void Block(InputAction.CallbackContext context)
@@ -309,9 +266,10 @@ public class Movement : MonoBehaviour
     bool JabAlreadyHit = false;
     bool HookAlreadyHit = false;
     bool SideKickAlreadyHit = false;
+    
     public void JabActivateHitbox()
     {
-        var hitTargets = Physics.OverlapSphere(_punchAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+        var hitTargets = Physics.OverlapSphere(_lefthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
 
         foreach (var hitTarget in hitTargets)
         {
@@ -326,7 +284,6 @@ public class Movement : MonoBehaviour
                     break;
                 }
             }
-            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
         }
     }
     public void JabDeactivateHitbox()
@@ -335,7 +292,7 @@ public class Movement : MonoBehaviour
     }
     public void HookActivateHitbox()
     {
-        var hitTargets = Physics.OverlapSphere(_hookAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+        var hitTargets = Physics.OverlapSphere(_righthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
 
         foreach (var hitTarget in hitTargets)
         {
@@ -350,7 +307,6 @@ public class Movement : MonoBehaviour
                     break;
                 }
             }
-            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
         }
     }
     public void HookDeactivateHitbox()
@@ -359,7 +315,7 @@ public class Movement : MonoBehaviour
     }
     public void SideKickActivateHitbox()
     {
-        var hitTargets = Physics.OverlapSphere(_sideKickAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+        var hitTargets = Physics.OverlapSphere(_rightlegAttackPoint.position, ATTACK_TOLERANCE_RANGE);
 
         foreach (var hitTarget in hitTargets)
         {
@@ -374,14 +330,11 @@ public class Movement : MonoBehaviour
                     break;
                 }
             }
-            //GeneralFunctions.PrintDebugStatement("Target_Hit: " + hitTarget);
         }
     }
     public void SideKickDeactivateHitbox()
     {
         SideKickAlreadyHit = false;
     }
-    
-    
     #endregion
 }
