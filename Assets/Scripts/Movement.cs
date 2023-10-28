@@ -8,8 +8,8 @@ public class Movement : MonoBehaviour
     #region Constants
     
     private const float MOVE_SPEED = .105f;
-    private const float JUMP_POWER = 3500f;
-    private const float GRAVITY_MULTI = 1.3f;
+    private const float JUMP_POWER = 420f;
+    private const float GRAVITY_MULTI = 1.015f;
     private const float ATTACK_TOLERANCE_RANGE = 0.2f;
     private const float ATTACK_COOLDOWN_TIME = 0.22f;
 
@@ -174,8 +174,8 @@ public class Movement : MonoBehaviour
     {
         // Dont allow this action while blocking
         if (_isBlocking) return;
-        
         if (!_canJump) return;
+        
         _animator.SetTrigger(JumpID);
         _rb.AddForce(Vector3.up * JUMP_POWER);
         _canJump = false;

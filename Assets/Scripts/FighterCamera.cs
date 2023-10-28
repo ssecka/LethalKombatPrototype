@@ -11,6 +11,9 @@ public class FighterCamera : MonoBehaviour
     public float yOffset = 1.5f;
     public float minDistance = 4f;
     private float xMin, xMax, yMin, yMax;
+    private PlayerRotationScript _playerRotationScript;
+    
+    
     
     // Start is called before the first frame update
 
@@ -18,7 +21,9 @@ public class FighterCamera : MonoBehaviour
     {
         _playerTransforms ??= new Transform[2];
 
+        #if DEBUG
         var debug = GameObject.Find("Player1").transform;
+        #endif
         
         _playerTransforms[0] ??= GameObject.Find("Player1").transform.GetChild(0).transform;
         _playerTransforms[1] ??= GameObject.Find("Player1").transform.GetChild(0).transform;
@@ -26,16 +31,17 @@ public class FighterCamera : MonoBehaviour
 
     public void SpawnInPlayer2()
     {
-        _playerTransforms[1] = GameObject.Find("PlayerManagerComponent").transform.GetChild(0).transform;
+        // Char_Player1(Clone)
+        _playerTransforms[1] = GameObject.Find("Char_Player1(Clone)").transform;
+        _playerRotationScript ??= new(_playerTransforms[0], _playerTransforms[1]);
+
+
     }
     
 
     // Update is called once per frame
     void LateUpdate()
     {
-  
-        
-        
         if(_playerTransforms.Length == 0)
             return;
         xMin = xMax = _playerTransforms[0].position.x;
@@ -62,6 +68,6 @@ public class FighterCamera : MonoBehaviour
         if (distance < minDistance)
             distance = minDistance;
         transform.position = new Vector3(xMiddle, yMiddle + yOffset, distance);
-
+        _playerRotationScript?.UpdatePlayerRotation();
     }
 }

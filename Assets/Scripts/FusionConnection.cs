@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 {
+    private const string MAIN_CAMERA_SYSTEM = "Main Camera";
     public bool connectOnAwake;
     [HideInInspector] public NetworkRunner networkRunner;
 
@@ -16,24 +17,22 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (connectOnAwake)
         {
-            ConnectToRunner(); 
+            ConnectToRunner();
         }
+
         Debug.Log("Awakaned");
     }
 
     public async void ConnectToRunner()
     {
         Debug.Log("ConnectToRunner");
-        if (networkRunner == null)
-            {
-                networkRunner = gameObject.AddComponent<NetworkRunner>();
-            }
+        networkRunner ??= gameObject.AddComponent<NetworkRunner>();
 
         await networkRunner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Shared,
-            SessionName = "TestRoom", 
-            PlayerCount = 2, 
+            SessionName = "TestRoom",
+            PlayerCount = 2,
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
@@ -71,14 +70,18 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     }*/
 
     public void OnConnectedToServer(NetworkRunner runner)
-        {
-            Debug.Log("OnConnectedToServer");
-            NetworkObject playerObject = runner.Spawn(playerPrefab,Vector3.zero);
-            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
-        }
+    {
+        Debug.Log("OnConnectedToServer");
+        NetworkObject playerObject = runner.Spawn(playerPrefab, Vector3.zero);
+        runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+    }
+
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log("OnPLayerJoined");
+        Debug.Log("OnPlayerJoined");
+
+        GameObject.Find(MAIN_CAMERA_SYSTEM).transform.GetComponent<FighterCamera>().SpawnInPlayer2();
+
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -95,7 +98,6 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-        
     }
 
     public void OnDisconnectedFromServer(NetworkRunner runner)
