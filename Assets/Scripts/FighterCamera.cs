@@ -20,10 +20,6 @@ public class FighterCamera : MonoBehaviour
     void Awake()
     {
         _playerTransforms ??= new Transform[2];
-
-        #if DEBUG
-        var debug = GameObject.Find("Player1").transform;
-        #endif
     }
 
     public void SpawnInPlayer2(Transform t1, Transform t2)

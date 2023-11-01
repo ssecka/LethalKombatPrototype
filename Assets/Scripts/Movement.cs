@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -163,21 +164,34 @@ public class Movement : MonoBehaviour
         }
 
 
-        _transform.position = new(newX, ((Component)this).transform.position.y, 0);
-        if (_otherPlayer is not null)
-        {
-            UpdatePlayerRotation();
-        }
+        _transform.position = new(newX, ((Component)this).transform.position.y, 0); 
+        UpdatePlayerRotation();
+
     }
 
 
     public void UpdatePlayerRotation()
     {
-        var myX = this.transform.position.x;
-        var otherX = _otherPlayer.position.x;
-        var dirCheck = myX > otherX;
+        
+        // !Physics.Raycast(this.transform.position,new(1,0,0),10f)
+        // Physics.Raycast(transform.position,new(-1,0,0),10f))
 
-        this.transform.rotation = dirCheck ? _faceRight : _faceLeft;
+        if (Physics.Raycast(new(transform.position.x - 0.25f,transform.position.y,transform.position.z), new(-1, 0, 0), out RaycastHit hit, 10f)
+            && this.transform.rotation.y > 0)
+        {
+            if(hit.transform.TryGetComponent<PlayerStats>(out PlayerStats tmp))
+            {
+                this.transform.rotation = Quaternion.Euler(0, -90f, 0);
+            }
+        }
+        if (Physics.Raycast(new(transform.position.x + 0.25f,transform.position.y,transform.position.z), new(1, 0, 0), out RaycastHit hit2, 10f)
+                 && this.transform.rotation.y < 0)
+        {
+            if(hit2.transform.TryGetComponent<PlayerStats>(out PlayerStats tmp))
+            {
+                this.transform.rotation = Quaternion.Euler(0, 90f, 0);
+            }
+        }
     }
 
 

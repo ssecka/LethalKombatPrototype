@@ -75,12 +75,6 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
             _fighterCamera ??= new();
             _fighterCamera.SpawnInPlayer2(_players[0].transform,_players[1].transform);
-
-
-            for (int i = 0; i < 2; i++)
-            {
-                _players[i].GetComponent<Movement>().SetOtherPlayer(_players[(i+1) % 2].transform);
-            }
         }
         
         
