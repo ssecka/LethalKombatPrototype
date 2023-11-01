@@ -29,5 +29,20 @@ public class PlayerRotationScript : MonoBehaviour
         
     }
     
+    public static void StaticUpdatePlayerRotation(Transform t1, Transform t2)
+    {
+        var xOne = t1.position.x;
+        var xTwo = t2.position.x;
+        var faceRight = xOne > xTwo;
+    
+        Quaternion fr = Quaternion.Euler(0, -90f, 0);
+        Quaternion fl = Quaternion.Euler(0, 90f, 0);
+        
+        t1.rotation =  faceRight ? fr : fl;
+        t2.rotation =  !faceRight ? fr : fl;
+        
+        
+    }
+    
     
 }
