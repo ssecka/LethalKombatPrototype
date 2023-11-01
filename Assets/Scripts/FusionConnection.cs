@@ -7,15 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 {
-    private int playerCount = 0;
-
-    
-    
     private const string MAIN_CAMERA_SYSTEM = "Main Camera";
     public bool connectOnAwake;
     [HideInInspector] public NetworkRunner networkRunner;
 
-    [SerializeField] private NetworkObject playerPrefab;
+    [SerializeField] private NetworkObject playerPrefabP1;
+    [SerializeField] private NetworkObject playerPrefabP2;
+
 
     private void Awake()
     {
@@ -48,7 +46,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         NetworkObject playerObject = runner.Spawn(playerPrefab, Vector3.zero);
         runner.SetPlayerObject(runner.LocalPlayer, playerObject);
     }*/
-    public void OnConnectedToServer(NetworkRunner runner)
+    /*public void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
 
@@ -56,16 +54,52 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         playerCount++;
 
         // Spawn the player at a different position based on their order of connection
-        Vector3 spawnPosition = (playerCount == 1) ? new Vector3(4.5f, 0.5f, 0) : new Vector3(-4.5f, 0.5f, 0);
-        NetworkObject playerObject = runner.Spawn(playerPrefab, spawnPosition);
+        if (playerCount == 1)
+        {
+            Vector3 spawnPosition = new Vector3(4.5f, 0.5f, 0);
+            NetworkObject playerObject = runner.Spawn(playerPrefabP1, spawnPosition);
+            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+        }
+        else
+        {
+            Vector3 spawnPosition = new Vector3(-4.5f, 0.5f, 0);
+            NetworkObject playerObject = runner.Spawn(playerPrefabP2, spawnPosition);
+            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+        }
+    }*/
+    
+    
+    public void OnConnectedToServer(NetworkRunner runner)
+    {
+        Debug.Log("OnConnectedToServer");
+
+        // Increment the player count when a new player connects
+        
+        // Spawn the player at a different position based on their order of connection
+        Vector3 spawnPosition = (runner.SessionInfo.PlayerCount == 1) ? new Vector3(4.5f, 0.5f, 0) : new Vector3(-4.5f, 0.5f, 0);
+        var rotation = (runner.SessionInfo.PlayerCount == 1) ? playerPrefabP1.transform.rotation = Quaternion.Euler(0f,-90f,0f): playerPrefabP1.transform.rotation = Quaternion.Euler(0f,90f,0f);
+        NetworkObject playerObject = runner.Spawn(playerPrefabP1, spawnPosition, rotation);
         runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+
+        /*if (runner.SessionInfo.PlayerCount == 1)
+        {
+            Vector3 spawnPosition = new Vector3(4.5f, 0.5f, 0);
+            NetworkObject playerObject = runner.Spawn(playerPrefabP1, spawnPosition);
+            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+        }
+        else
+        {
+            Vector3 spawnPosition = new Vector3(-4.5f, 0.5f, 0);
+            NetworkObject playerObject = runner.Spawn(playerPrefabP2, spawnPosition);
+            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+        }*/
+      
     }
-
-
+    
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         Debug.Log("OnPlayerJoined");
-
+        
         GameObject.Find(MAIN_CAMERA_SYSTEM).transform.GetComponent<FighterCamera>().SpawnInPlayer2();
 
     }
