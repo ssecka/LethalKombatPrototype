@@ -78,7 +78,7 @@ public class Movement : MonoBehaviour
             _playerStats = stats; // We need this to set blockingg
         }
 
-        _facingMultiplier = _transform.rotation.y < 0 ? -1 : 0;
+        _facingMultiplier = _transform.rotation.y < 0 ? -1 : 1;
         
         _lastXCord = _transform.position.x;
     }

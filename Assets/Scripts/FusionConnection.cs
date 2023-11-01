@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using Fusion.Sockets;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
 public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
@@ -13,10 +14,14 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
     [SerializeField] private NetworkObject playerPrefabP1;
     [SerializeField] private NetworkObject playerPrefabP2;
+    [SerializeField] private FighterCamera _fighterCamera;
 
-
+    private GameObject[] _gameObjects;
+    
     private void Awake()
     {
+        _gameObjects ??= new GameObject[2];
+        _fighterCamera ??= GameObject.Find(MAIN_CAMERA_SYSTEM).transform.GetComponent<FighterCamera>();
         if (connectOnAwake)
         {
             ConnectToRunner();
@@ -33,7 +38,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         await networkRunner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Shared,
-            SessionName = "TestRoom",
+            SessionName = "ASDASDASDASD",
             PlayerCount = 2,
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
@@ -52,12 +57,16 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
             Vector3 spawnPosition = new Vector3(4.5f, 0.5f, 0);
             NetworkObject playerObject = runner.Spawn(playerPrefabP1, spawnPosition);
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+            _gameObjects[0] = runner.GameObject();
         }
         else if (runner.SessionInfo.PlayerCount == 2)
         {
             Vector3 spawnPosition = new Vector3(-4.5f, 0.5f, 0);
             NetworkObject playerObject = runner.Spawn(playerPrefabP2, spawnPosition);
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+            _gameObjects[1] = runner.GameObject();
+            _fighterCamera ??= new();
+            _fighterCamera.SpawnInPlayer2(_gameObjects[0].transform,_gameObjects[1].transform);
         }
       
     }
@@ -65,8 +74,6 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         Debug.Log("OnPlayerJoined");
-        
-        GameObject.Find(MAIN_CAMERA_SYSTEM).transform.GetComponent<FighterCamera>().SpawnInPlayer2();
 
     }
 

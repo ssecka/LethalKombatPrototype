@@ -24,15 +24,13 @@ public class FighterCamera : MonoBehaviour
         #if DEBUG
         var debug = GameObject.Find("Player1").transform;
         #endif
-        
-        _playerTransforms[0] ??= GameObject.Find("Player1").transform.GetChild(0).transform;
-        _playerTransforms[1] ??= GameObject.Find("Player1").transform.GetChild(0).transform;
     }
 
-    public void SpawnInPlayer2()
+    public void SpawnInPlayer2(Transform t1, Transform t2)
     {
-        // Char_Player1(Clone)
-        _playerTransforms[1] = GameObject.Find("Char_Player1(Clone)").transform;
+        _playerTransforms[0] = t1;
+        _playerTransforms[1] = t2;
+
         _playerRotationScript ??= new(_playerTransforms[0], _playerTransforms[1]);
 
 
