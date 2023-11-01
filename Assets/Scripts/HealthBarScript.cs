@@ -34,11 +34,11 @@ public class HealthBarScript : MonoBehaviour
         
         if (playerNum == 1)
         {
-            _healthBarObject = GameObject.Find("Health Bar P1");
+            _healthBarObject = GameObject.Find("Canvas").transform.GetChild(0).gameObject;
         }
         else if (playerNum == 2)
         {
-            _healthBarObject = GameObject.Find("Health Bar P2");
+            _healthBarObject = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
         } 
         
         healthSlider ??= _healthBarObject.GetComponent<Slider>();

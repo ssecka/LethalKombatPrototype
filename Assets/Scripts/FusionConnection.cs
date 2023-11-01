@@ -16,11 +16,11 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private NetworkObject playerPrefabP2;
     [SerializeField] private FighterCamera _fighterCamera;
 
-    private GameObject[] _gameObjects;
+    private GameObject[] _players;
     
     private void Awake()
     {
-        _gameObjects ??= new GameObject[2];
+        _players ??= new GameObject[2];
         _fighterCamera ??= GameObject.Find(MAIN_CAMERA_SYSTEM).transform.GetComponent<FighterCamera>();
         if (connectOnAwake)
         {
@@ -29,6 +29,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
         Debug.Log("Awakaned");
     }
+    
 
     public async void ConnectToRunner()
     {
@@ -57,17 +58,32 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
             Vector3 spawnPosition = new Vector3(4.5f, 0.5f, 0);
             NetworkObject playerObject = runner.Spawn(playerPrefabP1, spawnPosition);
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
-            _gameObjects[0] = runner.GameObject();
+            _players[0] = playerObject.gameObject;
+
+            _players[0].GetComponent<PlayerStats>().SetTeam(1);
+            _players[0].transform.rotation = Quaternion.Euler(0f, -90f, 0f); 
         }
         else if (runner.SessionInfo.PlayerCount == 2)
         {
             Vector3 spawnPosition = new Vector3(-4.5f, 0.5f, 0);
             NetworkObject playerObject = runner.Spawn(playerPrefabP2, spawnPosition);
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
-            _gameObjects[1] = runner.GameObject();
+            _players[1] = playerObject.gameObject;
+            
+            _players[1].GetComponent<PlayerStats>().SetTeam(2);
+            _players[1].transform.rotation = Quaternion.Euler(0f, 90f, 0f); 
+
             _fighterCamera ??= new();
-            _fighterCamera.SpawnInPlayer2(_gameObjects[0].transform,_gameObjects[1].transform);
+            _fighterCamera.SpawnInPlayer2(_players[0].transform,_players[1].transform);
+
+
+            for (int i = 0; i < 2; i++)
+            {
+                _players[i].GetComponent<Movement>().SetOtherPlayer(_players[(i+1) % 2].transform);
+            }
         }
+        
+        
       
     }
     

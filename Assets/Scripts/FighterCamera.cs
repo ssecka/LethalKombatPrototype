@@ -66,6 +66,5 @@ public class FighterCamera : MonoBehaviour
         if (distance < minDistance)
             distance = minDistance;
         transform.position = new Vector3(xMiddle, yMiddle + yOffset, distance);
-        _playerRotationScript?.UpdatePlayerRotation();
     }
 }

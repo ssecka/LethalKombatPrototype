@@ -552,7 +552,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 939790853}
-  - component: {fileID: 939790852}
   - component: {fileID: 939790854}
   m_Layer: 0
   m_Name: PlayerEnvironmentSystem
@@ -561,18 +560,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &939790852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 939790851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87a4d2c37f2dd4bbc895e034f7b853, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &939790853
 Transform:
   m_ObjectHideFlags: 0
@@ -818,6 +805,10 @@ PrefabInstance:
     - target: {fileID: 4381932809218752521, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4381932809218752523, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
+      propertyPath: m_Value
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 4381932809218752526, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
       propertyPath: m_Name
@@ -1183,6 +1174,7 @@ MonoBehaviour:
   networkRunner: {fileID: 0}
   playerPrefabP1: {fileID: 6216089164746404152, guid: 78143c6e4c4cafb4d8db29ebe33f3aef, type: 3}
   playerPrefabP2: {fileID: 6216089164746404152, guid: fbea65acf7f16ee4aa046d6f0586bbee, type: 3}
+  _fighterCamera: {fileID: 0}
 --- !u!4 &2100008784
 Transform:
   m_ObjectHideFlags: 0

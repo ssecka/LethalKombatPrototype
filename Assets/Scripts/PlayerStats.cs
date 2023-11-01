@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -16,8 +17,19 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int maxhealth = 1000;
     [SerializeField] private int currenthealth;
     
-    [SerializeField] public int _player;
+    [SerializeField] private int _team;
 
+    public int GetTeam()
+    {
+        return _team;
+    }
+
+    public void SetTeam(int num)
+    {
+        _team = num;
+        HealthBarScript.SetMaxHealth(maxhealth, _team);
+    }
+    
     public bool IsBlocking { get; set; } = false;
 
     // Start is called before the first frame update
@@ -29,7 +41,6 @@ public class PlayerStats : MonoBehaviour
 
         HealthBarScript ??= new();
         currenthealth = maxhealth;
-        HealthBarScript.SetMaxHealth(maxhealth, _player);
      
         
     }
