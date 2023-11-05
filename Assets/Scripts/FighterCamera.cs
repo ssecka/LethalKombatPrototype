@@ -12,9 +12,11 @@ public class FighterCamera : MonoBehaviour
     public float minDistance = 4f;
     private float xMin, xMax, yMin, yMax;
     private PlayerRotationScript _playerRotationScript;
-    
-    
-    
+    public GameObject Player1;
+    public GameObject Player2;
+
+
+
     // Start is called before the first frame update
 
     void Awake()
@@ -31,7 +33,14 @@ public class FighterCamera : MonoBehaviour
 
 
     }
-    
+
+    private void Update()
+    {
+        Player1 = GameObject.FindGameObjectWithTag("Player1");
+        Player2 = GameObject.FindGameObjectWithTag("Player2");
+        _playerTransforms[0] = Player1.transform;
+        _playerTransforms[1] = Player2.transform;
+    }
 
     // Update is called once per frame
     void LateUpdate()

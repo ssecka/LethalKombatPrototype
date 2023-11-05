@@ -2374,7 +2374,7 @@ GameObject:
   - component: {fileID: -3754838019785107529}
   m_Layer: 0
   m_Name: Char_Player1
-  m_TagString: Untagged
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2464,7 +2464,7 @@ MonoBehaviour:
   HealthBarScript: {fileID: 4381932809218752520, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
   maxhealth: 1000
   currenthealth: 0
-  _player: 2
+  _team: 0
 --- !u!114 &8837867533244136399
 MonoBehaviour:
   m_ObjectHideFlags: 0
