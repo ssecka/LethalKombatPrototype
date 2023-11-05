@@ -45,6 +45,8 @@ public class Movement : MonoBehaviour
 
     #endregion
 
+
+    private HitFreezeSystem _hitFreezeSystem;
     private Vector2 _movDir = Vector2.zero;
     private List<InputAction> _toBeBlocked;
     private int _playerNumber = -1;
@@ -53,8 +55,12 @@ public class Movement : MonoBehaviour
     private float _facingMultiplier;
     private bool _isBlocking = false;
     private Transform _otherPlayer;
-    public void SetOtherPlayer(Transform value) => _otherPlayer = value;
+    
+    private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit;
 
+    public void SetOtherPlayer(Transform value) => _otherPlayer = value;
+    
+    
     #region Startup
 
     #region On/Off
@@ -72,6 +78,7 @@ public class Movement : MonoBehaviour
 
     private void Awake()
     {
+        _hitFreezeSystem ??= GameObject.Find("PlayerEnvironmentSystem").GetComponent<HitFreezeSystem>();
         _toBeBlocked ??= new();
         if (_transform == null) Debug.Log("transform not set!");
 
@@ -289,10 +296,7 @@ public class Movement : MonoBehaviour
 
         _isBlocking = state;
     }
-
-    bool JabAlreadyHit = false;
-    bool HookAlreadyHit = false;
-    bool SideKickAlreadyHit = false;
+    
 
     public void JabActivateHitbox()
     {
@@ -303,20 +307,19 @@ public class Movement : MonoBehaviour
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
-                if (JabAlreadyHit == false)
-                {
-                    GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                    otherPlayer.TakeDamage(30, animator);
-                    JabAlreadyHit = true;
-                    break;
-                }
+                if (_jabAlreadyHit) continue;
+                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
+                otherPlayer.TakeDamage(30, animator);
+                _jabAlreadyHit = true;
+                _hitFreezeSystem.Freeze();
+                break;
             }
         }
     }
 
     public void JabDeactivateHitbox()
     {
-        JabAlreadyHit = false;
+        _jabAlreadyHit = false;
     }
 
     public void HookActivateHitbox()
@@ -328,20 +331,19 @@ public class Movement : MonoBehaviour
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
-                if (HookAlreadyHit == false)
-                {
-                    GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                    otherPlayer.TakeDamage(40, animator);
-                    HookAlreadyHit = true;
-                    break;
-                }
+                if (_hookAlreadyHit) continue;
+                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
+                otherPlayer.TakeDamage(40, animator);
+                _hookAlreadyHit = true;
+                _hitFreezeSystem.Freeze();
+                break;
             }
         }
     }
 
     public void HookDeactivateHitbox()
     {
-        HookAlreadyHit = false;
+        _hookAlreadyHit = false;
     }
 
     public void SideKickActivateHitbox()
@@ -353,20 +355,19 @@ public class Movement : MonoBehaviour
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
-                if (SideKickAlreadyHit == false)
-                {
-                    GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                    otherPlayer.TakeDamage(80, animator);
-                    SideKickAlreadyHit = true;
-                    break;
-                }
+                if (_sideKickAlreadyHit) continue;
+                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
+                otherPlayer.TakeDamage(80, animator);
+                _sideKickAlreadyHit = true;
+                _hitFreezeSystem.Freeze();
+                break;
             }
         }
     }
 
     public void SideKickDeactivateHitbox()
     {
-        SideKickAlreadyHit = false;
+        _sideKickAlreadyHit = false;
     }
 
     #endregion
