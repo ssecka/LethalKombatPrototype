@@ -2464,7 +2464,7 @@ MonoBehaviour:
   HealthBarScript: {fileID: 4381932809218752520, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
   maxhealth: 1000
   currenthealth: 0
-  _team: 0
+  _team: 1
 --- !u!114 &8837867533244136399
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -36,8 +36,8 @@ public class Movement : MonoBehaviour
     #region AnimationIDs
 
     private static readonly int SideKickID = Animator.StringToHash("SideKick");
-    private static readonly int PunchID = Animator.StringToHash("Punch");
-    private static readonly int Jab = Animator.StringToHash("Jab");
+    private static readonly int HookID = Animator.StringToHash("Punch");
+    private static readonly int PunchID = Animator.StringToHash("Jab");
     private static readonly int FWalking = Animator.StringToHash("FWalking");
     private static readonly int BWalking = Animator.StringToHash("BWalking");
     private static readonly int BlockingID = Animator.StringToHash("Blocking");
@@ -248,8 +248,8 @@ public class Movement : MonoBehaviour
         if (_isBlocking) return;
 
         if (!IsNextAttackAllowed()) return;
-        GeneralFunctions.PrintDebugStatement("Jab");
-        _animator.SetTrigger(Jab);
+        GeneralFunctions.PrintDebugStatement("Punch");
+        _animator.SetTrigger(PunchID);
     }
 
     /// <summary>
@@ -262,8 +262,8 @@ public class Movement : MonoBehaviour
         if (_isBlocking) return;
 
         if (!IsNextAttackAllowed()) return;
-        GeneralFunctions.PrintDebugStatement("Punch");
-        _animator.SetTrigger(PunchID);
+        GeneralFunctions.PrintDebugStatement("Hook");
+        _animator.SetTrigger(HookID);
     }
 
     /// <summary>

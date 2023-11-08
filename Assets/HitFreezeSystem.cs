@@ -6,7 +6,7 @@ using UnityEngine;
 public class HitFreezeSystem : MonoBehaviour
 {
     // Start is called before the first frame update
-    private const float HITFREEZE_DURATION_IN_SECONDS = 0.2f;
+    private const float HITFREEZE_DURATION_IN_SECONDS = 0.25f;
     private const float TIMESCALE_FACTOR = 0.1f;
     private float _pendingFreeze = 0f;
     
