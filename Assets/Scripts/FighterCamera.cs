@@ -12,8 +12,8 @@ public class FighterCamera : MonoBehaviour
     public float minDistance = 4f;
     private float xMin, xMax, yMin, yMax;
     private PlayerRotationScript _playerRotationScript;
-    public GameObject Player1;
-    public GameObject Player2;
+    [FormerlySerializedAs("Player1")] public GameObject player1;
+    [FormerlySerializedAs("Player2")] public GameObject player2;
 
 
 
@@ -36,17 +36,21 @@ public class FighterCamera : MonoBehaviour
 
     private void Update()
     {
-        Player1 = GameObject.FindGameObjectWithTag("Player1");
-        Player2 = GameObject.FindGameObjectWithTag("Player2");
-        _playerTransforms[0] = Player1.transform;
-        _playerTransforms[1] = Player2.transform;
+        player1 = GameObject.FindGameObjectWithTag("Player1");
+        player2 = GameObject.FindGameObjectWithTag("Player2");
+        if(player1?.transform != null ) _playerTransforms[0] = player1.transform;
+        if(player2?.transform != null ) _playerTransforms[1] = player2.transform;
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        if(_playerTransforms.Length == 0)
+        if(_playerTransforms == null || 
+           _playerTransforms[0] is null || 
+           _playerTransforms[1] is null ||
+           _playerTransforms.Length == 0)
             return;
+        
         xMin = xMax = _playerTransforms[0].position.x;
         yMin = yMax = _playerTransforms[0].position.y;
         for (int i = 1; i < _playerTransforms.Length; i++)
