@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -224,7 +224,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &512023132
 Rigidbody:
@@ -371,7 +371,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &724288738
 GameObject:
@@ -687,6 +687,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yOffset: 1.5
   minDistance: 4
+  Player1: {fileID: 0}
+  Player2: {fileID: 0}
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -956,7 +958,7 @@ Transform:
   m_Children:
   - {fileID: 672841312}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1504243329
 GameObject:
@@ -1054,7 +1056,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1504243334
 Rigidbody:
@@ -1172,8 +1174,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectOnAwake: 1
   networkRunner: {fileID: 0}
-  playerPrefabP1: {fileID: 6216089164746404152, guid: 78143c6e4c4cafb4d8db29ebe33f3aef, type: 3}
-  playerPrefabP2: {fileID: 6216089164746404152, guid: fbea65acf7f16ee4aa046d6f0586bbee, type: 3}
+  playerPrefabP1: {fileID: 6557042812409941496, guid: 98d07182ecff1df419ee95918d2da656, type: 3}
+  playerPrefabP2: {fileID: 3443281148337175235, guid: 32af2fc4178226343b4731a6b25245ac, type: 3}
   _fighterCamera: {fileID: 0}
 --- !u!4 &2100008784
 Transform:
@@ -1203,7 +1205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 811855720400055435, guid: 438fabdb40cb6fe489c43d733b5b4075, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 811855720400055435, guid: 438fabdb40cb6fe489c43d733b5b4075, type: 3}
       propertyPath: m_LocalPosition.x
