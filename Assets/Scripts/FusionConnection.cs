@@ -5,24 +5,25 @@ using Fusion;
 using Fusion.Sockets;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 {
     private const string MAIN_CAMERA_SYSTEM = "Main Camera";
-    public bool connectOnAwake;
+    public bool ConnectOnAwake;
     [HideInInspector] public NetworkRunner networkRunner;
 
     [SerializeField] private NetworkObject playerPrefabP1;
     [SerializeField] private NetworkObject playerPrefabP2;
-    [SerializeField] private FighterCamera _fighterCamera;
+    [SerializeField] private FighterCamera FighterCamera;
 
     private GameObject[] _players;
     
     private void Awake()
     {
         _players ??= new GameObject[2];
-        _fighterCamera ??= GameObject.Find(MAIN_CAMERA_SYSTEM).transform.GetComponent<FighterCamera>();
-        if (connectOnAwake)
+        FighterCamera ??= GameObject.Find(MAIN_CAMERA_SYSTEM).transform.GetComponent<FighterCamera>();
+        if (ConnectOnAwake)
         {
             ConnectToRunner();
         }
@@ -73,8 +74,8 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
             _players[1].GetComponent<PlayerStats>().SetTeam(2);
             _players[1].transform.rotation = Quaternion.Euler(0f, 90f, 0f); 
 
-            _fighterCamera ??= new();
-            _fighterCamera.SpawnInPlayer2(_players[0].transform,_players[1].transform);
+            FighterCamera ??= new();
+            FighterCamera.SpawnInPlayer2(_players[0].transform,_players[1].transform);
         }
         
         

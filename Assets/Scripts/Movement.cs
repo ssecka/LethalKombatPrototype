@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem;
+// ReSharper disable InconsistentNaming
 
 public class Movement : MonoBehaviour
 {
@@ -58,8 +59,6 @@ public class Movement : MonoBehaviour
     
     private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit;
 
-    public void SetOtherPlayer(Transform value) => _otherPlayer = value;
-    
     
     #region Startup
 
@@ -159,12 +158,17 @@ public class Movement : MonoBehaviour
 
         _lastXCord = _transform.position.x;
         var newX = _transform.position.x + ((-1 * _movDir.x) * MOVE_SPEED);
-        if (_movDir.x > 0)
+
+        var facingRight = Math.Abs(_transform.rotation.y - (-90)) < 0.000001f;
+        
+        //TODO: Validate Move Dir
+        
+        if (facingRight && _movDir.x > 0 || !facingRight && _movDir.x < 0)
         {
             _animator.SetBool(FWalking, true);
             _animator.SetBool(BWalking, false);
         }
-        else if (_movDir.x < 0)
+        else if (facingRight && _movDir.x < 0 || !facingRight && _movDir.x > 0)
         {
             _animator.SetBool(FWalking, false);
             _animator.SetBool(BWalking, true);
