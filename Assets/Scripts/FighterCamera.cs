@@ -3,17 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+// ReSharper disable Unity.NoNullPropagation
 
 public class FighterCamera : MonoBehaviour
 {
 
+    private const string PLAYER_ONE_TAG_SEARCH_NAME = "Player1";
+    private const string PLAYER_TWO_TAG_SEARCH_NAME = "Player2";
+    
     private Transform[] _playerTransforms;
-    public float yOffset = 1.5f;
-    public float minDistance = 4f;
-    private float xMin, xMax, yMin, yMax;
+    public float YOffset = 1.5f;
+    public float MinDistance = 4f;
+    private float _xMin, _xMax, _yMin, _yMax;
     private PlayerRotationScript _playerRotationScript;
-    public GameObject Player1;
-    public GameObject Player2;
+    [SerializeField] private GameObject Player1;
+    [SerializeField] private GameObject Player2;
 
 
 
@@ -36,40 +40,65 @@ public class FighterCamera : MonoBehaviour
 
     private void Update()
     {
-        Player1 = GameObject.FindGameObjectWithTag("Player1");
-        Player2 = GameObject.FindGameObjectWithTag("Player2");
-        _playerTransforms[0] = Player1.transform;
-        _playerTransforms[1] = Player2.transform;
+
+        Player1 = GameObject.FindGameObjectWithTag(PLAYER_ONE_TAG_SEARCH_NAME);
+        Player2 = GameObject.FindGameObjectWithTag(PLAYER_TWO_TAG_SEARCH_NAME);
+        
+        // falls errors den expensive != null operator usen!
+        
+        if(Player1?.transform is not null ) _playerTransforms[0] = Player1.transform;
+        if(Player2?.transform is not null ) _playerTransforms[1] = Player2.transform;
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        if(_playerTransforms.Length == 0)
+        if(_playerTransforms?[0] is null || 
+           _playerTransforms[1] is null ||
+           _playerTransforms.Length == 0)
             return;
-        xMin = xMax = _playerTransforms[0].position.x;
-        yMin = yMax = _playerTransforms[0].position.y;
-        for (int i = 1; i < _playerTransforms.Length; i++)
+        
+        _xMin = _xMax = _playerTransforms[0].position.x;
+        _yMin = _yMax = _playerTransforms[0].position.y;
+        
+        // Calculate the lowest and highest X and Y
+        int i = 1, len = _playerTransforms.Length;
+        do
         {
-            if (_playerTransforms[i].position.x < xMin)
-                xMin = _playerTransforms[i].position.x;
+            var curX = _playerTransforms[i].position.x;
+            var curY = _playerTransforms[i].position.y;
             
-            if (_playerTransforms[i].position.x > xMax)
-                xMax = _playerTransforms[i].position.x;
+            _xMin = Math.Min(_xMin, curX);
+            _xMax = Math.Max(_xMax, curX);
             
-            if (_playerTransforms[i].position.y < yMin)
-                yMin = _playerTransforms[i].position.y;
+            _yMin = Math.Min(_yMin, curY);
+            _yMax = Math.Max(_yMax, curY);
             
-            if (_playerTransforms[i].position.y > yMax)
-                yMax = _playerTransforms[i].position.y;
-        }
+        } while (i++ < len);
 
-        float xMiddle = (xMin + xMax) / 2;
-        float yMiddle = (yMin + yMax) / 2;
+        
+        #region old
+        // for (int i = 1; i < _playerTransforms.Length; i++)
+        // {
+        //     // if (_playerTransforms[i].position.x < _xMin)
+        //     //     _xMin = _playerTransforms[i].position.x;
+        //     //
+        //     // if (_playerTransforms[i].position.x > _xMax)
+        //     //     _xMax = _playerTransforms[i].position.x;
+        //     //
+        //     // if (_playerTransforms[i].position.y < _yMin)
+        //     //     _yMin = _playerTransforms[i].position.y;
+        //     //
+        //     // if (_playerTransforms[i].position.y > _yMax)
+        //     //     _yMax = _playerTransforms[i].position.y;
+        // }
+        #endregion
+        
+        float xMiddle = (_xMin + _xMax) / 2;
+        float yMiddle = (_yMin + _yMax) / 2;
 
-        float distance = xMax - xMin;
-        if (distance < minDistance)
-            distance = minDistance;
-        transform.position = new Vector3(xMiddle, yMiddle + yOffset, distance);
+        float distance = Math.Clamp(_xMax - _xMin,MinDistance,200f);
+        
+        transform.position = new Vector3(xMiddle, yMiddle + YOffset, distance);
     }
 }

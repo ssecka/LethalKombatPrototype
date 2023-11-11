@@ -14,8 +14,8 @@ public class PlayerStats : MonoBehaviour
     private static readonly int Hit = Animator.StringToHash("Hit");
     
     public HealthBarScript HealthBarScript;
-    [SerializeField] private int maxhealth = 1000;
-    [SerializeField] private int currenthealth;
+    [SerializeField] private int MaxHealth = 1000;
+    [SerializeField] private int CurrentHealth;
     
     [SerializeField] private int _team;
 
@@ -27,7 +27,7 @@ public class PlayerStats : MonoBehaviour
     public void SetTeam(int num)
     {
         _team = num;
-        HealthBarScript.SetMaxHealth(maxhealth, _team);
+        HealthBarScript.SetMaxHealth(MaxHealth, _team);
     }
     
     public bool IsBlocking { get; set; } = false;
@@ -37,10 +37,10 @@ public class PlayerStats : MonoBehaviour
     {
         // Get the Animator component from your character.
         _animator = GetComponent<Animator>();
-        _hitFreezeSystem ??= GameObject.Find("PlayerEnvironmentSystem").GetComponent<HitFreezeSystem>();
+        _hitFreezeSystem ??= GameObject.Find("PlayerEnvironmentSystem")?.GetComponent<HitFreezeSystem>();
 
         HealthBarScript ??= new();
-        currenthealth = maxhealth;
+        CurrentHealth = MaxHealth;
      
         
     }
@@ -60,15 +60,15 @@ public class PlayerStats : MonoBehaviour
     {
         if (IsBlocking)
         {
-            var blocked = dmgAmount + DAMAGE_BLOCK_COEFFICIENT;
+            var blocked = dmgAmount * DAMAGE_BLOCK_COEFFICIENT;
             dmgAmount = (int)blocked;
-        };
-        currenthealth -= dmgAmount;
-        HealthBarScript.SetHealth(currenthealth);
+        }
+        CurrentHealth -= dmgAmount;
+        HealthBarScript.SetHealth(CurrentHealth);
 
         _hitFreezeSystem.Freeze();
         
-        if (currenthealth <= 0)
+        if (CurrentHealth <= 0)
         {
             //throw new NotImplementedException("TODO: Implement Game End");
             GeneralFunctions.PrintDebugStatement("Im Deadge");
@@ -79,7 +79,7 @@ public class PlayerStats : MonoBehaviour
         animator.SetTrigger(Hit);
         
 
-        GeneralFunctions.PrintDebugStatement("New Life: " + currenthealth);
+        GeneralFunctions.PrintDebugStatement("New Life: " + CurrentHealth);
 
     }
 }

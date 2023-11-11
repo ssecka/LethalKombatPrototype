@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
@@ -7,13 +8,9 @@ public class HealthBarScript : MonoBehaviour
 {
 
     private GameObject _healthBarObject;
-    public Slider healthSlider;
-    public Image fill;
+    public Slider HealthSlider;
+    public Image Fill;
     private Gradient _gradient;
-
-    private void Awake()
-    {
-    }
 
     public void SetMaxHealth(int health, int playerNum)
     {
@@ -41,21 +38,21 @@ public class HealthBarScript : MonoBehaviour
             _healthBarObject = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
         } 
         
-        healthSlider ??= _healthBarObject.GetComponent<Slider>();
-        fill ??= _healthBarObject.transform.GetChild(0).GetComponent<Image>();
+        HealthSlider ??= _healthBarObject.GetComponent<Slider>();
+        Fill ??= _healthBarObject.transform.GetChild(0).GetComponent<Image>();
 
-        GeneralFunctions.PrintDebugStatement(healthSlider);
+        GeneralFunctions.PrintDebugStatement(HealthSlider);
 
-        healthSlider.maxValue = health;
-        healthSlider.value = health;
+        HealthSlider.maxValue = health;
+        HealthSlider.value = health;
 
-        fill.color = _gradient.Evaluate(1f);
+        Fill.color = _gradient.Evaluate(1f);
     }
 
     public void SetHealth(int health)
     {
-        healthSlider.value = health;
+        HealthSlider.value = health;
 
-        fill.color = _gradient.Evaluate(healthSlider.normalizedValue);
+        Fill.color = _gradient.Evaluate(HealthSlider.normalizedValue);
     }
 }
