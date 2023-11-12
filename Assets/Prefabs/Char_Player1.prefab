@@ -2483,6 +2483,8 @@ MonoBehaviour:
   _righthandAttackPoint: {fileID: 5674331046740262974}
   _leftlegAttackPoint: {fileID: 7695206318009015622}
   _rightlegAttackPoint: {fileID: 8837867533986328759}
+  hitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
+  blockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
 --- !u!114 &8837867533244136392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2734,7 +2736,7 @@ MonoBehaviour:
     _value: 0
     _inverse: 0
     _hash: -814817977
-  StateHashes: 00000000ccdb6129b1d75ee2968b165def4185fb5c5f20edde106c682c38b1fd36a98b178b7cfd670f5f2b88866612edfed81a8c28a981077af3fe2ef142e047ebd3daaded4e32bf480ad50005be35e61f2f0f0c96b4d300d51ae003
+  StateHashes: 00000000ccdb6129b1d75ee2968b165def4185fb5c5f20edde106c682c38b1fd36a98b178b7cfd670f5f2b88866612edfed81a8c28a981077af3fe2ef142e047ebd3daaded4e32bf480ad50005be35e61f2f0f0c
   TriggerHashes: 0000000028a98107968b165d5c5f20ed2c38b1fd37b93501a1609f62
 --- !u!1 &8699067484177579448
 GameObject:

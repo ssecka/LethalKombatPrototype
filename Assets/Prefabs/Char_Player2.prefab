@@ -2462,8 +2462,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HealthBarScript: {fileID: 3954924586874837374, guid: e1cbc8c7dffc16c4a97e516c126c6d2c, type: 3}
-  maxhealth: 1000
-  currenthealth: 0
+  MaxHealth: 1000
+  CurrentHealth: 0
   _team: 2
 --- !u!114 &8837867533244136399
 MonoBehaviour:
@@ -2483,6 +2483,8 @@ MonoBehaviour:
   _righthandAttackPoint: {fileID: 5674331046740262974}
   _leftlegAttackPoint: {fileID: 7695206318009015622}
   _rightlegAttackPoint: {fileID: 8837867533986328759}
+  hitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
+  blockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
 --- !u!114 &8837867533244136392
 MonoBehaviour:
   m_ObjectHideFlags: 0

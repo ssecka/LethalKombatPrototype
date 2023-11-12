@@ -301,7 +301,8 @@ public class Movement : MonoBehaviour
         _isBlocking = state;
     }
     
-
+    public GameObject hitEffect;
+    public GameObject blockEffect; 
     public void JabActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_lefthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
@@ -312,6 +313,7 @@ public class Movement : MonoBehaviour
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
                 if (_jabAlreadyHit) continue;
+                Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
                 otherPlayer.TakeDamage(30, animator);
                 _jabAlreadyHit = true;
@@ -336,6 +338,7 @@ public class Movement : MonoBehaviour
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
                 if (_hookAlreadyHit) continue;
+                Instantiate(hitEffect, _righthandAttackPoint.position, Quaternion.identity);
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
                 otherPlayer.TakeDamage(40, animator);
                 _hookAlreadyHit = true;
@@ -360,6 +363,7 @@ public class Movement : MonoBehaviour
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
                 if (_sideKickAlreadyHit) continue;
+                Instantiate(hitEffect, _rightlegAttackPoint.position, Quaternion.identity);
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
                 otherPlayer.TakeDamage(80, animator);
                 _sideKickAlreadyHit = true;
