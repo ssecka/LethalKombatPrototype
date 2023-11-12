@@ -943,7 +943,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1473569079
 Transform:
   m_ObjectHideFlags: 0
@@ -1083,7 +1083,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6216089164746404152, guid: fbea65acf7f16ee4aa046d6f0586bbee, type: 3}
       propertyPath: Flags
-      value: 2561
+      value: 133633
       objectReference: {fileID: 0}
     - target: {fileID: 6216089164746404152, guid: fbea65acf7f16ee4aa046d6f0586bbee, type: 3}
       propertyPath: NetworkGuid.RawGuidValue.Array.data[0]
