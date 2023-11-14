@@ -56,17 +56,20 @@ public class PlayerStats : MonoBehaviour
     }
     
     
-    public void TakeDamage(int dmgAmount, Animator animator, EAttackType attackType)
+    public void TakeDamage(int dmgAmount, Animator animator, ref EAttackType attackType)
     {
+        //Convert to int, leftshift 1, then back to enum
+        attackType = (EAttackType)((int)attackType << 1);
+        
         if (IsBlocking)
         {
             var blocked = dmgAmount * DAMAGE_BLOCK_COEFFICIENT;
             dmgAmount = (int)blocked;
-            GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
+            GeneralFunctions.PlaySoundByEnum(EAttackType.Block, in _soundEffects);
         }
         else
         {
-            GeneralFunctions.PlaySoundByEnum(EAttackType.Block, in _soundEffects);
+            GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
         }
         CurrentHealth -= dmgAmount;
         HealthBarScript.SetHealth(CurrentHealth);

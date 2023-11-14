@@ -80,6 +80,7 @@ public class Movement : MonoBehaviour
     private void Awake()
     {
         _hitFreezeSystem ??= GameObject.Find("PlayerEnvironmentSystem").GetComponent<HitFreezeSystem>();
+        _soundEffects = GetComponent<SoundEffects>();
         _toBeBlocked ??= new();
         if (_transform == null) Debug.Log("transform not set!");
 
@@ -307,9 +308,11 @@ public class Movement : MonoBehaviour
     public GameObject blockEffect;
     public AudioSource punchSound;
     public AudioSource kickSound;
+    
     public void JabActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_lefthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+        var attackType = EAttackType.Jab;
 
         foreach (var hitTarget in hitTargets)
         {
@@ -320,13 +323,15 @@ public class Movement : MonoBehaviour
                 Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
                 punchSound.Play();
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                otherPlayer.TakeDamage(30, animator, EAttackType.JabHit);
+                
+                otherPlayer.TakeDamage(30, animator, ref attackType);
+                
                 _jabAlreadyHit = true;
                 _hitFreezeSystem.Freeze();
                 break;
             }
         }
-        _soundEffects.PlayJabSound(false);
+        GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
     }
 
     public void JabDeactivateHitbox()
@@ -337,7 +342,7 @@ public class Movement : MonoBehaviour
     public void HookActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_righthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
-
+        var attackType = EAttackType.Jab;
         foreach (var hitTarget in hitTargets)
         {
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
@@ -347,13 +352,16 @@ public class Movement : MonoBehaviour
                 Instantiate(hitEffect, _righthandAttackPoint.position, Quaternion.identity);
                 punchSound.Play();
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                otherPlayer.TakeDamage(40, animator, EAttackType.JabHit);
+                
+                otherPlayer.TakeDamage(40, animator, ref attackType);
+                
                 _hookAlreadyHit = true;
                 _hitFreezeSystem.Freeze();
+                
                 break;
             }
         }
-        _soundEffects.PlayJabSound(false);
+        GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
 
     }
 
@@ -365,7 +373,7 @@ public class Movement : MonoBehaviour
     public void SideKickActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_rightlegAttackPoint.position, ATTACK_TOLERANCE_RANGE);
-
+        var attackType = EAttackType.Kick;
         foreach (var hitTarget in hitTargets)
         {
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
@@ -375,13 +383,16 @@ public class Movement : MonoBehaviour
                 Instantiate(hitEffect, _rightlegAttackPoint.position, Quaternion.identity);
                 kickSound.Play();
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                otherPlayer.TakeDamage(80, animator, EAttackType.KickHit);
+                
+                otherPlayer.TakeDamage(80, animator, ref attackType);
+                
                 _sideKickAlreadyHit = true;
                 _hitFreezeSystem.Freeze();
                 break;
             }
         }
-        _soundEffects.PlayKickSound(false);
+        GeneralFunctions.PrintDebugStatement(attackType.ToString());
+        GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
 
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using DefaultNamespace;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,7 +8,11 @@ public class SoundEffects : MonoBehaviour
 {
     public AudioSource AudioSrc;
     public AudioClip Jab, JabHit, Kick, KickHit, Block;
+
+    public EAttackType _currentSound;
+    
     private bool _checkForNull;
+    
 
     public void Awake()
     {
@@ -38,6 +43,20 @@ public class SoundEffects : MonoBehaviour
     {
         if (_checkForNull) InitSource();
         AudioSrc.clip = Block;
+        AudioSrc.Play();
+    }
+
+    public void PlayCurrentSound()
+    {
+        AudioSrc.clip = _currentSound switch
+        {
+            EAttackType.Block => Block,
+            EAttackType.Jab => Jab,
+            EAttackType.JabHit => JabHit,
+            EAttackType.Kick => Kick,
+            EAttackType.KickHit => KickHit,
+            _ => Block,
+        };
         AudioSrc.Play();
     }
 }
