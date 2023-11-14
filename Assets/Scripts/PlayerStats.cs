@@ -1,3 +1,4 @@
+using DefaultNamespace;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,7 +10,7 @@ public class PlayerStats : MonoBehaviour
     private Animator _animator;
 
     private HitFreezeSystem _hitFreezeSystem;
-    
+    [SerializeField] private SoundEffects _soundEffects;
     private static readonly int Die = Animator.StringToHash("Die");
     private static readonly int Hit = Animator.StringToHash("Hit");
     
@@ -38,7 +39,6 @@ public class PlayerStats : MonoBehaviour
         // Get the Animator component from your character.
         _animator = GetComponent<Animator>();
         _hitFreezeSystem ??= GameObject.Find("PlayerEnvironmentSystem")?.GetComponent<HitFreezeSystem>();
-
         HealthBarScript ??= new();
         CurrentHealth = MaxHealth;
      
@@ -56,12 +56,17 @@ public class PlayerStats : MonoBehaviour
     }
     
     
-    public void TakeDamage(int dmgAmount, Animator animator)
+    public void TakeDamage(int dmgAmount, Animator animator, EAttackType attackType)
     {
         if (IsBlocking)
         {
             var blocked = dmgAmount * DAMAGE_BLOCK_COEFFICIENT;
             dmgAmount = (int)blocked;
+            GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
+        }
+        else
+        {
+            GeneralFunctions.PlaySoundByEnum(EAttackType.Block, in _soundEffects);
         }
         CurrentHealth -= dmgAmount;
         HealthBarScript.SetHealth(CurrentHealth);

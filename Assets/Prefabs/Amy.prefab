@@ -2009,6 +2009,11 @@ MonoBehaviour:
   _righthandAttackPoint: {fileID: 0}
   _leftlegAttackPoint: {fileID: 0}
   _rightlegAttackPoint: {fileID: 0}
+  _soundEffects: {fileID: 0}
+  hitEffect: {fileID: 0}
+  blockEffect: {fileID: 0}
+  punchSound: {fileID: 0}
+  kickSound: {fileID: 0}
 --- !u!1 &7332587550062696854
 GameObject:
   m_ObjectHideFlags: 0
@@ -2187,6 +2192,7 @@ GameObject:
   - component: {fileID: 3443281148337175235}
   - component: {fileID: 2410258042649366948}
   - component: {fileID: 5841921059127327619}
+  - component: {fileID: 3687466575865939876}
   m_Layer: 0
   m_Name: Amy
   m_TagString: Player2
@@ -2275,9 +2281,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a104041370c14742bd6761f3d7c8f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _soundEffects: {fileID: 3687466575865939876}
   HealthBarScript: {fileID: 3954924586874837374, guid: e1cbc8c7dffc16c4a97e516c126c6d2c, type: 3}
-  maxhealth: 1000
-  currenthealth: 0
+  MaxHealth: 1000
+  CurrentHealth: 0
   _team: 2
 --- !u!114 &2950782757055782223
 MonoBehaviour:
@@ -2297,6 +2304,11 @@ MonoBehaviour:
   _righthandAttackPoint: {fileID: 372124859884451012}
   _leftlegAttackPoint: {fileID: 2689380558484196073}
   _rightlegAttackPoint: {fileID: 8413048005735201379}
+  _soundEffects: {fileID: 3687466575865939876}
+  hitEffect: {fileID: 0}
+  blockEffect: {fileID: 0}
+  punchSound: {fileID: 0}
+  kickSound: {fileID: 0}
 --- !u!114 &1881182354091172945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2562,6 +2574,24 @@ MonoBehaviour:
     _hash: -814817977
   StateHashes: 00000000ccdb6129b1d75ee2968b165def4185fb5c5f20edde106c682c38b1fd36a98b178b7cfd670f5f2b8828a981077af3fe2effa4c8127deb8497ed4e32bf480ad50005be35e61f2f0f0c866612edfed81a8c
   TriggerHashes: 0000000028a98107968b165d5c5f20ed2c38b1fd37b93501a1609f62
+--- !u!114 &3687466575865939876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7718288144808027777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf81ae3fd5747c38758f869bab1d5e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioSrc: {fileID: 0}
+  Jab: {fileID: 8300000, guid: da94ad144d7b0714ca3ae0f7f59a50e0, type: 3}
+  JabHit: {fileID: 8300000, guid: 2ee0d8659521461439e73baa6b39646d, type: 3}
+  Kick: {fileID: 8300000, guid: a7754d195c3fcd345bacf8f1ca58a0e8, type: 3}
+  KickHit: {fileID: 8300000, guid: 41500b51213d94143913042b13dd5c82, type: 3}
+  Block: {fileID: 8300000, guid: b6d4f04ccfc49814090e7f14d2c38682, type: 3}
 --- !u!1 &7906593945093681067
 GameObject:
   m_ObjectHideFlags: 0

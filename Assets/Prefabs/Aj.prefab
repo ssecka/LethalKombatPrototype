@@ -521,6 +521,7 @@ GameObject:
   - component: {fileID: 6557042812409941496}
   - component: {fileID: 5395454332283700699}
   - component: {fileID: 5652061282752831241}
+  - component: {fileID: -5593638579767845088}
   m_Layer: 0
   m_Name: Aj
   m_TagString: Player1
@@ -612,9 +613,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a104041370c14742bd6761f3d7c8f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _soundEffects: {fileID: -5593638579767845088}
   HealthBarScript: {fileID: 4381932809218752520, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
-  maxhealth: 1000
-  currenthealth: 0
+  MaxHealth: 1000
+  CurrentHealth: 0
   _team: 1
 --- !u!114 &-4526120905677980729
 MonoBehaviour:
@@ -634,6 +636,11 @@ MonoBehaviour:
   _righthandAttackPoint: {fileID: 5581801711019267369}
   _leftlegAttackPoint: {fileID: 1402116649149001798}
   _rightlegAttackPoint: {fileID: 5144415377360452929}
+  _soundEffects: {fileID: -5593638579767845088}
+  hitEffect: {fileID: 0}
+  blockEffect: {fileID: 0}
+  punchSound: {fileID: 0}
+  kickSound: {fileID: 0}
 --- !u!114 &1624002835982522808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -899,6 +906,24 @@ MonoBehaviour:
     _hash: -814817977
   StateHashes: 00000000ccdb6129b1d75ee2968b165def4185fb5c5f20edde106c682c38b1fd36a98b178b7cfd670f5f2b88866612edfed81a8c28a981077af3fe2ef142e047ebd3daaded4e32bf480ad50005be35e61f2f0f0c
   TriggerHashes: 0000000028a98107968b165d5c5f20ed2c38b1fd37b93501a1609f62
+--- !u!114 &-5593638579767845088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303202008804901817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf81ae3fd5747c38758f869bab1d5e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioSrc: {fileID: 0}
+  Jab: {fileID: 8300000, guid: da94ad144d7b0714ca3ae0f7f59a50e0, type: 3}
+  JabHit: {fileID: 8300000, guid: 2ee0d8659521461439e73baa6b39646d, type: 3}
+  Kick: {fileID: 8300000, guid: 41500b51213d94143913042b13dd5c82, type: 3}
+  KickHit: {fileID: 8300000, guid: a7754d195c3fcd345bacf8f1ca58a0e8, type: 3}
+  Block: {fileID: 8300000, guid: b6d4f04ccfc49814090e7f14d2c38682, type: 3}
 --- !u!1 &1418392921048919454
 GameObject:
   m_ObjectHideFlags: 0

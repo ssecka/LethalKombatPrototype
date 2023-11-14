@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DefaultNamespace;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -48,6 +49,7 @@ public class Movement : MonoBehaviour
 
 
     private HitFreezeSystem _hitFreezeSystem;
+    [SerializeField] private SoundEffects _soundEffects;
     private Vector2 _movDir = Vector2.zero;
     private List<InputAction> _toBeBlocked;
     private int _playerNumber = -1;
@@ -318,12 +320,13 @@ public class Movement : MonoBehaviour
                 Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
                 punchSound.Play();
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                otherPlayer.TakeDamage(30, animator);
+                otherPlayer.TakeDamage(30, animator, EAttackType.JabHit);
                 _jabAlreadyHit = true;
                 _hitFreezeSystem.Freeze();
                 break;
             }
         }
+        _soundEffects.PlayJabSound(false);
     }
 
     public void JabDeactivateHitbox()
@@ -344,12 +347,14 @@ public class Movement : MonoBehaviour
                 Instantiate(hitEffect, _righthandAttackPoint.position, Quaternion.identity);
                 punchSound.Play();
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                otherPlayer.TakeDamage(40, animator);
+                otherPlayer.TakeDamage(40, animator, EAttackType.JabHit);
                 _hookAlreadyHit = true;
                 _hitFreezeSystem.Freeze();
                 break;
             }
         }
+        _soundEffects.PlayJabSound(false);
+
     }
 
     public void HookDeactivateHitbox()
@@ -370,12 +375,14 @@ public class Movement : MonoBehaviour
                 Instantiate(hitEffect, _rightlegAttackPoint.position, Quaternion.identity);
                 kickSound.Play();
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                otherPlayer.TakeDamage(80, animator);
+                otherPlayer.TakeDamage(80, animator, EAttackType.KickHit);
                 _sideKickAlreadyHit = true;
                 _hitFreezeSystem.Freeze();
                 break;
             }
         }
+        _soundEffects.PlayKickSound(false);
+
     }
 
     public void SideKickDeactivateHitbox()

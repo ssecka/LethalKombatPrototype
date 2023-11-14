@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using System.Diagnostics;
+using DefaultNamespace;
 using UnityEngine.Animations;
 
 public class GeneralFunctions : MonoBehaviour
@@ -20,12 +22,35 @@ public class GeneralFunctions : MonoBehaviour
         var method = frame.GetMethod();
         var methodName = method.Name;
         var className = method.ReflectedType.Name;
-        print(statement + " [ CLASS: " + className + " | METHOD: " + methodName +" ]");
+        print(statement + " [ CLASS: " + className + " | METHOD: " + methodName + " ]");
 #else
         return;
 #endif
     }
+
     public static void PrintDebugStatement(object statement) => PrintDebugStatement(statement.ToString());
-    
-    
+
+    public static void PlaySoundByEnum(EAttackType attackType, in SoundEffects soundEffects)
+    {
+        switch (attackType)
+        {
+            case EAttackType.Jab:
+                soundEffects.PlayJabSound(false);
+                break;
+            case EAttackType.JabHit:
+                soundEffects.PlayJabSound(true);
+                break;
+            case EAttackType.Kick:
+                soundEffects.PlayKickSound(false);
+                break;
+            case EAttackType.KickHit:
+                soundEffects.PlayKickSound(true);
+                break;
+            case EAttackType.Block:
+                soundEffects.PlayBlockSound();
+                break;
+            default:
+                throw new InvalidEnumArgumentException("Invalid Enum");
+        }
+    }
 }
