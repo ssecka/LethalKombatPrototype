@@ -324,7 +324,7 @@ public class Movement : MonoBehaviour
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator) && !_jabAlreadyHit)
             {
                 Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
-                //punchSound.Play();
+               // punchSound.Play();
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
                 otherPlayer.TakeDamage(30, animator, ref attackType);

@@ -1,8 +1,5 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
-
 
 public class HealthBarScript : MonoBehaviour
 {
@@ -14,7 +11,6 @@ public class HealthBarScript : MonoBehaviour
 
     public void SetMaxHealth(int health, int playerNum)
     {
-
         _gradient ??= new();
 
         var colors = new GradientColorKey[3];
@@ -23,12 +19,12 @@ public class HealthBarScript : MonoBehaviour
         colors[2] = new(Color.green, 1.0f);
 
         var alphas = new GradientAlphaKey[3];
-        alphas[0] = new(1.0f,0);
-        alphas[1] = new(1.0f,0.5f);
-        alphas[2] = new(1.0f,1f);
-         
-        _gradient.SetKeys(colors,alphas);
-        
+        alphas[0] = new(1.0f, 0);
+        alphas[1] = new(1.0f, 0.5f);
+        alphas[2] = new(1.0f, 1f);
+
+        _gradient.SetKeys(colors, alphas);
+
         if (playerNum == 1)
         {
             _healthBarObject = GameObject.Find("Canvas").transform.GetChild(0).gameObject;
@@ -36,10 +32,17 @@ public class HealthBarScript : MonoBehaviour
         else if (playerNum == 2)
         {
             _healthBarObject = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
-        } 
-        
-        HealthSlider ??= _healthBarObject.GetComponent<Slider>();
-        Fill ??= _healthBarObject.transform.GetChild(0).GetComponent<Image>();
+        }
+
+        HealthSlider = _healthBarObject.GetComponent<Slider>();
+        Fill = _healthBarObject.transform.GetChild(0).GetComponent<Image>();
+
+        if (HealthSlider == null || Fill == null)
+        {
+            // Handle the case where either HealthSlider or Fill is still null
+            Debug.LogError("HealthSlider or Fill is not found.");
+            return;
+        }
 
         GeneralFunctions.PrintDebugStatement(HealthSlider);
 
@@ -49,10 +52,24 @@ public class HealthBarScript : MonoBehaviour
         Fill.color = _gradient.Evaluate(1f);
     }
 
-    public void SetHealth(int health)
-    {
-        HealthSlider.value = health;
 
+    public void SetHealth(int health, int playerNum)
+    {
+        
+        if (playerNum == 1)
+        {
+            _healthBarObject = GameObject.Find("Canvas").transform.GetChild(0).gameObject;
+        }
+        else if (playerNum == 2)
+        {
+            _healthBarObject = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
+        }
+        
+        HealthSlider = _healthBarObject.GetComponent<Slider>();
+        Fill = _healthBarObject.transform.GetChild(0).GetComponent<Image>();
+        
+        HealthSlider.value = health;
+        
         Fill.color = _gradient.Evaluate(HealthSlider.normalizedValue);
     }
 }

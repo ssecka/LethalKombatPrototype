@@ -40,6 +40,8 @@ public class PlayerStats : MonoBehaviour
         _animator = GetComponent<Animator>();
         _hitFreezeSystem ??= GameObject.Find("PlayerEnvironmentSystem")?.GetComponent<HitFreezeSystem>();
         HealthBarScript ??= new();
+        HealthBarScript.SetMaxHealth(MaxHealth,_team);
+
         CurrentHealth = MaxHealth;
      
         
@@ -49,10 +51,11 @@ public class PlayerStats : MonoBehaviour
     void Update()
     {
         //Testing if HealthBars are getting updated(works)
-        /*if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.M))
         {
-            TakeDamage(20);
-        }*/
+            var attackType = EAttackType.Jab;
+            TakeDamage(30,_animator,ref attackType);
+        }
     }
     
     
@@ -68,11 +71,10 @@ public class PlayerStats : MonoBehaviour
             attackType = EAttackType.Block;
         }
             
-        GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
-        
+        //GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
         
         CurrentHealth -= dmgAmount;
-        HealthBarScript.SetHealth(CurrentHealth);
+        HealthBarScript.SetHealth(CurrentHealth, _team);
 
         _hitFreezeSystem.Freeze();
         
