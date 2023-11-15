@@ -65,12 +65,12 @@ public class PlayerStats : MonoBehaviour
         {
             var blocked = dmgAmount * DAMAGE_BLOCK_COEFFICIENT;
             dmgAmount = (int)blocked;
-            GeneralFunctions.PlaySoundByEnum(EAttackType.Block, in _soundEffects);
+            attackType = EAttackType.Block;
         }
-        else
-        {
-            GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
-        }
+            
+        GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
+        
+        
         CurrentHealth -= dmgAmount;
         HealthBarScript.SetHealth(CurrentHealth);
 
