@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -262,7 +262,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &678489038
 Transform:
   m_ObjectHideFlags: 0
@@ -1099,6 +1099,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Aj
       objectReference: {fileID: 0}
+    - target: {fileID: 1303202008804901817, guid: 98d07182ecff1df419ee95918d2da656, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1827960063354214659, guid: 98d07182ecff1df419ee95918d2da656, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -1145,7 +1149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6557042812409941496, guid: 98d07182ecff1df419ee95918d2da656, type: 3}
       propertyPath: Flags
-      value: 2561
+      value: 133633
       objectReference: {fileID: 0}
     - target: {fileID: 6557042812409941496, guid: 98d07182ecff1df419ee95918d2da656, type: 3}
       propertyPath: NetworkGuid.RawGuidValue.Array.data[0]
@@ -1375,8 +1379,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectOnAwake: 1
   networkRunner: {fileID: 0}
-  playerPrefabP1: {fileID: 6557042812409941496, guid: 98d07182ecff1df419ee95918d2da656, type: 3}
-  playerPrefabP2: {fileID: 3443281148337175235, guid: 32af2fc4178226343b4731a6b25245ac, type: 3}
+  playerPrefabP1: {fileID: 6216089164746404152, guid: 78143c6e4c4cafb4d8db29ebe33f3aef, type: 3}
+  playerPrefabP2: {fileID: 6216089164746404152, guid: fbea65acf7f16ee4aa046d6f0586bbee, type: 3}
   FighterCamera: {fileID: 0}
 --- !u!4 &2100008784
 Transform:
@@ -1976,7 +1980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6216089164746404152, guid: 78143c6e4c4cafb4d8db29ebe33f3aef, type: 3}
       propertyPath: Flags
-      value: 2561
+      value: 133633
       objectReference: {fileID: 0}
     - target: {fileID: 6216089164746404152, guid: 78143c6e4c4cafb4d8db29ebe33f3aef, type: 3}
       propertyPath: NetworkGuid.RawGuidValue.Array.data[0]

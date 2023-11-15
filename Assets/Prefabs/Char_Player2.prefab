@@ -783,7 +783,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4565884009001823619, guid: 1d4610f226da1b84a8e69cbddc540595, type: 3}
+  - {fileID: 2100000, guid: c7b59ee7d5acdb74b878bafea25fe4b7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2461,6 +2461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a104041370c14742bd6761f3d7c8f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _soundEffects: {fileID: 0}
   HealthBarScript: {fileID: 3954924586874837374, guid: e1cbc8c7dffc16c4a97e516c126c6d2c, type: 3}
   MaxHealth: 1000
   CurrentHealth: 0
@@ -2483,8 +2484,11 @@ MonoBehaviour:
   _righthandAttackPoint: {fileID: 5674331046740262974}
   _leftlegAttackPoint: {fileID: 7695206318009015622}
   _rightlegAttackPoint: {fileID: 8837867533986328759}
+  _soundEffects: {fileID: 0}
   hitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
   blockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
+  punchSound: {fileID: 0}
+  kickSound: {fileID: 0}
 --- !u!114 &8837867533244136392
 MonoBehaviour:
   m_ObjectHideFlags: 0
