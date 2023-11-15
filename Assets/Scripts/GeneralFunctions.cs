@@ -4,6 +4,7 @@ using System.ComponentModel;
 using UnityEngine;
 using System.Diagnostics;
 using DefaultNamespace;
+using Unity.VisualScripting;
 using UnityEngine.Animations;
 
 public class GeneralFunctions : MonoBehaviour
@@ -32,6 +33,7 @@ public class GeneralFunctions : MonoBehaviour
 
     public static void PlaySoundByEnum(EAttackType attackType, in SoundEffects soundEffects)
     {
+        //PrintDebugStatement("Playing sound: " + attackType.ToString());
         switch (attackType)
         {
             case EAttackType.Jab:
