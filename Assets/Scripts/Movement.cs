@@ -262,6 +262,7 @@ public class Movement : MonoBehaviour
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("Punch");
         _animator.SetTrigger(PunchID);
+        GeneralFunctions.PlaySoundByEnum(EAttackType.Jab, ref _soundEffects);
     }
 
     /// <summary>
@@ -276,6 +277,7 @@ public class Movement : MonoBehaviour
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("Hook");
         _animator.SetTrigger(HookID);
+        GeneralFunctions.PlaySoundByEnum(EAttackType.Jab, ref _soundEffects);
     }
 
     /// <summary>
@@ -290,6 +292,7 @@ public class Movement : MonoBehaviour
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("SideKick");
         _animator.SetTrigger(SideKickID);
+        GeneralFunctions.PlaySoundByEnum(EAttackType.Kick, ref _soundEffects);
     }
 
     public void Block(InputAction.CallbackContext context)
@@ -310,13 +313,11 @@ public class Movement : MonoBehaviour
     }
     
     public GameObject hitEffect;
-    public AudioSource punchSound;
-    public AudioSource kickSound;
-    
+
     public void JabActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_lefthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
-        var attackType = EAttackType.Jab;
+        var attackType = EAttackType.JabHit;
 
         GeneralFunctions.PrintDebugStatement("Jab");
 
@@ -344,15 +345,13 @@ public class Movement : MonoBehaviour
 
     public void JabDeactivateHitbox()
     {
-        if(!_jabAlreadyHit) GeneralFunctions.PlaySoundByEnum(EAttackType.Jab, ref _soundEffects);
-
         _jabAlreadyHit = false;
     }
 
     public void HookActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_righthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
-        var attackType = EAttackType.Jab;
+        var attackType = EAttackType.JabHit;
 
         for (var index = 0; index < hitTargets.Length && !_hookAlreadyHit; index++)
         {
@@ -380,17 +379,13 @@ public class Movement : MonoBehaviour
 
     public void HookDeactivateHitbox()
     {
-        if (!_hookAlreadyHit)
-        {
-            if(!_hookAlreadyHit)  GeneralFunctions.PlaySoundByEnum(EAttackType.Jab, ref _soundEffects);
-        }
         _hookAlreadyHit = false;
     }
 
     public void SideKickActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_rightlegAttackPoint.position, ATTACK_TOLERANCE_RANGE);
-        var attackType = EAttackType.Kick;
+        var attackType = EAttackType.KickHit;
         
         for (var index = 0; index < hitTargets.Length && !_sideKickAlreadyHit;index++)
         {
@@ -399,7 +394,7 @@ public class Movement : MonoBehaviour
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
                 _sideKickAlreadyHit = true;
-                //Instantiate(hitEffect, _rightlegAttackPoint.position, Quaternion.identity);
+                Instantiate(hitEffect, _rightlegAttackPoint.position, Quaternion.identity);
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
                 otherPlayer.TakeDamage(80, animator, ref attackType, 4f);
@@ -415,8 +410,6 @@ public class Movement : MonoBehaviour
 
     public void SideKickDeactivateHitbox()
     {
-        if(!_sideKickAlreadyHit) GeneralFunctions.PlaySoundByEnum(EAttackType.Kick, ref _soundEffects);
-
         _sideKickAlreadyHit = false;
     }
 
