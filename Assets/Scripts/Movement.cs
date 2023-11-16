@@ -320,7 +320,7 @@ public class Movement : MonoBehaviour
 
         GeneralFunctions.PrintDebugStatement("Jab");
 
-        for (var index = 0; index < hitTargets.Length && !_jabAlreadyHit;)
+        for (var index = 0; index < hitTargets.Length && !_jabAlreadyHit;index++)
         {
             var hitTarget = hitTargets[index];
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
@@ -328,17 +328,15 @@ public class Movement : MonoBehaviour
             {
                 _jabAlreadyHit = true;
                 Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
-                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-
+                
                 otherPlayer.TakeDamage(30, animator, ref attackType);
+
+                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
+                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
+
                 
                 _hitFreezeSystem.Freeze();
                 break;
-            }
-
-            if (++index == hitTargets.Length && _jabAlreadyHit)
-            {
-                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
             }
         }
         
@@ -356,7 +354,7 @@ public class Movement : MonoBehaviour
         var hitTargets = Physics.OverlapSphere(_righthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
         var attackType = EAttackType.Jab;
 
-        for (var index = 0; index < hitTargets.Length && !_hookAlreadyHit; )
+        for (var index = 0; index < hitTargets.Length && !_hookAlreadyHit; index++)
         {
             var hitTarget = hitTargets[index];
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
@@ -367,16 +365,14 @@ public class Movement : MonoBehaviour
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
                 otherPlayer.TakeDamage(40, animator, ref attackType);
+                
+                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
 
                 _hitFreezeSystem.Freeze();
 
                 break;
             }
             
-            if (++index == hitTargets.Length && _hookAlreadyHit)
-            {
-                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
-            }
             
         }
 
@@ -395,7 +391,8 @@ public class Movement : MonoBehaviour
     {
         var hitTargets = Physics.OverlapSphere(_rightlegAttackPoint.position, ATTACK_TOLERANCE_RANGE);
         var attackType = EAttackType.Kick;
-        for (var index = 0; index < hitTargets.Length && !_sideKickAlreadyHit;)
+        
+        for (var index = 0; index < hitTargets.Length && !_sideKickAlreadyHit;index++)
         {
             var hitTarget = hitTargets[index];
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
@@ -406,14 +403,10 @@ public class Movement : MonoBehaviour
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
                 otherPlayer.TakeDamage(80, animator, ref attackType);
+                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
 
                 _hitFreezeSystem.Freeze();
                 break;
-            }
-            
-            if (++index == hitTargets.Length && _sideKickAlreadyHit)
-            {
-                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
             }
         }
 
