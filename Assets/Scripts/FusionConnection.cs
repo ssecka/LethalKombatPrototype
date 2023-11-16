@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using Fusion.Sockets;
-using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -40,7 +38,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         await networkRunner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Shared,
-            SessionName = "uhdfhsdfhsudhsgf",
+            SessionName = "Showcase",
             PlayerCount = 2,
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
