@@ -20,6 +20,7 @@ public class Movement : MonoBehaviour
 
     private readonly Quaternion _faceRight = Quaternion.Euler(0, -90f, 0);
     private readonly Quaternion _faceLeft = Quaternion.Euler(0, 90f, 0);
+    public bool facingRight;
 
     #endregion
 
@@ -57,7 +58,7 @@ public class Movement : MonoBehaviour
     private float _lastXCord;
     private PlayerStats _playerStats;
     private float _facingMultiplier;
-    private bool _isBlocking = false;
+    public bool _isBlocking = false;
     private Transform _otherPlayer;
     
     private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit;
@@ -164,7 +165,7 @@ public class Movement : MonoBehaviour
         var newX = _transform.position.x + ((-1 * _movDir.x) * MOVE_SPEED);
 
 
-        var facingRight = Math.Abs(_transform.localEulerAngles.y - 270) < 0.00001f;
+         facingRight = Math.Abs(_transform.localEulerAngles.y - 270) < 0.00001f;
         print(facingRight + " | " + _transform.localEulerAngles.y);
         
         //TODO: Validate Move Dir
@@ -329,7 +330,7 @@ public class Movement : MonoBehaviour
                 _jabAlreadyHit = true;
                 Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
                 
-                otherPlayer.TakeDamage(30, animator, ref attackType);
+                otherPlayer.TakeDamage(30, animator, ref attackType, 2f);
 
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
                 GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
@@ -364,8 +365,8 @@ public class Movement : MonoBehaviour
                 Instantiate(hitEffect, _righthandAttackPoint.position, Quaternion.identity);
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
-                otherPlayer.TakeDamage(40, animator, ref attackType);
-                
+                otherPlayer.TakeDamage(40, animator, ref attackType, 2f);
+
                 GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
 
                 _hitFreezeSystem.Freeze();
@@ -402,7 +403,7 @@ public class Movement : MonoBehaviour
                 Instantiate(hitEffect, _rightlegAttackPoint.position, Quaternion.identity);
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
-                otherPlayer.TakeDamage(80, animator, ref attackType);
+                otherPlayer.TakeDamage(80, animator, ref attackType, 4f);
                 GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
 
                 _hitFreezeSystem.Freeze();

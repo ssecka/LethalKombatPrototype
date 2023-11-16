@@ -13,7 +13,9 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private SoundEffects _soundEffects;
     private static readonly int Die = Animator.StringToHash("Die");
     private static readonly int Hit = Animator.StringToHash("Hit");
-    
+    private Rigidbody _rb;
+    private Movement _mov;
+
     public HealthBarScript HealthBarScript;
     [SerializeField] private int MaxHealth = 1000;
     [SerializeField] private int CurrentHealth;
@@ -41,25 +43,19 @@ public class PlayerStats : MonoBehaviour
         _hitFreezeSystem ??= GameObject.Find("PlayerEnvironmentSystem")?.GetComponent<HitFreezeSystem>();
         HealthBarScript ??= new();
         HealthBarScript.SetMaxHealth(MaxHealth,_team);
+        _rb = GetComponent<Rigidbody>();
+        _mov = GetComponent<Movement>();
 
         CurrentHealth = MaxHealth;
-     
-        
     }
     
     // Update is called once per frame
     void Update()
     {
-        //Testing if HealthBars are getting updated(works)
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            var attackType = EAttackType.Jab;
-            TakeDamage(30,_animator,ref attackType);
-        }
     }
     
     
-    public void TakeDamage(int dmgAmount, Animator animator, ref EAttackType attackType)
+    public void TakeDamage(int dmgAmount, Animator animator, ref EAttackType attackType, float xCoordPushbackOnBlock)
     {
         //Convert to int, leftshift 1, then back to enum
         attackType = (EAttackType)((int)attackType << 1);
@@ -69,15 +65,17 @@ public class PlayerStats : MonoBehaviour
             var blocked = dmgAmount * DAMAGE_BLOCK_COEFFICIENT;
             dmgAmount = (int)blocked;
             attackType = EAttackType.Block;
+           PushBack(xCoordPushbackOnBlock); 
         }
-            
+
+        
         //GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
         
         CurrentHealth -= dmgAmount;
         HealthBarScript.SetHealth(CurrentHealth, _team);
 
         _hitFreezeSystem.Freeze();
-        
+
         if (CurrentHealth <= 0)
         {
             //throw new NotImplementedException("TODO: Implement Game End");
@@ -91,5 +89,18 @@ public class PlayerStats : MonoBehaviour
 
         GeneralFunctions.PrintDebugStatement("New Life: " + CurrentHealth);
 
+    }
+
+    public void PushBack(float xCoordPushForce)
+    {
+        if (_mov.facingRight)
+        {
+            _rb.AddForce(xCoordPushForce,0,0, ForceMode.Impulse);
+        }
+        else
+        {
+           _rb.AddForce(-xCoordPushForce,0,0, ForceMode.Impulse); 
+        }
+        
     }
 }
