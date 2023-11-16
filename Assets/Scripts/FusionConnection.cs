@@ -38,7 +38,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         await networkRunner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Shared,
-            SessionName = "kfdspfpdskkp",
+            SessionName = "Showcase",
             PlayerCount = 2,
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
