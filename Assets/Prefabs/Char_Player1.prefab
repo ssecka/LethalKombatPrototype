@@ -1382,6 +1382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _soundEffects: {fileID: 0}
+  blockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
   HealthBarScript: {fileID: 4381932809218752520, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
   MaxHealth: 1000
   CurrentHealth: 0
@@ -1398,6 +1399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe4f7e18cdf7d0e428b2ce43c65ecdc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  facingRight: 0
   _transform: {fileID: 2678481738194883530}
   _rb: {fileID: 2495374135181013011}
   _lefthandAttackPoint: {fileID: 2495374135620894957}
@@ -1405,8 +1407,8 @@ MonoBehaviour:
   _leftlegAttackPoint: {fileID: 3660843052950673049}
   _rightlegAttackPoint: {fileID: 2495374135780604776}
   _soundEffects: {fileID: 0}
+  _isBlocking: 0
   hitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
-  blockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
   punchSound: {fileID: 2376296419524571692}
   kickSound: {fileID: 6821494003052073092}
 --- !u!114 &2495374135181013015

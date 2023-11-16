@@ -310,7 +310,6 @@ public class Movement : MonoBehaviour
     }
     
     public GameObject hitEffect;
-    public GameObject blockEffect;
     public AudioSource punchSound;
     public AudioSource kickSound;
     
@@ -400,7 +399,7 @@ public class Movement : MonoBehaviour
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
             {
                 _sideKickAlreadyHit = true;
-                Instantiate(hitEffect, _rightlegAttackPoint.position, Quaternion.identity);
+                //Instantiate(hitEffect, _rightlegAttackPoint.position, Quaternion.identity);
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
                 otherPlayer.TakeDamage(80, animator, ref attackType, 4f);

@@ -15,6 +15,7 @@ public class PlayerStats : MonoBehaviour
     private static readonly int Hit = Animator.StringToHash("Hit");
     private Rigidbody _rb;
     private Movement _mov;
+    public GameObject blockEffect;
 
     public HealthBarScript HealthBarScript;
     [SerializeField] private int MaxHealth = 1000;
@@ -65,12 +66,12 @@ public class PlayerStats : MonoBehaviour
             var blocked = dmgAmount * DAMAGE_BLOCK_COEFFICIENT;
             dmgAmount = (int)blocked;
             attackType = EAttackType.Block;
-           PushBack(xCoordPushbackOnBlock); 
+            PushBack(xCoordPushbackOnBlock); 
+            Instantiate(blockEffect, _mov._lefthandAttackPoint.position, Quaternion.identity);
+            GeneralFunctions.PlaySoundByEnum(EAttackType.Block, ref _soundEffects);
         }
+        
 
-        
-        //GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
-        
         CurrentHealth -= dmgAmount;
         HealthBarScript.SetHealth(CurrentHealth, _team);
 
