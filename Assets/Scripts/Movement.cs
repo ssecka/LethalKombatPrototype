@@ -326,13 +326,11 @@ public class Movement : MonoBehaviour
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
                 hitTarget.transform.gameObject.TryGetComponent(out Animator animator) && !_jabAlreadyHit)
             {
+                _jabAlreadyHit = true;
                 Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
-               // punchSound.Play();
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
                 otherPlayer.TakeDamage(30, animator, ref attackType);
-
-                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
                 
                 _hitFreezeSystem.Freeze();
                 break;
@@ -366,7 +364,6 @@ public class Movement : MonoBehaviour
             {
                 _hookAlreadyHit = true;
                 Instantiate(hitEffect, _righthandAttackPoint.position, Quaternion.identity);
-                punchSound.Play();
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
                 otherPlayer.TakeDamage(40, animator, ref attackType);
@@ -406,7 +403,6 @@ public class Movement : MonoBehaviour
             {
                 _sideKickAlreadyHit = true;
                 Instantiate(hitEffect, _rightlegAttackPoint.position, Quaternion.identity);
-                kickSound.Play();
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
                 otherPlayer.TakeDamage(80, animator, ref attackType);
