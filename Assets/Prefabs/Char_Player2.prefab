@@ -1460,6 +1460,7 @@ GameObject:
   - component: {fileID: 4381137461784907483}
   - component: {fileID: 8176016836097157638}
   - component: {fileID: 2473064405409069630}
+  - component: {fileID: 7815631113196789856}
   m_Layer: 0
   m_Name: Char_Player2
   m_TagString: Player2
@@ -1831,6 +1832,25 @@ MonoBehaviour:
     _hash: -814817977
   StateHashes: 00000000ccdb6129b1d75ee2968b165def4185fb5c5f20edde106c682c38b1fd36a98b178b7cfd670f5f2b88866612edfed81a8c28a981077af3fe2ef142e047ebd3daaded4e32bf480ad50005be35e61f2f0f0c
   TriggerHashes: 0000000028a98107968b165d5c5f20ed2c38b1fd37b93501a1609f62
+--- !u!114 &7815631113196789856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5159609730593109702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf81ae3fd5747c38758f869bab1d5e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioSrc: {fileID: 0}
+  Jab: {fileID: 8300000, guid: da94ad144d7b0714ca3ae0f7f59a50e0, type: 3}
+  JabHit: {fileID: 8300000, guid: 2ee0d8659521461439e73baa6b39646d, type: 3}
+  Kick: {fileID: 8300000, guid: a7754d195c3fcd345bacf8f1ca58a0e8, type: 3}
+  KickHit: {fileID: 8300000, guid: 41500b51213d94143913042b13dd5c82, type: 3}
+  Block: {fileID: 8300000, guid: b6d4f04ccfc49814090e7f14d2c38682, type: 3}
+  _currentSound: 0
 --- !u!1 &5287336923119661397
 GameObject:
   m_ObjectHideFlags: 0
@@ -3020,6 +3040,14 @@ PrefabInstance:
     - target: {fileID: 3954924586874837372, guid: e1cbc8c7dffc16c4a97e516c126c6d2c, type: 3}
       propertyPath: m_Name
       value: Health Bar P2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3954924586874837374, guid: e1cbc8c7dffc16c4a97e516c126c6d2c, type: 3}
+      propertyPath: Fill
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3954924586874837374, guid: e1cbc8c7dffc16c4a97e516c126c6d2c, type: 3}
+      propertyPath: HealthSlider
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3954924586874837375, guid: e1cbc8c7dffc16c4a97e516c126c6d2c, type: 3}
       propertyPath: m_Pivot.x

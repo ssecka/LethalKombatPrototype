@@ -15,6 +15,7 @@ public class Movement : MonoBehaviour
     private const float GRAVITY_MULTI = 1.015f;
     private const float ATTACK_TOLERANCE_RANGE = 0.2f;
     private const float ATTACK_COOLDOWN_TIME = 0.22f;
+    private const float RIGHT_QUAT = -0.7075f;
 
 
     private readonly Quaternion _faceRight = Quaternion.Euler(0, -90f, 0);
@@ -162,7 +163,9 @@ public class Movement : MonoBehaviour
         _lastXCord = _transform.position.x;
         var newX = _transform.position.x + ((-1 * _movDir.x) * MOVE_SPEED);
 
-        var facingRight = Math.Abs(_transform.rotation.y - (-90)) < 0.000001f;
+
+        var facingRight = Math.Abs(_transform.localEulerAngles.y - 270) < 0.00001f;
+        print(facingRight + " | " + _transform.localEulerAngles.y);
         
         //TODO: Validate Move Dir
         
@@ -329,7 +332,7 @@ public class Movement : MonoBehaviour
 
                 otherPlayer.TakeDamage(30, animator, ref attackType);
 
-                GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
+                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
                 
                 _hitFreezeSystem.Freeze();
                 break;
@@ -337,7 +340,7 @@ public class Movement : MonoBehaviour
 
             if (++index == hitTargets.Length && _jabAlreadyHit)
             {
-                GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
+                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
             }
         }
         
@@ -345,7 +348,7 @@ public class Movement : MonoBehaviour
 
     public void JabDeactivateHitbox()
     {
-        if(!_jabAlreadyHit) GeneralFunctions.PlaySoundByEnum(EAttackType.Jab, in _soundEffects);
+        if(!_jabAlreadyHit) GeneralFunctions.PlaySoundByEnum(EAttackType.Jab, ref _soundEffects);
 
         _jabAlreadyHit = false;
     }
@@ -355,7 +358,7 @@ public class Movement : MonoBehaviour
         var hitTargets = Physics.OverlapSphere(_righthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
         var attackType = EAttackType.Jab;
 
-        for (var index = 0; index < hitTargets.Length && !_hookAlreadyHit; index++)
+        for (var index = 0; index < hitTargets.Length && !_hookAlreadyHit; )
         {
             var hitTarget = hitTargets[index];
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
@@ -375,7 +378,7 @@ public class Movement : MonoBehaviour
             
             if (++index == hitTargets.Length && _hookAlreadyHit)
             {
-                GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
+                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
             }
             
         }
@@ -386,7 +389,7 @@ public class Movement : MonoBehaviour
     {
         if (!_hookAlreadyHit)
         {
-            if(!_hookAlreadyHit)  GeneralFunctions.PlaySoundByEnum(EAttackType.Jab, in _soundEffects);
+            if(!_hookAlreadyHit)  GeneralFunctions.PlaySoundByEnum(EAttackType.Jab, ref _soundEffects);
         }
         _hookAlreadyHit = false;
     }
@@ -414,7 +417,7 @@ public class Movement : MonoBehaviour
             
             if (++index == hitTargets.Length && _sideKickAlreadyHit)
             {
-                GeneralFunctions.PlaySoundByEnum(attackType, in _soundEffects);
+                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
             }
         }
 
@@ -423,7 +426,7 @@ public class Movement : MonoBehaviour
 
     public void SideKickDeactivateHitbox()
     {
-        if(!_sideKickAlreadyHit) GeneralFunctions.PlaySoundByEnum(EAttackType.Kick, in _soundEffects);
+        if(!_sideKickAlreadyHit) GeneralFunctions.PlaySoundByEnum(EAttackType.Kick, ref _soundEffects);
 
         _sideKickAlreadyHit = false;
     }

@@ -74,7 +74,7 @@ public class FighterCamera : MonoBehaviour
             _yMin = Math.Min(_yMin, curY);
             _yMax = Math.Max(_yMax, curY);
             
-        } while (i++ < len);
+        } while (++i < len);
 
         
         #region old

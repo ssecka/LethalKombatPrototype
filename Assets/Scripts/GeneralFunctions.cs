@@ -31,7 +31,7 @@ public class GeneralFunctions : MonoBehaviour
 
     public static void PrintDebugStatement(object statement) => PrintDebugStatement(statement.ToString());
 
-    public static void PlaySoundByEnum(EAttackType attackType, in SoundEffects soundEffects)
+    public static void PlaySoundByEnum(EAttackType attackType, ref SoundEffects soundEffects)
     {
         //PrintDebugStatement("Playing sound: " + attackType.ToString());
         switch (attackType)
