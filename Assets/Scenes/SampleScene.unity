@@ -701,7 +701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   YOffset: 1.5
-  MinDistance: 4
+  MinDistance: 5
   Player1: {fileID: 0}
   Player2: {fileID: 0}
 --- !u!114 &963194230

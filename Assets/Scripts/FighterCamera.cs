@@ -13,7 +13,7 @@ public class FighterCamera : MonoBehaviour
     
     private Transform[] _playerTransforms;
     public float YOffset = 1.5f;
-    public float MinDistance = 4f;
+    public float MinDistance = 5f;
     private float _xMin, _xMax, _yMin, _yMax;
     private PlayerRotationScript _playerRotationScript;
     [SerializeField] private GameObject Player1;
