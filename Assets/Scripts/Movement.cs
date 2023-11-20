@@ -165,20 +165,20 @@ public class Movement : MonoBehaviour
         var newX = _transform.position.x + ((-1 * _movDir.x) * MOVE_SPEED);
 
 
-         facingRight = Math.Abs(_transform.localEulerAngles.y - 270) < 0.00001f;
-        print(facingRight + " | " + _transform.localEulerAngles.y);
+        facingRight = Math.Abs(_transform.localEulerAngles.y - 270) < 0.00001f;
         
-        //TODO: Validate Move Dir
-        
-        if (facingRight && _movDir.x > 0 || !facingRight && _movDir.x < 0)
+        switch (facingRight)
         {
-            _animator.SetBool(FWalking, true);
-            _animator.SetBool(BWalking, false);
-        }
-        else if (facingRight && _movDir.x < 0 || !facingRight && _movDir.x > 0)
-        {
-            _animator.SetBool(FWalking, false);
-            _animator.SetBool(BWalking, true);
+            case true when _movDir.x > 0:
+            case false when _movDir.x < 0:
+                _animator.SetBool(FWalking, true);
+                _animator.SetBool(BWalking, false);
+                break;
+            case true when _movDir.x < 0:
+            case false when _movDir.x > 0:
+                _animator.SetBool(FWalking, false);
+                _animator.SetBool(BWalking, true);
+                break;
         }
 
 
