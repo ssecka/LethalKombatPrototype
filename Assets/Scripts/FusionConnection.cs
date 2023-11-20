@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 using Fusion;
 using Fusion.Sockets;
@@ -16,9 +17,13 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private FighterCamera FighterCamera;
 
     private GameObject[] _players;
+
+    public void PlaySound(EAttackType type, ref SoundEffects soundEffects) =>
+        GeneralFunctions.PlaySoundByEnum(type, ref soundEffects);
     
     private void Awake()
     {
+        Movement._fusionConnection = this;
         _players ??= new GameObject[2];
         FighterCamera ??= GameObject.Find(MAIN_CAMERA_SYSTEM).transform.GetComponent<FighterCamera>();
         if (ConnectOnAwake)
@@ -60,7 +65,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
             _players[0] = playerObject.gameObject;
 
             _players[0].GetComponent<PlayerStats>().SetTeam(1);
-            _players[0].transform.rotation = Quaternion.Euler(0f, -90f, 0f); 
+            _players[0].transform.rotation = Quaternion.Euler(0f, -90f, 0f);
         }
         else if (runner.SessionInfo.PlayerCount == 2)
         {
@@ -73,7 +78,12 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
             _players[1].transform.rotation = Quaternion.Euler(0f, 90f, 0f); 
 
             FighterCamera ??= new();
+            
             FighterCamera.SpawnInPlayer2(_players[0].transform,_players[1].transform);
+            
+            
+            //now we need to give a ref to the other players...
+            
         }
         
         

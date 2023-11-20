@@ -1579,8 +1579,6 @@ MonoBehaviour:
   _soundEffects: {fileID: 0}
   _isBlocking: 0
   hitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
-  punchSound: {fileID: 0}
-  kickSound: {fileID: 0}
 --- !u!114 &4110730281729472425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1849,8 +1847,8 @@ MonoBehaviour:
   AudioSrc: {fileID: 0}
   Jab: {fileID: 8300000, guid: da94ad144d7b0714ca3ae0f7f59a50e0, type: 3}
   JabHit: {fileID: 8300000, guid: 2ee0d8659521461439e73baa6b39646d, type: 3}
-  Kick: {fileID: 8300000, guid: a7754d195c3fcd345bacf8f1ca58a0e8, type: 3}
-  KickHit: {fileID: 8300000, guid: 41500b51213d94143913042b13dd5c82, type: 3}
+  Kick: {fileID: 8300000, guid: 41500b51213d94143913042b13dd5c82, type: 3}
+  KickHit: {fileID: 8300000, guid: a7754d195c3fcd345bacf8f1ca58a0e8, type: 3}
   Block: {fileID: 8300000, guid: b6d4f04ccfc49814090e7f14d2c38682, type: 3}
   _currentSound: 0
 --- !u!1 &5287336923119661397

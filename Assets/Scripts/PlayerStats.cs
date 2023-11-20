@@ -10,7 +10,6 @@ public class PlayerStats : MonoBehaviour
     private Animator _animator;
 
     private HitFreezeSystem _hitFreezeSystem;
-    [SerializeField] private SoundEffects _soundEffects;
     private static readonly int Die = Animator.StringToHash("Die");
     private static readonly int Hit = Animator.StringToHash("Hit");
     private Rigidbody _rb;
@@ -59,7 +58,7 @@ public class PlayerStats : MonoBehaviour
     public void TakeDamage(int dmgAmount, Animator animator, ref EAttackType attackType, float xCoordPushbackOnBlock)
     {
         //Convert to int, leftshift 1, then back to enum
-        attackType = (EAttackType)((int)attackType << 1);
+     //   attackType = (EAttackType)((int)attackType << 1);
         
         if (IsBlocking)
         {
@@ -68,7 +67,6 @@ public class PlayerStats : MonoBehaviour
             attackType = EAttackType.Block;
             PushBack(xCoordPushbackOnBlock); 
             Instantiate(blockEffect, _mov._lefthandAttackPoint.position, Quaternion.identity);
-            GeneralFunctions.PlaySoundByEnum(EAttackType.Block, ref _soundEffects);
         }
         
 

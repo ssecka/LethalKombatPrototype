@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     #region Constants
 
     private const float MOVE_SPEED = .105f;
-    private const float JUMP_POWER = 420f;
+    private const float JUMP_POWER = 600f;
     private const float GRAVITY_MULTI = 1.015f;
     private const float ATTACK_TOLERANCE_RANGE = 0.2f;
     private const float ATTACK_COOLDOWN_TIME = 0.22f;
@@ -59,11 +59,12 @@ public class Movement : MonoBehaviour
     private PlayerStats _playerStats;
     private float _facingMultiplier;
     public bool _isBlocking = false;
-    private Transform _otherPlayer;
+    public static FusionConnection _fusionConnection;
     
     private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit;
-
     
+
+
     #region Startup
 
     #region On/Off
@@ -188,7 +189,7 @@ public class Movement : MonoBehaviour
     }
 
 
-    public void UpdatePlayerRotation()
+    private void UpdatePlayerRotation()
     {
         
         // !Physics.Raycast(this.transform.position,new(1,0,0),10f)
@@ -262,7 +263,7 @@ public class Movement : MonoBehaviour
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("Punch");
         _animator.SetTrigger(PunchID);
-        GeneralFunctions.PlaySoundByEnum(EAttackType.Jab, ref _soundEffects);
+        _fusionConnection.PlaySound(EAttackType.Jab,ref _soundEffects);
     }
 
     /// <summary>
@@ -277,7 +278,7 @@ public class Movement : MonoBehaviour
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("Hook");
         _animator.SetTrigger(HookID);
-        GeneralFunctions.PlaySoundByEnum(EAttackType.Jab, ref _soundEffects);
+        _fusionConnection.PlaySound(EAttackType.Jab,ref _soundEffects);
     }
 
     /// <summary>
@@ -292,7 +293,7 @@ public class Movement : MonoBehaviour
         if (!IsNextAttackAllowed()) return;
         GeneralFunctions.PrintDebugStatement("SideKick");
         _animator.SetTrigger(SideKickID);
-        GeneralFunctions.PlaySoundByEnum(EAttackType.Kick, ref _soundEffects);
+        _fusionConnection.PlaySound(EAttackType.Kick,ref _soundEffects);
     }
 
     public void Block(InputAction.CallbackContext context)
@@ -333,8 +334,8 @@ public class Movement : MonoBehaviour
                 otherPlayer.TakeDamage(30, animator, ref attackType, 2f);
 
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
-
+                
+                _fusionConnection.PlaySound(attackType,ref _soundEffects);
                 
                 _hitFreezeSystem.Freeze();
                 break;
@@ -365,16 +366,13 @@ public class Movement : MonoBehaviour
 
                 otherPlayer.TakeDamage(40, animator, ref attackType, 2f);
 
-                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
+                _fusionConnection.PlaySound(attackType,ref _soundEffects);
 
                 _hitFreezeSystem.Freeze();
 
                 break;
             }
-            
-            
         }
-
     }
 
     public void HookDeactivateHitbox()
@@ -398,7 +396,8 @@ public class Movement : MonoBehaviour
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
                 otherPlayer.TakeDamage(80, animator, ref attackType, 4f);
-                GeneralFunctions.PlaySoundByEnum(attackType, ref _soundEffects);
+                
+                _fusionConnection.PlaySound(attackType,ref _soundEffects);
 
                 _hitFreezeSystem.Freeze();
                 break;
