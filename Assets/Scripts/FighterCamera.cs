@@ -30,6 +30,7 @@ public class FighterCamera : MonoBehaviour
 
     public void SpawnInPlayer2(Transform t1, Transform t2)
     {
+        _playerTransforms ??= new Transform[2];
         _playerTransforms[0] = t1;
         _playerTransforms[1] = t2;
 
