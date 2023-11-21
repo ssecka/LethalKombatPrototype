@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DefaultNamespace;
+using Mono.Cecil;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 // ReSharper disable InconsistentNaming
 
 public class Movement : MonoBehaviour
@@ -15,6 +18,7 @@ public class Movement : MonoBehaviour
     private const float GRAVITY_MULTI = 1.015f;
     private const float ATTACK_TOLERANCE_RANGE = 0.2f;
     private const float RIGHT_QUAT = -0.7075f;
+    private const float ATTACK_COOLDOWN_TIME = 0.075f;
 
 
     private readonly Quaternion _faceRight = Quaternion.Euler(0, -90f, 0);
@@ -62,7 +66,6 @@ public class Movement : MonoBehaviour
     private bool _attackAllowed = true;
 
     private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit;
-    
 
 
     #region Startup
@@ -167,7 +170,7 @@ public class Movement : MonoBehaviour
 
 
         facingRight = Math.Abs(_transform.localEulerAngles.y - 270) < 0.00001f;
-        
+
         switch (facingRight)
         {
             case true when _movDir.x > 0:
@@ -183,30 +186,31 @@ public class Movement : MonoBehaviour
         }
 
 
-        _transform.position = new(newX, ((Component)this).transform.position.y, 0); 
+        _transform.position = new(newX, ((Component)this).transform.position.y, 0);
         UpdatePlayerRotation();
-
     }
 
 
     private void UpdatePlayerRotation()
     {
-        
         // !Physics.Raycast(this.transform.position,new(1,0,0),10f)
         // Physics.Raycast(transform.position,new(-1,0,0),10f))
 
-        if (Physics.Raycast(new(transform.position.x - 0.25f,transform.position.y,transform.position.z), new(-1, 0, 0), out RaycastHit hit, 10f)
+        if (Physics.Raycast(new(transform.position.x - 0.25f, transform.position.y, transform.position.z),
+                new(-1, 0, 0), out RaycastHit hit, 10f)
             && this.transform.rotation.y > 0)
         {
-            if(hit.transform.TryGetComponent<PlayerStats>(out PlayerStats tmp))
+            if (hit.transform.TryGetComponent<PlayerStats>(out PlayerStats tmp))
             {
                 this.transform.rotation = Quaternion.Euler(0, -90f, 0);
             }
         }
-        if (Physics.Raycast(new(transform.position.x + 0.25f,transform.position.y,transform.position.z), new(1, 0, 0), out RaycastHit hit2, 10f)
-                 && this.transform.rotation.y < 0)
+
+        if (Physics.Raycast(new(transform.position.x + 0.25f, transform.position.y, transform.position.z), new(1, 0, 0),
+                out RaycastHit hit2, 10f)
+            && this.transform.rotation.y < 0)
         {
-            if(hit2.transform.TryGetComponent<PlayerStats>(out PlayerStats tmp))
+            if (hit2.transform.TryGetComponent<PlayerStats>(out PlayerStats tmp))
             {
                 this.transform.rotation = Quaternion.Euler(0, 90f, 0);
             }
@@ -233,35 +237,48 @@ public class Movement : MonoBehaviour
 
     #region Attacks
 
-    #region Cooldown
+    #region Cooldown-System
+
     /// <summary>
     /// Used as cooldown between Attacks
     /// </summary>
     /// <returns>true if allowed, false if not</returns>
-    private bool IsNextAttackAllowed()
+    private bool IsNextAttackAllowed() => _attackAllowed;
+
+    public void AttackFinished()
     {
-        return _attackAllowed;
+        var task = new Task(() =>
+        {
+            // delay for cooldown time, then enable.
+            // 1E3 = 1.000
+            Task.Delay((int)(ATTACK_COOLDOWN_TIME * 1E3));
+            _attackAllowed = true;
+        });
+        task.Start();
     }
 
     #endregion
-    
-    #region Punch / Jab
+
+    #region Jab (aka Punch)
+
     /// <summary>
     /// Hotkey: leftclick
     /// </summary>
     /// <param name="context"></param>
-    public void Punch(InputAction.CallbackContext context)
+    public void Jab(InputAction.CallbackContext context)
     {
         //Blocking --> Dont allow other action meanwhile.
         if (_isBlocking) return;
 
         if (!IsNextAttackAllowed()) return;
         _attackAllowed = false;
-        GeneralFunctions.PrintDebugStatement("Punch");
+
+        GeneralFunctions.PrintDebugStatement("Jab");
         _animator.SetTrigger(PunchID);
-        _fusionConnection.PlaySound(EAttackType.Jab,ref _soundEffects);
     }
-    
+
+    public void JabAnimationStarted() => _fusionConnection.PlaySound(EAttackType.Jab, ref _soundEffects);
+
     public void JabActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_lefthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
@@ -269,7 +286,7 @@ public class Movement : MonoBehaviour
 
         GeneralFunctions.PrintDebugStatement("Jab");
 
-        for (var index = 0; index < hitTargets.Length && !_jabAlreadyHit;index++)
+        for (var index = 0; index < hitTargets.Length && !_jabAlreadyHit; index++)
         {
             var hitTarget = hitTargets[index];
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
@@ -277,29 +294,28 @@ public class Movement : MonoBehaviour
             {
                 _jabAlreadyHit = true;
                 Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
-                
+
                 otherPlayer.TakeDamage(30, animator, ref attackType, 2f);
 
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
-                
-                _fusionConnection.PlaySound(attackType,ref _soundEffects);
-                
+
+                _fusionConnection.PlaySound(attackType, ref _soundEffects);
+
                 _hitFreezeSystem.Freeze();
                 break;
             }
         }
-        
     }
 
     public void JabDeactivateHitbox()
     {
         _jabAlreadyHit = false;
     }
-    
-    
+
     #endregion
 
     #region Hook
+
     /// <summary>
     /// Hotkey: L
     /// </summary>
@@ -310,11 +326,16 @@ public class Movement : MonoBehaviour
         if (_isBlocking) return;
 
         if (!IsNextAttackAllowed()) return;
+        _attackAllowed = false;
+        
+        
         GeneralFunctions.PrintDebugStatement("Hook");
         _animator.SetTrigger(HookID);
-        _fusionConnection.PlaySound(EAttackType.Jab,ref _soundEffects);
     }
-    
+
+    public void HookAnimationStarted() => _fusionConnection.PlaySound(EAttackType.Jab, ref _soundEffects);
+
+
     public void HookActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_righthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
@@ -332,7 +353,7 @@ public class Movement : MonoBehaviour
 
                 otherPlayer.TakeDamage(40, animator, ref attackType, 2f);
 
-                _fusionConnection.PlaySound(attackType,ref _soundEffects);
+                _fusionConnection.PlaySound(attackType, ref _soundEffects);
 
                 _hitFreezeSystem.Freeze();
 
@@ -345,10 +366,11 @@ public class Movement : MonoBehaviour
     {
         _hookAlreadyHit = false;
     }
-    
+
     #endregion
 
     #region SideKick
+
     /// <summary>
     /// Hotkey: Rightclick
     /// </summary>
@@ -359,21 +381,23 @@ public class Movement : MonoBehaviour
         if (_isBlocking) return;
 
         if (!IsNextAttackAllowed()) return;
+        _attackAllowed = false;
+        
         GeneralFunctions.PrintDebugStatement("SideKick");
         _animator.SetTrigger(SideKickID);
     }
 
     public void SideKickAnimationStarted()
     {
-        _fusionConnection.PlaySound(EAttackType.Kick,ref _soundEffects);
+        _fusionConnection.PlaySound(EAttackType.Kick, ref _soundEffects);
     }
-    
+
     public void SideKickActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_rightlegAttackPoint.position, ATTACK_TOLERANCE_RANGE);
         var attackType = EAttackType.KickHit;
-        
-        for (var index = 0; index < hitTargets.Length && !_sideKickAlreadyHit;index++)
+
+        for (var index = 0; index < hitTargets.Length && !_sideKickAlreadyHit; index++)
         {
             var hitTarget = hitTargets[index];
             if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
@@ -384,25 +408,24 @@ public class Movement : MonoBehaviour
                 GeneralFunctions.PrintDebugStatement("We hit the other Player!");
 
                 otherPlayer.TakeDamage(80, animator, ref attackType, 4f);
-                
-                _fusionConnection.PlaySound(attackType,ref _soundEffects);
+
+                _fusionConnection.PlaySound(attackType, ref _soundEffects);
 
                 _hitFreezeSystem.Freeze();
                 break;
             }
         }
-
-
     }
 
     public void SideKickDeactivateHitbox()
     {
         _sideKickAlreadyHit = false;
     }
-    
+
     #endregion
 
     #region Blocking
+
     public void Block(InputAction.CallbackContext context)
     {
         GeneralFunctions.PrintDebugStatement("BREAKPOINT");
@@ -419,7 +442,7 @@ public class Movement : MonoBehaviour
 
         _isBlocking = state;
     }
-    
+
     #endregion
 
     #endregion

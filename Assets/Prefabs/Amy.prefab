@@ -2386,7 +2386,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2950782757055782223}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: Punch
+        m_MethodName: Jab
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
