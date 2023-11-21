@@ -14,7 +14,6 @@ public class Movement : MonoBehaviour
     private const float JUMP_POWER = 600f;
     private const float GRAVITY_MULTI = 1.015f;
     private const float ATTACK_TOLERANCE_RANGE = 0.2f;
-    private const float ATTACK_COOLDOWN_TIME = 0.22f;
     private const float RIGHT_QUAT = -0.7075f;
 
 
@@ -28,6 +27,7 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private Transform _transform;
     [SerializeField] private Rigidbody _rb;
+    [SerializeField] private SoundEffects _soundEffects;
     public Transform _lefthandAttackPoint, _righthandAttackPoint, _leftlegAttackPoint, _rightlegAttackPoint;
 
     #endregion
@@ -49,9 +49,8 @@ public class Movement : MonoBehaviour
 
     #endregion
 
-
+    public GameObject hitEffect;
     private HitFreezeSystem _hitFreezeSystem;
-    [SerializeField] private SoundEffects _soundEffects;
     private Vector2 _movDir = Vector2.zero;
     private List<InputAction> _toBeBlocked;
     private int _playerNumber = -1;
@@ -60,7 +59,8 @@ public class Movement : MonoBehaviour
     private float _facingMultiplier;
     public bool _isBlocking = false;
     public static FusionConnection _fusionConnection;
-    
+    private bool _attackAllowed = true;
+
     private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit;
     
 
@@ -233,24 +233,19 @@ public class Movement : MonoBehaviour
 
     #region Attacks
 
+    #region Cooldown
     /// <summary>
     /// Used as cooldown between Attacks
     /// </summary>
     /// <returns>true if allowed, false if not</returns>
     private bool IsNextAttackAllowed()
     {
-        var curTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        var allowedTime = _lastAttackTime.AddSeconds(ATTACK_COOLDOWN_TIME).ToUnixTimeSeconds();
-        
-        if (curTime > allowedTime)
-        {
-            _lastAttackTime = DateTimeOffset.UtcNow;
-            return true;
-        }
-
-        return false;
+        return _attackAllowed;
     }
 
+    #endregion
+    
+    #region Punch / Jab
     /// <summary>
     /// Hotkey: leftclick
     /// </summary>
@@ -261,60 +256,12 @@ public class Movement : MonoBehaviour
         if (_isBlocking) return;
 
         if (!IsNextAttackAllowed()) return;
+        _attackAllowed = false;
         GeneralFunctions.PrintDebugStatement("Punch");
         _animator.SetTrigger(PunchID);
         _fusionConnection.PlaySound(EAttackType.Jab,ref _soundEffects);
     }
-
-    /// <summary>
-    /// Hotkey: L
-    /// </summary>
-    /// <param name="context"></param>
-    public void Hook(InputAction.CallbackContext context)
-    {
-        //Blocking --> Dont allow other action meanwhile.
-        if (_isBlocking) return;
-
-        if (!IsNextAttackAllowed()) return;
-        GeneralFunctions.PrintDebugStatement("Hook");
-        _animator.SetTrigger(HookID);
-        _fusionConnection.PlaySound(EAttackType.Jab,ref _soundEffects);
-    }
-
-    /// <summary>
-    /// Hotkey: Rightclick
-    /// </summary>
-    /// <param name="context"></param>
-    public void SideKick(InputAction.CallbackContext context)
-    {
-        //Blocking --> Dont allow other action meanwhile.
-        if (_isBlocking) return;
-
-        if (!IsNextAttackAllowed()) return;
-        GeneralFunctions.PrintDebugStatement("SideKick");
-        _animator.SetTrigger(SideKickID);
-        _fusionConnection.PlaySound(EAttackType.Kick,ref _soundEffects);
-    }
-
-    public void Block(InputAction.CallbackContext context)
-    {
-        GeneralFunctions.PrintDebugStatement("BREAKPOINT");
-        var state = context.phase;
-        if (state == InputActionPhase.Started) UpdateBlocking(true);
-        else if (state == InputActionPhase.Canceled) UpdateBlocking(false);
-    }
-
-    private void UpdateBlocking(bool state)
-    {
-        _animator.SetBool(BlockingID, state);
-        _animator.SetBool(FWalking, false);
-        _animator.SetBool(BWalking, false);
-
-        _isBlocking = state;
-    }
     
-    public GameObject hitEffect;
-
     public void JabActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_lefthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
@@ -348,7 +295,26 @@ public class Movement : MonoBehaviour
     {
         _jabAlreadyHit = false;
     }
+    
+    
+    #endregion
 
+    #region Hook
+    /// <summary>
+    /// Hotkey: L
+    /// </summary>
+    /// <param name="context"></param>
+    public void Hook(InputAction.CallbackContext context)
+    {
+        //Blocking --> Dont allow other action meanwhile.
+        if (_isBlocking) return;
+
+        if (!IsNextAttackAllowed()) return;
+        GeneralFunctions.PrintDebugStatement("Hook");
+        _animator.SetTrigger(HookID);
+        _fusionConnection.PlaySound(EAttackType.Jab,ref _soundEffects);
+    }
+    
     public void HookActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_righthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
@@ -379,7 +345,29 @@ public class Movement : MonoBehaviour
     {
         _hookAlreadyHit = false;
     }
+    
+    #endregion
 
+    #region SideKick
+    /// <summary>
+    /// Hotkey: Rightclick
+    /// </summary>
+    /// <param name="context"></param>
+    public void SideKick(InputAction.CallbackContext context)
+    {
+        //Blocking --> Dont allow other action meanwhile.
+        if (_isBlocking) return;
+
+        if (!IsNextAttackAllowed()) return;
+        GeneralFunctions.PrintDebugStatement("SideKick");
+        _animator.SetTrigger(SideKickID);
+    }
+
+    public void SideKickAnimationStarted()
+    {
+        _fusionConnection.PlaySound(EAttackType.Kick,ref _soundEffects);
+    }
+    
     public void SideKickActivateHitbox()
     {
         var hitTargets = Physics.OverlapSphere(_rightlegAttackPoint.position, ATTACK_TOLERANCE_RANGE);
@@ -411,6 +399,28 @@ public class Movement : MonoBehaviour
     {
         _sideKickAlreadyHit = false;
     }
+    
+    #endregion
+
+    #region Blocking
+    public void Block(InputAction.CallbackContext context)
+    {
+        GeneralFunctions.PrintDebugStatement("BREAKPOINT");
+        var state = context.phase;
+        if (state == InputActionPhase.Started) UpdateBlocking(true);
+        else if (state == InputActionPhase.Canceled) UpdateBlocking(false);
+    }
+
+    private void UpdateBlocking(bool state)
+    {
+        _animator.SetBool(BlockingID, state);
+        _animator.SetBool(FWalking, false);
+        _animator.SetBool(BWalking, false);
+
+        _isBlocking = state;
+    }
+    
+    #endregion
 
     #endregion
 }
