@@ -84,6 +84,9 @@ public class Movement : MonoBehaviour
 
     private void Awake()
     {
+
+        
+        
         _hitFreezeSystem ??= GameObject.Find("PlayerEnvironmentSystem").GetComponent<HitFreezeSystem>();
         _soundEffects = GetComponent<SoundEffects>();
         _toBeBlocked ??= new();
@@ -94,7 +97,7 @@ public class Movement : MonoBehaviour
             _playerNumber = stats.GetTeam();
             _playerStats = stats; // We need this to set blockingg
         }
-
+        
 
         _lastXCord = _transform.position.x;
     }
@@ -427,7 +430,6 @@ public class Movement : MonoBehaviour
 
     public void Block(InputAction.CallbackContext context)
     {
-        GeneralFunctions.PrintDebugStatement("BREAKPOINT");
         var state = context.phase;
         if (state == InputActionPhase.Started) UpdateBlocking(true);
         else if (state == InputActionPhase.Canceled) UpdateBlocking(false);
@@ -439,7 +441,9 @@ public class Movement : MonoBehaviour
         _animator.SetBool(FWalking, false);
         _animator.SetBool(BWalking, false);
 
+        //Settings the state in this class AND for the corresponding playerStats class.
         _isBlocking = state;
+        _playerStats.IsBlocking = state;
     }
 
     #endregion
