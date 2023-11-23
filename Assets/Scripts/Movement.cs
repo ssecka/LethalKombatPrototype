@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using DefaultNamespace;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using ThreadPriority = System.Threading.ThreadPriority;
 
 // ReSharper disable InconsistentNaming
 
@@ -63,9 +66,12 @@ public class Movement : MonoBehaviour
     public bool _isBlocking = false;
     public static FusionConnection _fusionConnection;
     private bool _attackAllowed = true;
-
+    private bool[] _allowTaskCreation = { true, true };
     private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit;
 
+
+    private Thread[] _threads;
+    private ManualResetEvent[] _waitHandles;
 
     #region Startup
 
@@ -84,9 +90,6 @@ public class Movement : MonoBehaviour
 
     private void Awake()
     {
-
-        
-        
         _hitFreezeSystem ??= GameObject.Find("PlayerEnvironmentSystem").GetComponent<HitFreezeSystem>();
         _soundEffects = GetComponent<SoundEffects>();
         _toBeBlocked ??= new();
@@ -97,9 +100,51 @@ public class Movement : MonoBehaviour
             _playerNumber = stats.GetTeam();
             _playerStats = stats; // We need this to set blockingg
         }
-        
 
         _lastXCord = _transform.position.x;
+
+        // Init Handles
+        _waitHandles = new []
+        {
+            new ManualResetEvent(false),
+            new(false),
+        };
+        
+        //Defining the Threads
+        _threads = new[]
+        {
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    // delay for cooldown time, then enable.
+                    // 1E3 = 1.000  
+                    Thread.Sleep((int)(ATTACK_COOLDOWN_TIME * 1E3 * 4));
+                    _attackAllowed = true;
+                    _waitHandles[0].WaitOne();
+                }
+            }),
+            new(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep((int)((6.5 * 1E-2) * 1E3 * 4));
+                    _canJump = true;
+                    _waitHandles[1].WaitOne();
+                }
+            }),
+        };
+
+        _threads[0].Name = "Attack CD Resetter";
+        _threads[1].Name = "Jump Resetter";
+
+
+        foreach (var thread in _threads)
+        {
+            thread.Priority = ThreadPriority.Normal;
+            thread.IsBackground = true;
+            thread.Start();
+        }
     }
 
 
@@ -139,6 +184,7 @@ public class Movement : MonoBehaviour
         }
     }
 
+    #region Updates
 
     // Update is called once per frame
     void Update()
@@ -192,6 +238,7 @@ public class Movement : MonoBehaviour
         UpdatePlayerRotation();
     }
 
+    #endregion
 
     private void UpdatePlayerRotation()
     {
@@ -230,10 +277,10 @@ public class Movement : MonoBehaviour
         // Dont allow this action while blocking
         if (_isBlocking) return;
         if (!_canJump) return;
-
+        
+        _canJump = false;
         _animator.SetTrigger(JumpID);
         _rb.AddForce(Vector3.up * JUMP_POWER);
-        _canJump = false;
     }
 
 
@@ -247,16 +294,15 @@ public class Movement : MonoBehaviour
     /// <returns>true if allowed, false if not</returns>
     private bool IsNextAttackAllowed() => _attackAllowed;
 
+
+    private void BlockAttack() => _attackAllowed = false;
+
     public void AttackFinished()
     {
-        var task = new Task(() =>
+        for ( var i = 0; i < _threads.Length; i++)
         {
-            // delay for cooldown time, then enable.
-            // 1E3 = 1.000
-            Task.Delay((int)(ATTACK_COOLDOWN_TIME * 1E3));
-            _attackAllowed = true;
-        });
-        task.Start();
+            _waitHandles[i].Set();
+        }
     }
 
     #endregion
@@ -329,8 +375,8 @@ public class Movement : MonoBehaviour
 
         if (!IsNextAttackAllowed()) return;
         _attackAllowed = false;
-        
-        
+
+
         GeneralFunctions.PrintDebugStatement("Hook");
         _animator.SetTrigger(HookID);
     }
@@ -384,7 +430,7 @@ public class Movement : MonoBehaviour
 
         if (!IsNextAttackAllowed()) return;
         _attackAllowed = false;
-        
+
         GeneralFunctions.PrintDebugStatement("SideKick");
         _animator.SetTrigger(SideKickID);
     }
