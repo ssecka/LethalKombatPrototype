@@ -68,10 +68,11 @@ public class Movement : MonoBehaviour
     private bool _attackAllowed = true;
     private bool[] _allowTaskCreation = { true, true };
     private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit;
+    private int _layerIndex;
 
 
     private Thread[] _threads;
-    private ManualResetEvent[] _waitHandles;
+    private bool[] _sleeps = {true, true};
 
     #region Startup
 
@@ -102,13 +103,6 @@ public class Movement : MonoBehaviour
         }
 
         _lastXCord = _transform.position.x;
-
-        // Init Handles
-        _waitHandles = new []
-        {
-            new ManualResetEvent(false),
-            new(false),
-        };
         
         //Defining the Threads
         _threads = new[]
@@ -119,24 +113,27 @@ public class Movement : MonoBehaviour
                 {
                     // delay for cooldown time, then enable.
                     // 1E3 = 1.000  
-                    Thread.Sleep((int)(ATTACK_COOLDOWN_TIME * 1E3 * 4));
+                    Thread.Sleep((int)(ATTACK_COOLDOWN_TIME * 1E3));
                     _attackAllowed = true;
-                    _waitHandles[0].WaitOne();
+                    _sleeps[0] = true;
+                    while(_sleeps[0])Thread.Sleep(15);
                 }
             }),
-            new(() =>
-            {
-                while (true)
-                {
-                    Thread.Sleep((int)((6.5 * 1E-2) * 1E3 * 4));
-                    _canJump = true;
-                    _waitHandles[1].WaitOne();
-                }
-            }),
+            // new(() =>
+            // {
+            //     while (true)
+            //     {
+            //         Thread.Sleep((int)((6.5 * 1E-2) * 1E3));
+            //         _canJump = true;
+            //         print("Allowing jumping...");
+            //         _sleeps[1] = true;
+            //         while(_sleeps[1])Thread.Sleep(15);
+            //     }
+            // }),
         };
 
         _threads[0].Name = "Attack CD Resetter";
-        _threads[1].Name = "Jump Resetter";
+    //    _threads[1].Name = "Jump Resetter";
 
 
         foreach (var thread in _threads)
@@ -153,6 +150,9 @@ public class Movement : MonoBehaviour
     {
         // Get the Animator component from your character.
         _animator = GetComponent<Animator>();
+        
+        _layerIndex = _animator.GetLayerIndex("Base Layer");
+
     }
 
     #endregion
@@ -274,10 +274,12 @@ public class Movement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
+        print("Entering Jump");
         // Dont allow this action while blocking
         if (_isBlocking) return;
         if (!_canJump) return;
         
+        print("starting jump...");
         _canJump = false;
         _animator.SetTrigger(JumpID);
         _rb.AddForce(Vector3.up * JUMP_POWER);
@@ -299,9 +301,13 @@ public class Movement : MonoBehaviour
 
     public void AttackFinished()
     {
+        if (_animator.IsInTransition(_layerIndex))
+        {
+            return;
+        }
         for ( var i = 0; i < _threads.Length; i++)
         {
-            _waitHandles[i].Set();
+            _sleeps[i] = false;
         }
     }
 

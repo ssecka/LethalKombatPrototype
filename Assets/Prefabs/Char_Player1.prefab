@@ -1381,7 +1381,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a104041370c14742bd6761f3d7c8f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _soundEffects: {fileID: 0}
   blockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
   HealthBarScript: {fileID: 4381932809218752520, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
   MaxHealth: 1000
@@ -1402,15 +1401,13 @@ MonoBehaviour:
   facingRight: 0
   _transform: {fileID: 2678481738194883530}
   _rb: {fileID: 2495374135181013011}
+  _soundEffects: {fileID: 0}
   _lefthandAttackPoint: {fileID: 2495374135620894957}
   _righthandAttackPoint: {fileID: 1637188454640815073}
   _leftlegAttackPoint: {fileID: 3660843052950673049}
   _rightlegAttackPoint: {fileID: 2495374135780604776}
-  _soundEffects: {fileID: 0}
-  _isBlocking: 0
   hitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
-  punchSound: {fileID: 2376296419524571692}
-  kickSound: {fileID: 6821494003052073092}
+  _isBlocking: 0
 --- !u!114 &2495374135181013015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1662,7 +1659,7 @@ MonoBehaviour:
     _value: 0
     _inverse: 0
     _hash: -814817977
-  StateHashes: 00000000ccdb6129b1d75ee2968b165def4185fb5c5f20edde106c682c38b1fd36a98b178b7cfd670f5f2b88866612edfed81a8c28a981077af3fe2ef142e047ebd3daaded4e32bf480ad50005be35e61f2f0f0c
+  StateHashes: 00000000ccdb6129b1d75ee2968b165def4185fb6bec6a0439b6152d2c38b1fd36a98b178b7cfd670f5f2b88866612edfed81a8c28a981077af3fe2ef142e047ebd3daaded4e32bf480ad50005be35e61f2f0f0c
   TriggerHashes: 0000000028a98107968b165d5c5f20ed2c38b1fd37b93501a1609f62
 --- !u!82 &2376296419524571692
 AudioSource:
