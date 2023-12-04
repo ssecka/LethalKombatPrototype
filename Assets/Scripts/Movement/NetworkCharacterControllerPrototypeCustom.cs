@@ -109,7 +109,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             moveVelocity.y = 0f;
         }
 
-        if (transform.rotation == Quaternion.Euler(0f, 90f, 0f)) direction.x *= -1;
+        direction.x *= -1;
         
         moveVelocity.y += gravity * Runner.DeltaTime;
 
