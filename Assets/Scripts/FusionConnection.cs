@@ -9,9 +9,11 @@ using UnityEngine.SceneManagement;
 public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 {
     private const string MAIN_CAMERA_SYSTEM = "Main Camera";
+
+    private CharacterInputHandler _characterInputHandler;
+    
     public bool ConnectOnAwake;
     [HideInInspector] public NetworkRunner networkRunner;
-
     [SerializeField] private NetworkObject playerPrefabP1;
     [SerializeField] private NetworkObject playerPrefabP2;
     [SerializeField] private FighterCamera FighterCamera;
@@ -96,13 +98,18 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
     }
 
+    public void OnInput(NetworkRunner runner, NetworkInput input)
+    {
+        if (
+        {
+            
+        }
+    }
+    
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input)
-    {
-    }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
     {

@@ -1283,13 +1283,10 @@ GameObject:
   - component: {fileID: 2495374135181013010}
   - component: {fileID: 2495374135181013023}
   - component: {fileID: 2495374135181013009}
-  - component: {fileID: 2495374135181013008}
   - component: {fileID: 2495374135181013015}
   - component: {fileID: 1028171007578159847}
   - component: {fileID: 1028171007578159864}
   - component: {fileID: 1433009495956773992}
-  - component: {fileID: 2376296419524571692}
-  - component: {fileID: 6821494003052073092}
   - component: {fileID: 3181854620538284095}
   m_Layer: 0
   m_Name: Char_Player1
@@ -1386,28 +1383,6 @@ MonoBehaviour:
   MaxHealth: 1000
   CurrentHealth: 0
   _team: 1
---- !u!114 &2495374135181013008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3341724110316783984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe4f7e18cdf7d0e428b2ce43c65ecdc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  facingRight: 0
-  _transform: {fileID: 2678481738194883530}
-  _rb: {fileID: 2495374135181013011}
-  _soundEffects: {fileID: 0}
-  _lefthandAttackPoint: {fileID: 2495374135620894957}
-  _righthandAttackPoint: {fileID: 1637188454640815073}
-  _leftlegAttackPoint: {fileID: 3660843052950673049}
-  _rightlegAttackPoint: {fileID: 2495374135780604776}
-  hitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
-  _isBlocking: 0
 --- !u!114 &2495374135181013015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1435,7 +1410,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2495374135181013008}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -1455,7 +1430,7 @@ MonoBehaviour:
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2495374135181013008}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 0
@@ -1471,7 +1446,7 @@ MonoBehaviour:
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2495374135181013008}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
         m_MethodName: Jab
         m_Mode: 0
@@ -1487,7 +1462,7 @@ MonoBehaviour:
     m_ActionName: Player/Punch[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2495374135181013008}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
         m_MethodName: SideKick
         m_Mode: 0
@@ -1503,7 +1478,7 @@ MonoBehaviour:
     m_ActionName: Player/Leg Sweep[/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2495374135181013008}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
         m_MethodName: Block
         m_Mode: 0
@@ -1559,7 +1534,7 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2495374135181013008}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
         m_MethodName: Hook
         m_Mode: 0
@@ -1661,198 +1636,6 @@ MonoBehaviour:
     _hash: -814817977
   StateHashes: 00000000ccdb6129b1d75ee2968b165def4185fb6bec6a0439b6152d2c38b1fd36a98b178b7cfd670f5f2b88866612edfed81a8c28a981077af3fe2ef142e047ebd3daaded4e32bf480ad50005be35e61f2f0f0c
   TriggerHashes: 0000000028a98107968b165d5c5f20ed2c38b1fd37b93501a1609f62
---- !u!82 &2376296419524571692
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3341724110316783984}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6095fc2ed32303343b111780e6437dfb, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!82 &6821494003052073092
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3341724110316783984}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 2f0dbc50bc427364bb53617971bd4d54, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &3181854620538284095
 MonoBehaviour:
   m_ObjectHideFlags: 0

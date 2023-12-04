@@ -69,7 +69,7 @@ public class Movement : MonoBehaviour
     private bool[] _allowTaskCreation = { true, true };
     private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit;
     private int _layerIndex;
-
+    private EAttackType _nextAttackType;
 
     private Thread[] _threads;
     private bool[] _sleeps = {true, true};
@@ -156,7 +156,9 @@ public class Movement : MonoBehaviour
     }
 
     #endregion
-
+    
+    
+    
     /// <summary>
     /// Used to draw the hit detection spheres
     /// </summary>
@@ -184,6 +186,8 @@ public class Movement : MonoBehaviour
         }
     }
 
+   
+    
     #region Updates
 
     // Update is called once per frame
