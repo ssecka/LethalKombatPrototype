@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 72677141}
   - component: {fileID: 72677140}
-  - component: {fileID: 72677142}
   m_Layer: 0
   m_Name: NetworkRunnerHandler
   m_TagString: Untagged
@@ -169,19 +168,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &72677142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 72677139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0abcaaed6fe784e4c9a22e1817ed8d85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 2586309976803595032, guid: 9eb243fe7520b4142a773ec9bcddb499, type: 3}
 --- !u!850595691 &103347408
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -1819,6 +1805,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1473569079}
     m_Modifications:
+    - target: {fileID: 2473064405409069630, guid: fbea65acf7f16ee4aa046d6f0586bbee, type: 3}
+      propertyPath: StateHashes.Array.data[5]
+      value: 74116203
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473064405409069630, guid: fbea65acf7f16ee4aa046d6f0586bbee, type: 3}
+      propertyPath: StateHashes.Array.data[6]
+      value: 756397625
+      objectReference: {fileID: 0}
     - target: {fileID: 4110730281729472425, guid: fbea65acf7f16ee4aa046d6f0586bbee, type: 3}
       propertyPath: m_Enabled
       value: 0
