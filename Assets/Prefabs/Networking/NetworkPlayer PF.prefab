@@ -1540,13 +1540,14 @@ GameObject:
   m_Component:
   - component: {fileID: 3892802045629199744}
   - component: {fileID: 3570434938953471573}
-  - component: {fileID: 4523628093008181008}
   - component: {fileID: 2586309976803595032}
   - component: {fileID: 4712382024090723856}
-  - component: {fileID: 4430681581055845845}
+  - component: {fileID: 1718038388106415334}
+  - component: {fileID: 2936710190526656690}
   - component: {fileID: 4237744938786626837}
   - component: {fileID: 62515908758625995}
   - component: {fileID: 3030220832143509205}
+  - component: {fileID: 4497482234332226813}
   m_Layer: 0
   m_Name: NetworkPlayer PF
   m_TagString: Player1
@@ -1562,7 +1563,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4417418228734897978}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1578,7 +1579,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4417418228734897978}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 9354b6bb6ac676148bef433119f72b86, type: 2}
   m_CullingMode: 0
@@ -1591,24 +1592,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!143 &4523628093008181008
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4417418228734897978}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 1.9
-  m_Radius: 0.3
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!114 &2586309976803595032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1645,10 +1628,28 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 2586309976803595032}
-  - {fileID: 4430681581055845845}
+  - {fileID: 2936710190526656690}
   - {fileID: 62515908758625995}
   SimulationBehaviours: []
---- !u!114 &4430681581055845845
+--- !u!143 &1718038388106415334
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4417418228734897978}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2936710190526656690
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1682,6 +1683,7 @@ MonoBehaviour:
   braking: 10
   maxSpeed: 2
   rotationSpeed: 15
+  viewUpDownRotationSpeed: 50
   _IsGrounded: 0
   _Velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &4237744938786626837
@@ -1819,6 +1821,25 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4497482234332226813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4417418228734897978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf81ae3fd5747c38758f869bab1d5e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioSrc: {fileID: 0}
+  Jab: {fileID: 8300000, guid: da94ad144d7b0714ca3ae0f7f59a50e0, type: 3}
+  JabHit: {fileID: 8300000, guid: 2ee0d8659521461439e73baa6b39646d, type: 3}
+  Kick: {fileID: 8300000, guid: 41500b51213d94143913042b13dd5c82, type: 3}
+  KickHit: {fileID: 8300000, guid: a7754d195c3fcd345bacf8f1ca58a0e8, type: 3}
+  Block: {fileID: 8300000, guid: b6d4f04ccfc49814090e7f14d2c38682, type: 3}
+  _currentSound: 0
 --- !u!1 &4506338734718176353
 GameObject:
   m_ObjectHideFlags: 0

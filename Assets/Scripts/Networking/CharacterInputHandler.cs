@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CharacterInputHandler : MonoBehaviour
 {
-    Vector2 _moveInputVector = Vector2.zero;
+    Vector3 _moveInputVector = Vector3.zero;    
     
     public void OnMove(InputAction.CallbackContext context)
     {
