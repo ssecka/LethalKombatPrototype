@@ -18,6 +18,9 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private NetworkObject playerPrefabP2;
     [SerializeField] private FighterCamera FighterCamera;
 
+
+    public NetworkPlayer playerPrefab;
+    
     private GameObject[] _players;
 
     public void PlaySound(EAttackType type, ref SoundEffects soundEffects) =>
@@ -54,39 +57,39 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     
     public void OnConnectedToServer(NetworkRunner runner)
     {
-        Debug.Log("OnConnectedToServer");
-
-        // Increment the player count when a new player connects
-        
-        // Spawn the player at a different position based on their order of connection
-        if (runner.SessionInfo.PlayerCount == 1)
-        {
-            Vector3 spawnPosition = new Vector3(4.5f, 0.5f, 0);
-            NetworkObject playerObject = runner.Spawn(playerPrefabP1, spawnPosition);
-            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
-            _players[0] = playerObject.gameObject;
-
-            _players[0].GetComponent<PlayerStats>().SetTeam(1);
-            _players[0].transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-        }
-        else if (runner.SessionInfo.PlayerCount == 2)
-        {
-            Vector3 spawnPosition = new Vector3(-4.5f, 0.5f, 0);
-            NetworkObject playerObject = runner.Spawn(playerPrefabP2, spawnPosition);
-            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
-            _players[1] = playerObject.gameObject;
-            
-            _players[1].GetComponent<PlayerStats>().SetTeam(2);
-            _players[1].transform.rotation = Quaternion.Euler(0f, 90f, 0f); 
-
-            FighterCamera ??= new();
-            
-            FighterCamera.SpawnInPlayer2(_players[0].transform,_players[1].transform);
-            
-            
-            //now we need to give a ref to the other players...
-            
-        }
+        // Debug.Log("OnConnectedToServer");
+        //
+        // // Increment the player count when a new player connects
+        //
+        // // Spawn the player at a different position based on their order of connection
+        // if (runner.SessionInfo.PlayerCount == 1)
+        // {
+        //     Vector3 spawnPosition = new Vector3(4.5f, 0.5f, 0);
+        //     NetworkObject playerObject = runner.Spawn(playerPrefabP1, spawnPosition);
+        //     runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+        //     _players[0] = playerObject.gameObject;
+        //
+        //     _players[0].GetComponent<PlayerStats>().SetTeam(1);
+        //     _players[0].transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+        // }
+        // else if (runner.SessionInfo.PlayerCount == 2)
+        // {
+        //     Vector3 spawnPosition = new Vector3(-4.5f, 0.5f, 0);
+        //     NetworkObject playerObject = runner.Spawn(playerPrefabP2, spawnPosition);
+        //     runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+        //     _players[1] = playerObject.gameObject;
+        //     
+        //     _players[1].GetComponent<PlayerStats>().SetTeam(2);
+        //     _players[1].transform.rotation = Quaternion.Euler(0f, 90f, 0f); 
+        //
+        //     FighterCamera ??= new();
+        //     
+        //     FighterCamera.SpawnInPlayer2(_players[0].transform,_players[1].transform);
+        //     
+        //     
+        //     //now we need to give a ref to the other players...
+        //     
+        // }
         
         
       
@@ -94,15 +97,25 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log("OnPlayerJoined");
+        if (runner.IsServer)
+        {
+            Debug.Log("OnPlayerJoined we are server. Spawning player");
+            runner.Spawn(playerPrefab, new(4.5f, 0.5f, 0), Quaternion.Euler(0f, -90f, 0f), player);
+        }
+        else Debug.Log("OnPlayerJoined");
 
     }
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        if (
+        if (NetworkPlayer.Local != null)
         {
-            
+            _characterInputHandler ??= NetworkPlayer.Local.GetComponent<CharacterInputHandler>();
+        }
+
+        if (_characterInputHandler != null)
+        {
+            input.Set(_characterInputHandler.GetNetworkInput());
         }
     }
     

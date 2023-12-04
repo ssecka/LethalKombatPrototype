@@ -5,7 +5,6 @@ public class CharacterInputHandler : MonoBehaviour
 {
     Vector2 _moveInputVector = Vector2.zero;
     
-    
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveInputVector = context.ReadValue<Vector2>();
