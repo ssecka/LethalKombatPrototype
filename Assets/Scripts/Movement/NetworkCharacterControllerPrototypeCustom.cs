@@ -101,11 +101,16 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
         direction = direction.normalized;
 
+        Debug.Log($"[x:{direction.x} | y: {direction.y} | z: {direction.z}]");
+
+        
         if (IsGrounded && moveVelocity.y < 0)
         {
             moveVelocity.y = 0f;
         }
 
+        if (transform.rotation == Quaternion.Euler(0f, 90f, 0f)) direction.x *= -1;
+        
         moveVelocity.y += gravity * Runner.DeltaTime;
 
         var horizontalVel = default(Vector3);
