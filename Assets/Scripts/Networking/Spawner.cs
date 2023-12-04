@@ -23,16 +23,16 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             var spawnPoints = SpawnPointHandler.GetSpawnPoint();
             Debug.Log("OnPlayerJoined wer are server, Spawning player");
-            runner.Spawn(playerPrefab, spawnPoints.Item1, Quaternion.Euler(0f, -90f, 0f), player);
+            runner.Spawn(playerPrefab, spawnPoints.Item1, spawnPoints.Item2,player);
         }
         else Debug.Log("OnPlayerJoined");
     }
     
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        if (NetworkPlayer.Local != null)
+        if (_characterInputHandler == null && NetworkPlayer.Local != null)
         {
-            _characterInputHandler ??= NetworkPlayer.Local.GetComponent<CharacterInputHandler>();
+            _characterInputHandler = NetworkPlayer.Local.GetComponent<CharacterInputHandler>();
         }
 
         if (_characterInputHandler != null)
