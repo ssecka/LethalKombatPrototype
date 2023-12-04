@@ -16,7 +16,17 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     void Start()
     {
     }
-
+    
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    {
+        if (runner.IsServer)
+        {
+            var spawnPoints = SpawnPointHandler.GetSpawnPoint();
+            Debug.Log("OnPlayerJoined wer are server, Spawning player");
+            runner.Spawn(playerPrefab, spawnPoints.Item1, Quaternion.Euler(0f, -90f, 0f), player);
+        }
+        else Debug.Log("OnPlayerJoined");
+    }
     
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
@@ -31,16 +41,7 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
-    {
-        if (runner.IsServer)
-        {
-            var spawnPoints = SpawnPointHandler.GetSpawnPoint();
-            Debug.Log("OnPlayerJoined wer are server, Spawning player");
-            runner.Spawn(playerPrefab, spawnPoints.Item1, Quaternion.Euler(0f, -90f, 0f), player);
-        }
-        else Debug.Log("OnPlayerJoined");
-    }
+
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {

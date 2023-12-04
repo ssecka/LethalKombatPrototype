@@ -8,6 +8,7 @@ public class CharacterInputHandler : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveInputVector = context.ReadValue<Vector2>();
+        _moveInputVector.y = 0;
     }
     
     public NetworkInputData GetNetworkInput()

@@ -5,18 +5,18 @@ public class SpawnPointHandler
 {
     private static int  spwanCounter = 0;
 
-    public static (Vector2,Quaternion) GetSpawnPoint()
+    public static (Vector3,Quaternion) GetSpawnPoint()
     {
-        Vector2 vector2;
+        Vector3 vector3;
         Quaternion quaternion;
         switch (spwanCounter)
         {
             case(0):
-                vector2 = new(4.5f, 0.5f);
+                vector3 = new(4.5f, 0.5f,0f);
                 quaternion = Quaternion.Euler(0f, -90f, 0f);
                 break;
             case(1):
-                vector2 = new(-4.5f, 0.5f);
+                vector3 = new(-4.5f, 0.5f,0f);
                 quaternion = Quaternion.Euler(0f, 90f, 0f);
                 break;
             default:
@@ -25,6 +25,6 @@ public class SpawnPointHandler
 
         spwanCounter = (++spwanCounter % 2);
 
-        return (vector2, quaternion);
+        return (vector3, quaternion);
     }
 }

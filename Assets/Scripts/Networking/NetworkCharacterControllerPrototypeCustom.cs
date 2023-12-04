@@ -91,6 +91,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     /// </summary>
     public virtual void Move(Vector3 direction)
     {
+        Debug.Log($"Move [x:{direction.x} | y: {direction.y} | z: {direction.z}]");
+        
         var deltaTime = Runner.DeltaTime;
         var previousPos = transform.position;
         var moveVelocity = Velocity;
@@ -115,8 +117,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         else
         {
             horizontalVel = Vector3.ClampMagnitude(horizontalVel + direction * acceleration * deltaTime, maxSpeed);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction),
-                rotationSpeed * Runner.DeltaTime);
         }
 
         moveVelocity.x = horizontalVel.x;
