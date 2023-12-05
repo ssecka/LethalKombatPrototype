@@ -42,7 +42,8 @@ public class CharacterInputHandler : MonoBehaviour
     {
         // Only trigger on "keyDown"
         
-        if (!context.started) return; 
+        if (!context.started) return;
+        
         _inputAttackType = InputAttackType.Jab;
     }
 

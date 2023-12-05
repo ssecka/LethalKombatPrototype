@@ -22,6 +22,10 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public Animator animator;
     public Transform leftHandAttackPoint, rightHandAttackPoint, leftLegAttackPoint, rightLegAttackPoint;
 
+    private const byte ATTACK_QUEUE_DELAY = 150;
+
+    private long _lastAttackQueued = 0;
+    
     public bool isAllowedToAttack { get; set; } = true;
 
     private bool _attackAlreadyHit = false;
@@ -167,6 +171,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     public void Attack(InputAttackType inputInputAttackType)
     {
+        if (!CheckIfAttackIsAllowed(inputInputAttackType)) return;
+        
         switch (inputInputAttackType)
         {
             case InputAttackType.None:
@@ -188,9 +194,21 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 throw new ArgumentOutOfRangeException(nameof(inputInputAttackType), inputInputAttackType, null);
         }
     }
-    
-    
-    
+
+    private bool CheckIfAttackIsAllowed(InputAttackType inputAttackType)
+    {
+        if (inputAttackType == InputAttackType.Block || inputAttackType == InputAttackType.None) return true;
+
+        var unixMS = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+        if (_lastAttackQueued + ATTACK_QUEUE_DELAY > unixMS) return false;
+
+        _lastAttackQueued = unixMS;
+        
+        return true;
+    }
+
+
     #region Attack Patterns
 
     private void Jab()
@@ -262,17 +280,14 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         #endregion
         
         var hitTargets = Physics.OverlapSphere(hitPoint, .2f);
-        var attackType = EAttackType.JabHit;
-
-        GeneralFunctions.PrintDebugStatement("Jab");
 
         for (var index = 0; index < hitTargets.Length && !_attackAlreadyHit; index++)
         {
             var hitTarget = hitTargets[index];
-            if (hitTarget.TryGetComponent(out HPHandler hpHandler) &&
-                hitTarget.transform.gameObject.TryGetComponent(out Animator animator) && !_attackAlreadyHit)
+            if (hitTarget.TryGetComponent(out HPHandler hpHandler) && _attackAlreadyHit)
             {
                 _attackAlreadyHit = true;
+                
                 //Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
 
                 hpHandler.OnHitTaken(damage);
