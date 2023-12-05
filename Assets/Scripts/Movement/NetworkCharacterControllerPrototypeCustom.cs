@@ -81,6 +81,9 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     /// </summary>
     public virtual void Jump(bool ignoreGrounded = false, float? overrideImpulse = null)
     {
+        // JUMP
+        Debug.Log("JUMPING");
+        
         if (IsGrounded || ignoreGrounded)
         {
             var newVel = Velocity;
@@ -100,8 +103,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         var moveVelocity = Velocity;
 
         direction = direction.normalized;
-
-        Debug.Log($"[x:{direction.x} | y: {direction.y} | z: {direction.z}]");
 
         
         if (IsGrounded && moveVelocity.y < 0)

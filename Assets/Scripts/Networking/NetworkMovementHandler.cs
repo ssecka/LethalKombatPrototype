@@ -29,6 +29,8 @@ public class NetworkMovementHandler : NetworkBehaviour
             
             
             _networkCharacterControllerPrototypeCustom.Move(moveDir);
+            if(networkInputData._isJumpPressed)
+                _networkCharacterControllerPrototypeCustom.Jump();
         }
     }
 }
