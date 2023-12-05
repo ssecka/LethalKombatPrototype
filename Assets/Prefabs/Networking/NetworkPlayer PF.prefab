@@ -1542,12 +1542,12 @@ GameObject:
   - component: {fileID: 1718038388106415334}
   - component: {fileID: 2586309976803595032}
   - component: {fileID: 4712382024090723856}
+  - component: {fileID: 7011918486089827759}
   - component: {fileID: 2936710190526656690}
   - component: {fileID: 62515908758625995}
   - component: {fileID: 4237744938786626837}
   - component: {fileID: 3030220832143509205}
   - component: {fileID: 4497482234332226813}
-  - component: {fileID: 7011918486089827759}
   m_Layer: 0
   m_Name: NetworkPlayer PF
   m_TagString: Player1
@@ -1625,10 +1625,40 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 2586309976803595032}
+  - {fileID: 7011918486089827759}
   - {fileID: 2936710190526656690}
   - {fileID: 62515908758625995}
-  - {fileID: 7011918486089827759}
   SimulationBehaviours: []
+--- !u!114 &7011918486089827759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4417418228734897978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  Animator: {fileID: 580777354271473791}
+  TotalWords: 1
+  SyncSettings: 79
+  FloatAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: -814817977
+  TimeAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: 1061325578
+  WeightAccuracy:
+    _value: 0
+    _inverse: 0
+    _hash: -814817977
+  StateHashes: 00000000ccdb6129b1d75ee2968b165def4185fb6bec6a0439b6152d2c38b1fd36a98b178b7cfd670f5f2b88866612edfed81a8c28a981077af3fe2ef142e047ebd3daaded4e32bf480ad50005be35e61f2f0f0c
+  TriggerHashes: 0000000028a98107968b165d5c5f20ed2c38b1fd37b93501a1609f62
 --- !u!114 &2936710190526656690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1664,6 +1694,7 @@ MonoBehaviour:
   maxSpeed: 6
   rotationSpeed: 15
   viewUpDownRotationSpeed: 50
+  animator: {fileID: 580777354271473791}
   _IsGrounded: 0
   _Velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &62515908758625995
@@ -1753,15 +1784,51 @@ MonoBehaviour:
     m_ActionId: 8cbd0667-7280-4a45-8f7e-b694fbec3a29
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4237744938786626837}
+        m_TargetAssemblyTypeName: CharacterInputHandler, Assembly-CSharp
+        m_MethodName: OnPunch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 1ae7ee3f-9b78-4ef1-98b0-2962b84f57cd
     m_ActionName: Player/Punch[/Mouse/leftButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4237744938786626837}
+        m_TargetAssemblyTypeName: CharacterInputHandler, Assembly-CSharp
+        m_MethodName: OnHook
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 55db6dcb-a35b-46b7-b15d-95f50bf27d9c
     m_ActionName: Player/Hook[/Keyboard/l]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4237744938786626837}
+        m_TargetAssemblyTypeName: CharacterInputHandler, Assembly-CSharp
+        m_MethodName: OnSideKick
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 7b9f2bea-0e3b-453a-b542-3d03deba9995
     m_ActionName: Player/SideKick[/Mouse/rightButton]
   - m_PersistentCalls:
@@ -1832,36 +1899,6 @@ MonoBehaviour:
   KickHit: {fileID: 8300000, guid: a7754d195c3fcd345bacf8f1ca58a0e8, type: 3}
   Block: {fileID: 8300000, guid: b6d4f04ccfc49814090e7f14d2c38682, type: 3}
   _currentSound: 0
---- !u!114 &7011918486089827759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4417418228734897978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
-  Animator: {fileID: 580777354271473791}
-  TotalWords: 1
-  SyncSettings: 79
-  FloatAccuracy:
-    _value: 0
-    _inverse: 0
-    _hash: -814817977
-  TimeAccuracy:
-    _value: 0
-    _inverse: 0
-    _hash: 1061325578
-  WeightAccuracy:
-    _value: 0
-    _inverse: 0
-    _hash: -814817977
-  StateHashes: 00000000ccdb6129b1d75ee2968b165def4185fb6bec6a0439b6152d2c38b1fd36a98b178b7cfd670f5f2b88866612edfed81a8c28a981077af3fe2ef142e047ebd3daaded4e32bf480ad50005be35e61f2f0f0c
-  TriggerHashes: 0000000028a98107968b165d5c5f20ed2c38b1fd37b93501a1609f62
 --- !u!1 &4506338734718176353
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using Fusion;
 using UnityEngine;
 
@@ -17,10 +18,28 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public float maxSpeed = 2.0f;
     public float rotationSpeed = 15.0f;
     public float viewUpDownRotationSpeed = 50.0f;
+    public Animator animator;
 
+    
+    
+    #region AnimationIDs
+
+    private static readonly int SideKickID = Animator.StringToHash("SideKick");
+    private static readonly int HookID = Animator.StringToHash("Punch");
+    private static readonly int PunchID = Animator.StringToHash("Jab");
+    private static readonly int FWalking = Animator.StringToHash("FWalking");
+    private static readonly int BWalking = Animator.StringToHash("BWalking");
+    private static readonly int BlockingID = Animator.StringToHash("Blocking");
+    private static readonly int JumpID = Animator.StringToHash("Jump");
+
+    #endregion
+    
+    
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
     [Networked] [HideInInspector] public Vector3 Velocity { get; set; }
+    
+
 
     /// <summary>
     /// Sets the default teleport interpolation velocity to be the CC's current velocity.
@@ -40,6 +59,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     {
         base.Awake();
         CacheController();
+
     }
 
     public override void Spawned()
@@ -140,4 +160,54 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     {
         transform.Rotate(0, rotationY * Runner.DeltaTime * rotationSpeed, 0);
     }
+
+    public void Attack(InputAttackType inputInputAttackType)
+    {
+        switch (inputInputAttackType)
+        {
+            case InputAttackType.None:
+                Block(false);
+                break;
+            case InputAttackType.Block:
+                Block(true);
+                break;
+            case InputAttackType.Punch:
+                Punch();
+                break;
+            case InputAttackType.Sidekick:
+                SideKick();
+                break;
+            case InputAttackType.Hook:
+                Hook();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(inputInputAttackType), inputInputAttackType, null);
+        }
+    }
+    
+    
+    
+    #region Attack Patterns
+
+    private void Punch()
+    {
+       animator.SetTrigger(PunchID);
+    }
+
+    private void SideKick()
+    {
+        animator.SetTrigger(SideKickID);
+    }
+
+    private void Hook()
+    {
+        animator.SetTrigger(HookID);
+    }
+
+    private void Block(bool val)
+    {
+        //TODO
+    }
+    
+    #endregion
 }

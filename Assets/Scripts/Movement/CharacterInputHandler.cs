@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CharacterInputHandler : MonoBehaviour
@@ -6,6 +7,7 @@ public class CharacterInputHandler : MonoBehaviour
     private Vector2 _moveInputVector = Vector2.zero;
     private bool _jumpWasPressed = false;
     private bool _isAllowedToAttack = true;
+    private InputAttackType _inputAttackType = 0;
 
     public void AttackFinished()
     {
@@ -20,6 +22,8 @@ public class CharacterInputHandler : MonoBehaviour
     }
 
 
+    #region General Movement Inputs
+
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveInputVector = context.ReadValue<Vector2>();
@@ -31,6 +35,36 @@ public class CharacterInputHandler : MonoBehaviour
         _jumpWasPressed = true;
     }
 
+    #endregion
+    
+    #region Defensive Movement Inputs
+    
+    public void OnBlock(InputAction.CallbackContext context)
+    {
+        _inputAttackType = InputAttackType.Block;
+    }
+    
+    #endregion
+    
+    #region Attack Based Inputs
+
+    public void OnPunch(InputAction.CallbackContext context)
+    {
+        _inputAttackType = InputAttackType.Punch;
+    }
+
+    public void OnSideKick(InputAction.CallbackContext context)
+    {
+        _inputAttackType = InputAttackType.Sidekick;
+    }
+
+    public void OnHook(InputAction.CallbackContext context)
+    {
+        _inputAttackType = InputAttackType.Hook;
+    }
+    #endregion
+
+
     public NetworkInputData GetNetworkInput()
     {
         NetworkInputData networkInputData = new();
@@ -38,6 +72,8 @@ public class CharacterInputHandler : MonoBehaviour
         networkInputData._isJumpPressed = _jumpWasPressed;
         _jumpWasPressed = false;
 
+        networkInputData._InputAttackType = _inputAttackType;
+        _inputAttackType = 0;
 
         return networkInputData;
     }

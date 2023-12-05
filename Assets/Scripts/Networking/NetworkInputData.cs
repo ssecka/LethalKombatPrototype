@@ -6,7 +6,6 @@ using UnityEngine;
 public struct NetworkInputData : INetworkInput
 {
     public Vector2 _movementInput;
-    public bool _facingRight;
     public NetworkBool _isJumpPressed;
-    public EAttackType _eAttackType;
+    public InputAttackType _InputAttackType;
 }
