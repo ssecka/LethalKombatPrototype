@@ -238,7 +238,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         #region Determine Physical HitArea and damage
         
         Vector3 hitPoint = Vector3.zero;
-        int damage = 0;
+        short damage = 0;
         switch (inputAttackType)
         {
             case InputAttackType.None:
@@ -275,7 +275,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 _attackAlreadyHit = true;
                 //Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
 
-                hpHandler.OnHitTaken(100);
+                hpHandler.OnHitTaken(damage);
 
                 //_fusionConnection.PlaySound(attackType, ref _soundEffects);
                 //_hitFreezeSystem.Freeze();

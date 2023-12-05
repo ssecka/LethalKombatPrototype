@@ -40,16 +40,25 @@ public class CharacterInputHandler : MonoBehaviour
 
     public void OnJab(InputAction.CallbackContext context)
     {
+        // Only trigger on "keyDown"
+        
+        if (!context.started) return; 
         _inputAttackType = InputAttackType.Jab;
     }
 
     public void OnSideKick(InputAction.CallbackContext context)
     {
+        // Only trigger on "keyDown"
+
+        if (!context.started) return;
         _inputAttackType = InputAttackType.Sidekick;
     }
 
     public void OnHook(InputAction.CallbackContext context)
     {
+        // Only trigger on "keyDown"
+
+        if (!context.started) return;
         _inputAttackType = InputAttackType.Hook;
     }
 
@@ -63,7 +72,7 @@ public class CharacterInputHandler : MonoBehaviour
         _jumpWasPressed = false;
 
         networkInputData._InputAttackType = _inputAttackType;
-        _inputAttackType = 0;
+        _inputAttackType = InputAttackType.None;
 
         return networkInputData;
     }
