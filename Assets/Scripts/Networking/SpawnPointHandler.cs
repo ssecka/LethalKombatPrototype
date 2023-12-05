@@ -16,11 +16,11 @@ public class SpawnPointHandler
         {
             case 0:
                 vector3 = new(4.5f / 2f,0,0f);
-                quaternion = Quaternion.Euler(0f, 90f, 0f);
+                quaternion = Quaternion.Euler(0f, -90f, 0f);
                 break;
             case(1):
                 vector3 = new(-4.5f / 2f, 0,0f);
-                quaternion = Quaternion.Euler(0f, -90f, 0f);
+                quaternion = Quaternion.Euler(0f, 90f, 0f);
                 break;
             default:
                 throw new InvalidEnumArgumentException("UNSUPPORTED PLAYER COUNT");
