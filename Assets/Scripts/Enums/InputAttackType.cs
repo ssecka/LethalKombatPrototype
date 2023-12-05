@@ -2,7 +2,7 @@
 {
     None = 0,
     Block = 1,
-    Punch = 2,
+    Jab = 2,
     Sidekick = 3,
     Hook = 4,
     

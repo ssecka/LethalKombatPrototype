@@ -1695,6 +1695,10 @@ MonoBehaviour:
   rotationSpeed: 15
   viewUpDownRotationSpeed: 50
   animator: {fileID: 580777354271473791}
+  leftHandAttackPoint: {fileID: 3570434938580756135}
+  rightHandAttackPoint: {fileID: 402390604025359787}
+  leftLegAttackPoint: {fileID: 2440968017602588883}
+  rightLegAttackPoint: {fileID: 3570434938185981218}
   _IsGrounded: 0
   _Velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &62515908758625995
@@ -1787,7 +1791,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4237744938786626837}
         m_TargetAssemblyTypeName: CharacterInputHandler, Assembly-CSharp
-        m_MethodName: OnPunch
+        m_MethodName: OnJab
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2261,6 +2265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4837154372979586991}
   - component: {fileID: 580777354271473791}
+  - component: {fileID: 7760745957650894356}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -2309,6 +2314,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7760745957650894356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5932830902639443499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b1a86c556a80e4a8eac1d33c5af501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  networkCharacterControllerPrototypeCustom: {fileID: 2936710190526656690}
 --- !u!1 &5953188584973735647
 GameObject:
   m_ObjectHideFlags: 0

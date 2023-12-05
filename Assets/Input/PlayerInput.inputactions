@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Punch",
+                    "name": "Jab",
                     "type": "Button",
                     "id": "1ae7ee3f-9b78-4ef1-98b0-2962b84f57cd",
                     "expectedControlType": "Button",
@@ -253,7 +253,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Punch",
+                    "action": "Jab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -264,7 +264,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Punch",
+                    "action": "Jab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -275,7 +275,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Punch",
+                    "action": "Jab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

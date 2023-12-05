@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using DefaultNamespace;
 using Fusion;
 using UnityEngine;
 
@@ -19,14 +20,17 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public float rotationSpeed = 15.0f;
     public float viewUpDownRotationSpeed = 50.0f;
     public Animator animator;
+    public Transform leftHandAttackPoint, rightHandAttackPoint, leftLegAttackPoint, rightLegAttackPoint;
 
-    
+    public bool isAllowedToAttack { get; set; } = true;
+
+    private bool _attackAlreadyHit = false;
     
     #region AnimationIDs
 
     private static readonly int SideKickID = Animator.StringToHash("SideKick");
     private static readonly int HookID = Animator.StringToHash("Punch");
-    private static readonly int PunchID = Animator.StringToHash("Jab");
+    private static readonly int JabID = Animator.StringToHash("Jab");
     private static readonly int FWalking = Animator.StringToHash("FWalking");
     private static readonly int BWalking = Animator.StringToHash("BWalking");
     private static readonly int BlockingID = Animator.StringToHash("Blocking");
@@ -171,8 +175,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             case InputAttackType.Block:
                 Block(true);
                 break;
-            case InputAttackType.Punch:
-                Punch();
+            case InputAttackType.Jab:
+                Jab();
                 break;
             case InputAttackType.Sidekick:
                 SideKick();
@@ -189,19 +193,22 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     
     #region Attack Patterns
 
-    private void Punch()
+    private void Jab()
     {
-       animator.SetTrigger(PunchID);
+       if(isAllowedToAttack)
+           animator.SetTrigger(JabID);
     }
 
     private void SideKick()
     {
-        animator.SetTrigger(SideKickID);
+        if(isAllowedToAttack) 
+            animator.SetTrigger(SideKickID);
     }
 
     private void Hook()
     {
-        animator.SetTrigger(HookID);
+        if(isAllowedToAttack)
+            animator.SetTrigger(HookID);
     }
 
     private void Block(bool val)
@@ -209,5 +216,83 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         //TODO
     }
     
+    #endregion
+    
+    #region Animations
+
+    #region Start
+    
+    public void AnimationStarted(EAttackType attackType)
+    {
+        isAllowedToAttack = false;
+        //TODO: PLAY SOUND
+    }
+
+    
+    #endregion
+    
+    #region ActivateHitBox
+    
+    public void ActivateHitBox(InputAttackType inputAttackType)
+    {
+        #region Determine Physical HitArea and damage
+        
+        Vector3 hitPoint = Vector3.zero;
+        int damage = 0;
+        switch (inputAttackType)
+        {
+            case InputAttackType.None:
+                break;
+            case InputAttackType.Block:
+                break;
+            case InputAttackType.Jab:
+                hitPoint = leftHandAttackPoint.position;
+                damage = 100;
+                break;
+            case InputAttackType.Sidekick:
+                damage = 200;
+                break;
+            case InputAttackType.Hook:
+                damage = 100;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
+        }
+        
+        #endregion
+        
+        var hitTargets = Physics.OverlapSphere(hitPoint, .2f);
+        var attackType = EAttackType.JabHit;
+
+        GeneralFunctions.PrintDebugStatement("Jab");
+
+        for (var index = 0; index < hitTargets.Length && !_attackAlreadyHit; index++)
+        {
+            var hitTarget = hitTargets[index];
+            if (hitTarget.TryGetComponent(out HPHandler hpHandler) &&
+                hitTarget.transform.gameObject.TryGetComponent(out Animator animator) && !_attackAlreadyHit)
+            {
+                _attackAlreadyHit = true;
+                //Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
+
+                hpHandler.OnHitTaken(100);
+
+                //_fusionConnection.PlaySound(attackType, ref _soundEffects);
+                //_hitFreezeSystem.Freeze();
+                
+                break;
+            }
+        }
+    }
+    
+    #endregion
+
+    #region Deactivate HitBox
+
+    
+    public void DeactivateHitBox() => _attackAlreadyHit = false;
+
+    #endregion
+
     #endregion
 }

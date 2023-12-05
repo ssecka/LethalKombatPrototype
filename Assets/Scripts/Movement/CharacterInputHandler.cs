@@ -2,25 +2,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// This class only recieves the inputs and sends it.
+/// The checks happen in the other class!
+/// </summary>
 public class CharacterInputHandler : MonoBehaviour
 {
     private Vector2 _moveInputVector = Vector2.zero;
     private bool _jumpWasPressed = false;
-    private bool _isAllowedToAttack = true;
     private InputAttackType _inputAttackType = 0;
-
-    public void AttackFinished()
-    {
-        Debug.Log("Attack finished.");
-        _isAllowedToAttack = true;
-    }
-
-    public void BlockAttack()
-    {
-        Debug.Log("Attacks blocked.");
-        _isAllowedToAttack = false;
-    }
-
 
     #region General Movement Inputs
 
@@ -36,21 +26,21 @@ public class CharacterInputHandler : MonoBehaviour
     }
 
     #endregion
-    
+
     #region Defensive Movement Inputs
-    
+
     public void OnBlock(InputAction.CallbackContext context)
     {
         _inputAttackType = InputAttackType.Block;
     }
-    
+
     #endregion
-    
+
     #region Attack Based Inputs
 
-    public void OnPunch(InputAction.CallbackContext context)
+    public void OnJab(InputAction.CallbackContext context)
     {
-        _inputAttackType = InputAttackType.Punch;
+        _inputAttackType = InputAttackType.Jab;
     }
 
     public void OnSideKick(InputAction.CallbackContext context)
@@ -62,9 +52,9 @@ public class CharacterInputHandler : MonoBehaviour
     {
         _inputAttackType = InputAttackType.Hook;
     }
+
     #endregion
-
-
+    
     public NetworkInputData GetNetworkInput()
     {
         NetworkInputData networkInputData = new();

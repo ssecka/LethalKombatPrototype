@@ -55,7 +55,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Punch"",
+                    ""name"": ""Jab"",
                     ""type"": ""Button"",
                     ""id"": ""1ae7ee3f-9b78-4ef1-98b0-2962b84f57cd"",
                     ""expectedControlType"": ""Button"",
@@ -275,7 +275,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Punch"",
+                    ""action"": ""Jab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -286,7 +286,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Punch"",
+                    ""action"": ""Jab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -297,7 +297,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Punch"",
+                    ""action"": ""Jab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -987,7 +987,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Punch = m_Player.FindAction("Punch", throwIfNotFound: true);
+        m_Player_Jab = m_Player.FindAction("Jab", throwIfNotFound: true);
         m_Player_Hook = m_Player.FindAction("Hook", throwIfNotFound: true);
         m_Player_SideKick = m_Player.FindAction("SideKick", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
@@ -1067,7 +1067,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Punch;
+    private readonly InputAction m_Player_Jab;
     private readonly InputAction m_Player_Hook;
     private readonly InputAction m_Player_SideKick;
     private readonly InputAction m_Player_Block;
@@ -1078,7 +1078,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Punch => m_Wrapper.m_Player_Punch;
+        public InputAction @Jab => m_Wrapper.m_Player_Jab;
         public InputAction @Hook => m_Wrapper.m_Player_Hook;
         public InputAction @SideKick => m_Wrapper.m_Player_SideKick;
         public InputAction @Block => m_Wrapper.m_Player_Block;
@@ -1100,9 +1100,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Punch.started += instance.OnPunch;
-            @Punch.performed += instance.OnPunch;
-            @Punch.canceled += instance.OnPunch;
+            @Jab.started += instance.OnJab;
+            @Jab.performed += instance.OnJab;
+            @Jab.canceled += instance.OnJab;
             @Hook.started += instance.OnHook;
             @Hook.performed += instance.OnHook;
             @Hook.canceled += instance.OnHook;
@@ -1125,9 +1125,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Punch.started -= instance.OnPunch;
-            @Punch.performed -= instance.OnPunch;
-            @Punch.canceled -= instance.OnPunch;
+            @Jab.started -= instance.OnJab;
+            @Jab.performed -= instance.OnJab;
+            @Jab.canceled -= instance.OnJab;
             @Hook.started -= instance.OnHook;
             @Hook.performed -= instance.OnHook;
             @Hook.canceled -= instance.OnHook;
@@ -1322,7 +1322,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnPunch(InputAction.CallbackContext context);
+        void OnJab(InputAction.CallbackContext context);
         void OnHook(InputAction.CallbackContext context);
         void OnSideKick(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
