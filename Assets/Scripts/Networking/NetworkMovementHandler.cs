@@ -10,6 +10,8 @@ public class NetworkMovementHandler : NetworkBehaviour
     [Header("Animation")] public Animator Animator;
 
     private InputAttackType _lastAnimationInput = 0;
+
+    private bool _proxyTiggered, _hostTriggered;
     
     #region AnimationIDs
 
@@ -30,7 +32,13 @@ public class NetworkMovementHandler : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (Object.IsProxy) return;
+        if (Object.IsProxy)
+        {
+            _proxyTiggered = true;
+            return;
+        }
+
+        _hostTriggered = true;
         
         if (GetInput(out NetworkInputData networkInputData))
         {
@@ -49,6 +57,7 @@ public class NetworkMovementHandler : NetworkBehaviour
     public override void Render()
     {
         StartAttackAnimation(_lastAnimationInput);
+        // Setting _lastAnimationInput to 0 would cause issues.
         //_lastAnimationInput = 0;
     }
 

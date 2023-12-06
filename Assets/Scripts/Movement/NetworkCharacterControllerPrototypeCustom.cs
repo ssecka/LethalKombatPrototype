@@ -158,19 +158,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         transform.Rotate(0, rotationY * Runner.DeltaTime * rotationSpeed, 0);
     }
     
-
-    private bool CheckIfAttackIsAllowed(InputAttackType inputAttackType)
-    {
-        if (inputAttackType == InputAttackType.Block || inputAttackType == InputAttackType.None) return true;
-
-        var unixMS = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
-        if (_lastAttackQueued + ATTACK_QUEUE_DELAY > unixMS) return false;
-
-        _lastAttackQueued = unixMS;
-        
-        return true;
-    }
     
     
     #region Animations

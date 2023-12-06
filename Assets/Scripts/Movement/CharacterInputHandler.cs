@@ -45,7 +45,6 @@ public class CharacterInputHandler : MonoBehaviour
     public void OnJab(InputAction.CallbackContext context)
     {
         // Only trigger on "keyDown"
-
         if (!context.started) return;
 
         var curUnixTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();

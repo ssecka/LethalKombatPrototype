@@ -10,5 +10,7 @@ namespace DefaultNamespace
         JabHit = 1 << 1,
         Kick = 1 << 2,
         KickHit = 1 << 3,
+        Hook = 1 << 4,
+        HookHit = 1 << 5,
     }
 }
