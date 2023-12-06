@@ -1,6 +1,14 @@
 ﻿using System;
+using Fusion;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+public struct NetworkInputData : INetworkInput
+{
+    public Vector2 _movementInput;
+    public NetworkBool _isJumpPressed;
+    public InputAttackType _InputAttackType;
+}
 
 /// <summary>
 /// This class only recieves the inputs and sends it.

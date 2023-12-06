@@ -6,12 +6,11 @@ using UnityEngine;
 public class NetworkMovementHandler : NetworkBehaviour
 {
     private NetworkCharacterControllerPrototypeCustom _networkCharacterControllerPrototypeCustom;
-
     private NetworkMecanimAnimator _networkAnimator;
-
     private InputAttackType _lastAnimationInput = 0;
-
     private bool _proxyTiggered, _hostTriggered;
+
+    private int _lastVisibleJump, _lastVisibleJab, _lastVisibleKick, _lastVisibleHook;
     
     #region AnimationIDs
 
@@ -31,82 +30,27 @@ public class NetworkMovementHandler : NetworkBehaviour
         _networkAnimator = GetComponentInChildren<NetworkMecanimAnimator>();
     }
 
-    public override void FixedUpdateNetwork()
+    public override void Spawned()
     {
-        if (Object.IsProxy)
-        {
-            _proxyTiggered = true;
-            return;
-        }
-
-        _hostTriggered = true;
-        
-        if (GetInput(out NetworkInputData networkInputData))
-        {
-            var moveDir = networkInputData._movementInput;
-            moveDir.Normalize();
-
-
-            _networkCharacterControllerPrototypeCustom.Move(moveDir);
-            if (networkInputData._isJumpPressed)
-                _networkCharacterControllerPrototypeCustom.Jump();
-
-            _lastAnimationInput = networkInputData._InputAttackType;
-        }
     }
+    
 
     public override void Render()
     {
-        StartAttackAnimation(_lastAnimationInput);
+
+        UpdateAnimations();
+        
+        //StartAttackAnimation(_lastAnimationInput);
         // Setting _lastAnimationInput to 0 would cause issues.
         //_lastAnimationInput = 0;
     }
 
-    private void StartAttackAnimation(InputAttackType inputAttackType)
+    private void UpdateAnimations()
     {
-        switch (inputAttackType)
+        if (_lastVisibleJab < _networkCharacterControllerPrototypeCustom.JabCount)
         {
-            case InputAttackType.None:
-                Block(false);
-                break;
-            case InputAttackType.Block:
-                Block(true);
-                break;
-            case InputAttackType.Jab:
-                Jab();
-                break;
-            case InputAttackType.Sidekick:
-                SideKick();
-                break;
-            case InputAttackType.Hook:
-                Hook();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
+            _networkAnimator.SetTrigger(JabID,true);
+            _lastVisibleJab = _networkCharacterControllerPrototypeCustom.JabCount;
         }
     }
-
-    #region Attack Patterns
-
-    private void Jab()
-    {
-        _networkAnimator.SetTrigger(JabID);
-    }
-
-    private void SideKick()
-    {
-        _networkAnimator.SetTrigger(SideKickID);
-    }
-
-    private void Hook()
-    {
-        _networkAnimator.SetTrigger(HookID);
-    }
-
-    private void Block(bool val)
-    {
-        //TODO
-    }
-
-    #endregion
 }

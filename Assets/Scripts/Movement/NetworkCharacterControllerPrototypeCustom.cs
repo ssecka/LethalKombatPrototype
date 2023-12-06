@@ -10,6 +10,34 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 {
+    
+    #region Networked stuff
+
+    private NetworkMecanimAnimator _networkAnimator;
+    
+    [Networked, HideInInspector]
+    public int     JabCount              { get; set; }
+    
+    public int     InterpolatedJabCount  => _jabCountInterpolator.Value;
+
+    private Interpolator<int> _jabCountInterpolator;
+
+    private InputAttackType _lastAnimationInput = 0;
+
+    #endregion
+    
+    #region AnimationIDs
+
+    private static readonly int SideKickID = Animator.StringToHash("SideKick");
+    private static readonly int HookID = Animator.StringToHash("Punch");
+    private static readonly int JabID = Animator.StringToHash("Jab");
+    private static readonly int FWalking = Animator.StringToHash("FWalking");
+    private static readonly int BWalking = Animator.StringToHash("BWalking");
+    private static readonly int BlockingID = Animator.StringToHash("Blocking");
+    private static readonly int JumpID = Animator.StringToHash("Jump");
+
+    #endregion
+    
     [Header("Character Controller Settings")]
     public float gravity = -20.0f;
 
@@ -18,19 +46,11 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public float braking = 10.0f;
     public float maxSpeed = 2.0f;
     public float rotationSpeed = 15.0f;
-    public float viewUpDownRotationSpeed = 50.0f;
-    public Animator animator;
     public Transform leftHandAttackPoint, rightHandAttackPoint, leftLegAttackPoint, rightLegAttackPoint;
 
-    private const byte ATTACK_QUEUE_DELAY = 150;
-
     private long _lastAttackQueued = 0;
-    
     public bool isAllowedToAttack { get; set; } = true;
-
     private bool _attackAlreadyHit = false;
-    
-    
     
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
@@ -54,6 +74,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     protected override void Awake()
     {
+        _networkAnimator = GetComponentInChildren<NetworkMecanimAnimator>();
         base.Awake();
         CacheController();
 
@@ -66,8 +87,84 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
         // Caveat: this is needed to initialize the Controller's state and avoid unwanted spikes in its perceived velocity
         Controller.Move(transform.position);
+
+        _jabCountInterpolator = GetInterpolator<int>(nameof(JabCount));
+    }
+    
+    public override void FixedUpdateNetwork()
+    {
+        if (Object.IsProxy) // Only run on the host
+        {
+            Debug.Log("Im Proxy");
+            return;
+        }
+
+        
+        if (GetInput(out NetworkInputData networkInputData))
+        {
+            var moveDir = networkInputData._movementInput;
+            moveDir.Normalize();
+
+
+            this.Move(moveDir);
+            if (networkInputData._isJumpPressed)
+                this.Jump();
+
+            StartAttackAnimation(networkInputData._InputAttackType);
+        }
+    }
+    
+    
+    private void StartAttackAnimation(InputAttackType inputAttackType)
+    {
+        switch (inputAttackType)
+        {
+            case InputAttackType.None:
+                Block(false);
+                break;
+            case InputAttackType.Block:
+                Block(true);
+                break;
+            case InputAttackType.Jab:
+                Jab();
+                break;
+            case InputAttackType.Sidekick:
+                SideKick();
+                break;
+            case InputAttackType.Hook:
+                Hook();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
+        }
     }
 
+    #region Attack Patterns
+
+    private void Jab()
+    {
+        JabCount++;
+        _networkAnimator.SetTrigger(JabID);
+    }
+
+    private void SideKick()
+    {
+        _networkAnimator.SetTrigger(SideKickID);
+    }
+
+    private void Hook()
+    {
+        _networkAnimator.SetTrigger(HookID);
+    }
+
+    private void Block(bool val)
+    {
+        //TODO
+    }
+
+    #endregion
+
+    #region Cached
     private void CacheController()
     {
         if (Controller == null)
@@ -91,6 +188,10 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         Controller.enabled = true;
     }
 
+    #endregion
+    
+    #region Movement
+    
     /// <summary>
     /// Basic implementation of a jump impulse (immediately integrates a vertical component to Velocity).
     /// <param name="ignoreGrounded">Jump even if not in a grounded state.</param>
@@ -153,6 +254,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         IsGrounded = Controller.isGrounded;
     }
 
+    #endregion
+    
     public void Rotate(float rotationY)
     {
         transform.Rotate(0, rotationY * Runner.DeltaTime * rotationSpeed, 0);
