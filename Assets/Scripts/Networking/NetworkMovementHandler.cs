@@ -34,15 +34,11 @@ public class NetworkMovementHandler : NetworkBehaviour
     {
 
         UpdateAnimations();
-        
-        //StartAttackAnimation(_lastAnimationInput);
-        // Setting _lastAnimationInput to 0 would cause issues.
-        //_lastAnimationInput = 0;
+
     }
 
     public override void FixedUpdateNetwork()
     {
-        //UpdateAnimations();
     }
 
     private void UpdateAnimations()

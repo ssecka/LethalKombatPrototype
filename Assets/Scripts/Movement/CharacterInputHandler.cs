@@ -56,16 +56,6 @@ public class CharacterInputHandler : MonoBehaviour
     {
         // Only trigger on "keyDown"
         if (!context.started) return;
-
-        var curUnixTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        if (_lastBlocKUnixTime + ATTACK_BLOCK_TIMER > curUnixTime)
-        {
-            //Debug.Log("Jab blocked: " + _lastBlocKUnixTime);
-            return;
-        }
-
-        // Debug.Log("Jab Input accepted. | curUnixTime:" + curUnixTime);
-        _lastBlocKUnixTime = curUnixTime;
         _inputAttackType = InputAttackType.Jab;
     }
 
@@ -74,16 +64,6 @@ public class CharacterInputHandler : MonoBehaviour
         // Only trigger on "keyDown"
 
         if (!context.started) return;
-        
-        var curUnixTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        if (_lastBlocKUnixTime + ATTACK_BLOCK_TIMER > curUnixTime)
-        {
-            //Debug.Log("OnSideKick blocked: " + _lastBlocKUnixTime);
-            return;
-        }
-
-        // Debug.Log("OnSideKick Input accepted. | curUnixTime:" + curUnixTime);
-        _lastBlocKUnixTime = curUnixTime;
         _inputAttackType = InputAttackType.Sidekick;
     }
 
@@ -92,16 +72,6 @@ public class CharacterInputHandler : MonoBehaviour
         // Only trigger on "keyDown"
 
         if (!context.started) return;
-        
-        var curUnixTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        if (_lastBlocKUnixTime + ATTACK_BLOCK_TIMER > curUnixTime)
-        {
-            //Debug.Log("OnHook blocked: " + _lastBlocKUnixTime);
-            return;
-        }
-
-        // Debug.Log("OnHook Input accepted. | curUnixTime:" + curUnixTime);
-        _lastBlocKUnixTime = curUnixTime;
         _inputAttackType = InputAttackType.Hook;
     }
 

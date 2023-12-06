@@ -84,6 +84,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private long _lastAttackQueued = 0;
     public bool isAllowedToAttack { get; set; } = true;
     private bool _attackAlreadyHit = false;
+    private long _lastTimeCheck = 0;
+    private InputAttackType _lastNetworkInput;
     
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
@@ -148,15 +150,20 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 networkInputData._isJumpPressed = false;
             }
 
-            StartAttackAnimation(networkInputData._InputAttackType);
+            if (networkInputData._InputAttackType != 0)
+            {
+                _lastNetworkInput = networkInputData._InputAttackType;
+            }
+            StartAttackAnimation(_lastNetworkInput);
         }
     }
     
     
     private void StartAttackAnimation(InputAttackType inputAttackType)
     {
+        _lastNetworkInput = 0;
         //Test with this
-
+        
         if (inputAttackType is InputAttackType.None or InputAttackType.Block)
         {
             Block(inputAttackType == InputAttackType.Block);
@@ -164,19 +171,16 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         }
 
         if (!isAllowedToAttack) return;
-        
+
         switch (inputAttackType)
         {
             case InputAttackType.Jab:
-                Jab();
                 JabCount++;
                 break;
             case InputAttackType.Sidekick:
-                SideKick();
                 KickCount++;
                 break;
             case InputAttackType.Hook:
-                Hook();
                 HookCount++;
                 break;
             default:
@@ -188,17 +192,17 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     private void Jab()
     {
-        _networkAnimator.SetTrigger(JabID);
+        _networkAnimator.SetTrigger(JabID, true);
     }
 
     private void SideKick()
     {
-        _networkAnimator.SetTrigger(SideKickID);
+        _networkAnimator.SetTrigger(SideKickID, true);
     }
 
     private void Hook()
     {
-        _networkAnimator.SetTrigger(HookID);
+        _networkAnimator.SetTrigger(HookID, true);
     }
 
     private void Block(bool val)
@@ -315,6 +319,15 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     {
         isAllowedToAttack = false;
         
+        switch (attackType)
+        {
+            case InputAttackType.Jab:
+                break;
+            case InputAttackType.Hook:
+                break;
+            case InputAttackType.Sidekick:
+                break;
+        }
         //TODO: SOUND
     }
 
