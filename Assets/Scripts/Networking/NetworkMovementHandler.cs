@@ -30,11 +30,6 @@ public class NetworkMovementHandler : NetworkBehaviour
         _networkAnimator = GetComponentInChildren<NetworkMecanimAnimator>();
     }
 
-    public override void Spawned()
-    {
-    }
-    
-
     public override void Render()
     {
 
@@ -43,6 +38,11 @@ public class NetworkMovementHandler : NetworkBehaviour
         //StartAttackAnimation(_lastAnimationInput);
         // Setting _lastAnimationInput to 0 would cause issues.
         //_lastAnimationInput = 0;
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        UpdateAnimations();
     }
 
     private void UpdateAnimations()

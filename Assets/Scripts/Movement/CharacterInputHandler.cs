@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using Fusion;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,6 +35,7 @@ public class CharacterInputHandler : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (!context.started) return;
         _jumpWasPressed = true;
     }
 

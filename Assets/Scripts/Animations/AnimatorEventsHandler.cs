@@ -11,7 +11,7 @@ public class AnimatorEventsHandler : MonoBehaviour
 
     #region Jab
 
-    public void JabAnimationStarted() => networkCharacterControllerPrototypeCustom.AnimationStarted(EAttackType.Jab);
+    public void JabAnimationStarted() => networkCharacterControllerPrototypeCustom.AnimationStarted(InputAttackType.Jab);
 
     public void JabActivateHitbox() => networkCharacterControllerPrototypeCustom.ActivateHitBox(InputAttackType.Jab);
 
@@ -22,7 +22,7 @@ public class AnimatorEventsHandler : MonoBehaviour
 
     #region SideKick
 
-    public void SideKickAnimationStarted() => networkCharacterControllerPrototypeCustom.AnimationStarted(EAttackType.Kick);
+    public void SideKickAnimationStarted() => networkCharacterControllerPrototypeCustom.AnimationStarted(InputAttackType.Sidekick);
 
     public void SideKickActivateHitbox() => networkCharacterControllerPrototypeCustom.ActivateHitBox(InputAttackType.Sidekick);
 
@@ -33,7 +33,7 @@ public class AnimatorEventsHandler : MonoBehaviour
     
     #region Hook
     
-    public void HookAnimationStarted() => networkCharacterControllerPrototypeCustom.AnimationStarted(EAttackType.Hook);
+    public void HookAnimationStarted() => networkCharacterControllerPrototypeCustom.AnimationStarted(InputAttackType.Hook);
 
     public void HookActivateHitbox() => networkCharacterControllerPrototypeCustom.ActivateHitBox(InputAttackType.Hook);
 
@@ -42,5 +42,10 @@ public class AnimatorEventsHandler : MonoBehaviour
     
     #endregion
 
+    public void BlockAttack()
+    {
+        networkCharacterControllerPrototypeCustom.isAllowedToAttack = true;
+    }
+    
     public void AttackFinished() => networkCharacterControllerPrototypeCustom.isAllowedToAttack = true;
 }

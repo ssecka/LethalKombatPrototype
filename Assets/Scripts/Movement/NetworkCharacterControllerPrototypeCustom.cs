@@ -131,7 +131,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     {
         if (Object.IsProxy) // Only run on the host
         {
-            Debug.Log("Im Proxy");
             return;
         }
 
@@ -144,7 +143,10 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
             this.Move(moveDir);
             if (networkInputData._isJumpPressed)
+            {
                 this.Jump();
+                networkInputData._isJumpPressed = false;
+            }
 
             StartAttackAnimation(networkInputData._InputAttackType);
         }
@@ -153,22 +155,29 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     
     private void StartAttackAnimation(InputAttackType inputAttackType)
     {
+        //Test with this
+
+        if (inputAttackType is InputAttackType.None or InputAttackType.Block)
+        {
+            Block(inputAttackType == InputAttackType.Block);
+            return;
+        }
+
+        if (!isAllowedToAttack) return;
+        
         switch (inputAttackType)
         {
-            case InputAttackType.None:
-                Block(false);
-                break;
-            case InputAttackType.Block:
-                Block(true);
-                break;
             case InputAttackType.Jab:
                 Jab();
+                JabCount++;
                 break;
             case InputAttackType.Sidekick:
                 SideKick();
+                KickCount++;
                 break;
             case InputAttackType.Hook:
                 Hook();
+                HookCount++;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
@@ -179,19 +188,16 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     private void Jab()
     {
-        JabCount++;
         _networkAnimator.SetTrigger(JabID);
     }
 
     private void SideKick()
     {
-        KickCount++;
         _networkAnimator.SetTrigger(SideKickID);
     }
 
     private void Hook()
     {
-        HookCount++;
         _networkAnimator.SetTrigger(HookID);
     }
 
@@ -245,6 +251,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             var newVel = Velocity;
             newVel.y += overrideImpulse ?? jumpImpulse;
             Velocity = newVel;
+            JumpCount++;
+            _networkAnimator.SetTrigger(JumpID,true);
         }
     }
 
@@ -305,10 +313,11 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     #region Start
     
-    public void AnimationStarted(EAttackType attackType)
+    public void AnimationStarted(InputAttackType attackType)
     {
         isAllowedToAttack = false;
-        //TODO: PLAY SOUND
+        
+        //TODO: SOUND
     }
 
     
