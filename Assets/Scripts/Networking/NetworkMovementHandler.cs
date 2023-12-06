@@ -52,5 +52,23 @@ public class NetworkMovementHandler : NetworkBehaviour
             _networkAnimator.SetTrigger(JabID,true);
             _lastVisibleJab = _networkCharacterControllerPrototypeCustom.JabCount;
         }
+
+        if (_lastVisibleHook < _networkCharacterControllerPrototypeCustom.HookCount)
+        {
+            _networkAnimator.SetTrigger(HookID,true);
+            _lastVisibleHook = _networkCharacterControllerPrototypeCustom.HookCount;
+        }
+
+        if (_lastVisibleKick < _networkCharacterControllerPrototypeCustom.KickCount)
+        {
+            _networkAnimator.SetTrigger(SideKickID, true);
+            _lastVisibleKick = _networkCharacterControllerPrototypeCustom.KickCount;
+        }
+
+        if (_lastVisibleJump < _networkCharacterControllerPrototypeCustom.JumpCount)
+        {
+            _networkAnimator.SetTrigger(JumpID, true);
+            _lastVisibleJump = _networkCharacterControllerPrototypeCustom.JumpCount;
+        }
     }
 }

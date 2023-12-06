@@ -15,13 +15,46 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     private NetworkMecanimAnimator _networkAnimator;
     
+    #region Jab
     [Networked, HideInInspector]
     public int     JabCount              { get; set; }
     
     public int     InterpolatedJabCount  => _jabCountInterpolator.Value;
 
     private Interpolator<int> _jabCountInterpolator;
+    
+    #endregion
+    
+    #region Kick
+    [Networked, HideInInspector]
+    
+    public int     KickCount              { get; set; }
+    
+    public int     InterpolatedKickCount  => _kickCountInterpolator.Value;
+    
+    private Interpolator<int> _kickCountInterpolator;
+    
+    #endregion
+    
+    #region Hook
+    [Networked, HideInInspector]
+    public int     HookCount              { get; set; }
+    
+    public int     InterpolatedHookCount  => _hookCountInterpolator.Value;
+    private Interpolator<int> _hookCountInterpolator;
 
+    #endregion
+    
+    #region Jump
+    
+    [Networked, HideInInspector]
+    public int     JumpCount              { get; set; }
+    
+    public int     InterpolatedJumpCount  => _jumpCountInterpolator.Value;
+    private Interpolator<int> _jumpCountInterpolator;
+    
+    #endregion
+    
     private InputAttackType _lastAnimationInput = 0;
 
     #endregion
@@ -89,6 +122,9 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         Controller.Move(transform.position);
 
         _jabCountInterpolator = GetInterpolator<int>(nameof(JabCount));
+        _hookCountInterpolator = GetInterpolator<int>(nameof(HookCount));
+        _kickCountInterpolator = GetInterpolator<int>(nameof(KickCount));
+        _jumpCountInterpolator = GetInterpolator<int>(nameof(JumpCount));
     }
     
     public override void FixedUpdateNetwork()
@@ -149,11 +185,13 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     private void SideKick()
     {
+        KickCount++;
         _networkAnimator.SetTrigger(SideKickID);
     }
 
     private void Hook()
     {
+        HookCount++;
         _networkAnimator.SetTrigger(HookID);
     }
 
