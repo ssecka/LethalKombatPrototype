@@ -7,7 +7,7 @@ public class NetworkMovementHandler : NetworkBehaviour
 {
     private NetworkCharacterControllerPrototypeCustom _networkCharacterControllerPrototypeCustom;
 
-    [Header("Animation")] public Animator Animator;
+    private NetworkMecanimAnimator _networkAnimator;
 
     private InputAttackType _lastAnimationInput = 0;
 
@@ -28,6 +28,7 @@ public class NetworkMovementHandler : NetworkBehaviour
     private void Awake()
     {
         _networkCharacterControllerPrototypeCustom = GetComponent<NetworkCharacterControllerPrototypeCustom>();
+        _networkAnimator = GetComponentInChildren<NetworkMecanimAnimator>();
     }
 
     public override void FixedUpdateNetwork()
@@ -89,17 +90,17 @@ public class NetworkMovementHandler : NetworkBehaviour
 
     private void Jab()
     {
-        Animator.SetTrigger(JabID);
+        _networkAnimator.SetTrigger(JabID);
     }
 
     private void SideKick()
     {
-        Animator.SetTrigger(SideKickID);
+        _networkAnimator.SetTrigger(SideKickID);
     }
 
     private void Hook()
     {
-        Animator.SetTrigger(HookID);
+        _networkAnimator.SetTrigger(HookID);
     }
 
     private void Block(bool val)
