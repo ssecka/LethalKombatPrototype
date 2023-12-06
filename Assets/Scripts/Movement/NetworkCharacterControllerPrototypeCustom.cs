@@ -30,17 +30,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     private bool _attackAlreadyHit = false;
     
-    #region AnimationIDs
-
-    private static readonly int SideKickID = Animator.StringToHash("SideKick");
-    private static readonly int HookID = Animator.StringToHash("Punch");
-    private static readonly int JabID = Animator.StringToHash("Jab");
-    private static readonly int FWalking = Animator.StringToHash("FWalking");
-    private static readonly int BWalking = Animator.StringToHash("BWalking");
-    private static readonly int BlockingID = Animator.StringToHash("Blocking");
-    private static readonly int JumpID = Animator.StringToHash("Jump");
-
-    #endregion
     
     
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
@@ -168,32 +157,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     {
         transform.Rotate(0, rotationY * Runner.DeltaTime * rotationSpeed, 0);
     }
-
-    public void Attack(InputAttackType inputInputAttackType)
-    {
-        if (!CheckIfAttackIsAllowed(inputInputAttackType)) return;
-        
-        switch (inputInputAttackType)
-        {
-            case InputAttackType.None:
-                Block(false);
-                break;
-            case InputAttackType.Block:
-                Block(true);
-                break;
-            case InputAttackType.Jab:
-                Jab();
-                break;
-            case InputAttackType.Sidekick:
-                SideKick();
-                break;
-            case InputAttackType.Hook:
-                Hook();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(inputInputAttackType), inputInputAttackType, null);
-        }
-    }
+    
 
     private bool CheckIfAttackIsAllowed(InputAttackType inputAttackType)
     {
@@ -207,34 +171,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         
         return true;
     }
-
-
-    #region Attack Patterns
-
-    private void Jab()
-    {
-       if(isAllowedToAttack)
-           animator.SetTrigger(JabID);
-    }
-
-    private void SideKick()
-    {
-        if(isAllowedToAttack) 
-            animator.SetTrigger(SideKickID);
-    }
-
-    private void Hook()
-    {
-        if(isAllowedToAttack)
-            animator.SetTrigger(HookID);
-    }
-
-    private void Block(bool val)
-    {
-        //TODO
-    }
     
-    #endregion
     
     #region Animations
 

@@ -16,10 +16,16 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
         if (Object.HasInputAuthority)
         {
             Local = this;
+            this.transform.name = "Host";
 
             Debug.Log("Spawned local player");
         }
-        else Debug.Log("Spawned remote player");
+        else
+        {
+            this.transform.name = "Client";
+            Debug.Log("Spawned remote player");
+        }
+        
     }
 
     public void PlayerLeft(PlayerRef player)

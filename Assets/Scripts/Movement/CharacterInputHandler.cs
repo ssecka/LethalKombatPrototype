@@ -12,6 +12,10 @@ public class CharacterInputHandler : MonoBehaviour
     private bool _jumpWasPressed = false;
     private InputAttackType _inputAttackType = 0;
 
+    private const long ATTACK_BLOCK_TIMER = 400;
+    private long _lastBlocKUnixTime = 0;
+
+
     #region General Movement Inputs
 
     public void OnMove(InputAction.CallbackContext context)
@@ -41,9 +45,18 @@ public class CharacterInputHandler : MonoBehaviour
     public void OnJab(InputAction.CallbackContext context)
     {
         // Only trigger on "keyDown"
-        
+
         if (!context.started) return;
-        
+
+        var curUnixTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        if (_lastBlocKUnixTime + ATTACK_BLOCK_TIMER > curUnixTime)
+        {
+            //Debug.Log("Jab blocked: " + _lastBlocKUnixTime);
+            return;
+        }
+
+        // Debug.Log("Jab Input accepted. | curUnixTime:" + curUnixTime);
+        _lastBlocKUnixTime = curUnixTime;
         _inputAttackType = InputAttackType.Jab;
     }
 
@@ -52,6 +65,16 @@ public class CharacterInputHandler : MonoBehaviour
         // Only trigger on "keyDown"
 
         if (!context.started) return;
+        
+        var curUnixTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        if (_lastBlocKUnixTime + ATTACK_BLOCK_TIMER > curUnixTime)
+        {
+            //Debug.Log("OnSideKick blocked: " + _lastBlocKUnixTime);
+            return;
+        }
+
+        // Debug.Log("OnSideKick Input accepted. | curUnixTime:" + curUnixTime);
+        _lastBlocKUnixTime = curUnixTime;
         _inputAttackType = InputAttackType.Sidekick;
     }
 
@@ -60,11 +83,21 @@ public class CharacterInputHandler : MonoBehaviour
         // Only trigger on "keyDown"
 
         if (!context.started) return;
+        
+        var curUnixTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        if (_lastBlocKUnixTime + ATTACK_BLOCK_TIMER > curUnixTime)
+        {
+            //Debug.Log("OnHook blocked: " + _lastBlocKUnixTime);
+            return;
+        }
+
+        // Debug.Log("OnHook Input accepted. | curUnixTime:" + curUnixTime);
+        _lastBlocKUnixTime = curUnixTime;
         _inputAttackType = InputAttackType.Hook;
     }
 
     #endregion
-    
+
     public NetworkInputData GetNetworkInput()
     {
         NetworkInputData networkInputData = new();

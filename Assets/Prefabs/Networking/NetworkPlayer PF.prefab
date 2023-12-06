@@ -1714,6 +1714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  Animator: {fileID: 580777354271473791}
 --- !u!114 &4237744938786626837
 MonoBehaviour:
   m_ObjectHideFlags: 0
