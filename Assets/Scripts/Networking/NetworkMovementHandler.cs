@@ -42,7 +42,7 @@ public class NetworkMovementHandler : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        UpdateAnimations();
+        //UpdateAnimations();
     }
 
     private void UpdateAnimations()

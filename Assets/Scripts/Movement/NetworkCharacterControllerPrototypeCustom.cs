@@ -243,11 +243,9 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     /// </summary>
     public virtual void Jump(bool ignoreGrounded = false, float? overrideImpulse = null)
     {
-        // JUMP
-        Debug.Log("JUMPING");
-        
         if (IsGrounded || ignoreGrounded)
         {
+            Debug.Log("JUMPING");
             var newVel = Velocity;
             newVel.y += overrideImpulse ?? jumpImpulse;
             Velocity = newVel;
