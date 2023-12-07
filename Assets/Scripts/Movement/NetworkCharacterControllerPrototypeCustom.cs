@@ -149,25 +149,30 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             // Cache last input 
             if (networkInputData._InputAttackType != 0)
             {
+                Debug.Log($"Changed last input from {_lastNetworkInput} to {networkInputData._InputAttackType}");
                 _lastNetworkInput = networkInputData._InputAttackType;
             }
 
-            StartAttackAnimation(_lastNetworkInput);
+            QueueAttackAnimation(_lastNetworkInput);
         }
     }
 
 
-    private void StartAttackAnimation(InputAttackType inputAttackType)
+    private void QueueAttackAnimation(InputAttackType inputAttackType)
     {
         _lastNetworkInput = 0;
         //Test with this
 
+        
+        
         if (inputAttackType is InputAttackType.None or InputAttackType.Block)
         {
             Block(inputAttackType == InputAttackType.Block);
             return;
         }
 
+
+        if (!isAllowedToAttack) return;
 
         switch (inputAttackType)
         {
@@ -189,21 +194,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     }
 
     #region Attack Patterns
-
-    private void Jab()
-    {
-        _networkAnimator.SetTrigger(JabID, true);
-    }
-
-    private void SideKick()
-    {
-        _networkAnimator.SetTrigger(SideKickID, true);
-    }
-
-    private void Hook()
-    {
-        _networkAnimator.SetTrigger(HookID, true);
-    }
 
     private void Block(bool val)
     {
@@ -371,6 +361,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         for (var index = 0; index < hitTargets.Length && !_attackAlreadyHit; index++)
         {
             var hitTarget = hitTargets[index];
+            if (hitTarget == null) return; // no targets remain...
             if (hitTarget.TryGetComponent(out HPHandler hpHandler) && !_attackAlreadyHit)
             {
                 _attackAlreadyHit = true;

@@ -43,28 +43,39 @@ public class NetworkMovementHandler : NetworkBehaviour
 
     private void UpdateAnimations()
     {
-        if (_lastVisibleJab < _networkCharacterControllerPrototypeCustom.JabCount)
+        // Safe some typing...
+        var controller = _networkCharacterControllerPrototypeCustom;
+        var useInterpolation = true; //testing...
+        
+        
+        var jabCount =  useInterpolation ?  controller.InterpolatedJabCount : controller.JabCount;
+        var hookCount = useInterpolation ?  controller.InterpolatedHookCount : controller.HookCount;
+        var kickCount = useInterpolation ?  controller.InterpolatedKickCount : controller.KickCount;
+        var jumpCount = useInterpolation ?  controller.InterpolatedJumpCount : controller.JumpCount;
+        
+        if (_lastVisibleJab < jabCount)
         {
             _networkAnimator.SetTrigger(JabID,true);
-            _lastVisibleJab = _networkCharacterControllerPrototypeCustom.JabCount;
+            _lastVisibleJab = controller.JabCount;
         }
 
-        if (_lastVisibleHook < _networkCharacterControllerPrototypeCustom.HookCount)
+        if (_lastVisibleHook < hookCount)
         {
             _networkAnimator.SetTrigger(HookID,true);
-            _lastVisibleHook = _networkCharacterControllerPrototypeCustom.HookCount;
+            _lastVisibleHook = controller.HookCount;
         }
 
-        if (_lastVisibleKick < _networkCharacterControllerPrototypeCustom.KickCount)
+        if (_lastVisibleKick < kickCount)
         {
             _networkAnimator.SetTrigger(SideKickID, true);
-            _lastVisibleKick = _networkCharacterControllerPrototypeCustom.KickCount;
+            _lastVisibleKick = controller.KickCount;
         }
 
-        if (_lastVisibleJump < _networkCharacterControllerPrototypeCustom.JumpCount)
+        if (_lastVisibleJump < jumpCount)
         {
-            _networkAnimator.SetTrigger(JumpID, true);
-            _lastVisibleJump = _networkCharacterControllerPrototypeCustom.JumpCount;
+            controller.Jump();
+            //_networkAnimator.SetTrigger(JumpID, true);
+            _lastVisibleJump = controller.JumpCount;
         }
     }
 }

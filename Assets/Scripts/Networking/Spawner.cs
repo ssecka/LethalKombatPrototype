@@ -59,7 +59,6 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         Debug.Log(input);
         Debug.Log(player);
-        throw new NotImplementedException();
     }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
