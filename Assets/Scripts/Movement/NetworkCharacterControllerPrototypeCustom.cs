@@ -10,55 +10,53 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 {
-    
     #region Networked stuff
 
     private NetworkMecanimAnimator _networkAnimator;
-    
+
     #region Jab
+
     [Networked, HideInInspector]
-    public int     JabCount              { get; set; }
-    
-    public int     InterpolatedJabCount  => _jabCountInterpolator.Value;
+    public int JabCount { get; set; }
+
+    public int InterpolatedJabCount => _jabCountInterpolator.Value;
 
     private Interpolator<int> _jabCountInterpolator;
-    
+
     #endregion
-    
+
     #region Kick
-    [Networked, HideInInspector]
-    
-    public int     KickCount              { get; set; }
-    
-    public int     InterpolatedKickCount  => _kickCountInterpolator.Value;
-    
+
+    [Networked, HideInInspector] public int KickCount { get; set; }
+
+    public int InterpolatedKickCount => _kickCountInterpolator.Value;
+
     private Interpolator<int> _kickCountInterpolator;
-    
+
     #endregion
-    
+
     #region Hook
-    [Networked, HideInInspector]
-    public int     HookCount              { get; set; }
-    
-    public int     InterpolatedHookCount  => _hookCountInterpolator.Value;
+
+    [Networked, HideInInspector] public int HookCount { get; set; }
+
+    public int InterpolatedHookCount => _hookCountInterpolator.Value;
     private Interpolator<int> _hookCountInterpolator;
 
     #endregion
-    
+
     #region Jump
-    
-    [Networked, HideInInspector]
-    public int     JumpCount              { get; set; }
-    
-    public int     InterpolatedJumpCount  => _jumpCountInterpolator.Value;
+
+    [Networked, HideInInspector] public int JumpCount { get; set; }
+
+    public int InterpolatedJumpCount => _jumpCountInterpolator.Value;
     private Interpolator<int> _jumpCountInterpolator;
-    
+
     #endregion
-    
+
     private InputAttackType _lastAnimationInput = 0;
 
     #endregion
-    
+
     #region AnimationIDs
 
     private static readonly int SideKickID = Animator.StringToHash("SideKick");
@@ -70,7 +68,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private static readonly int JumpID = Animator.StringToHash("Jump");
 
     #endregion
-    
+
     [Header("Character Controller Settings")]
     public float gravity = -20.0f;
 
@@ -86,11 +84,10 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private bool _attackAlreadyHit = false;
     private long _lastTimeCheck = 0;
     private InputAttackType _lastNetworkInput;
-    
+
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
     [Networked] [HideInInspector] public Vector3 Velocity { get; set; }
-    
 
 
     /// <summary>
@@ -112,7 +109,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         _networkAnimator = GetComponentInChildren<NetworkMecanimAnimator>();
         base.Awake();
         CacheController();
-
     }
 
     public override void Spawned()
@@ -128,7 +124,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         _kickCountInterpolator = GetInterpolator<int>(nameof(KickCount));
         _jumpCountInterpolator = GetInterpolator<int>(nameof(JumpCount));
     }
-    
+
     public override void FixedUpdateNetwork()
     {
         if (Object.IsProxy) // Only run on the host
@@ -136,7 +132,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             return;
         }
 
-        
+
         if (GetInput(out NetworkInputData networkInputData))
         {
             var moveDir = networkInputData._movementInput;
@@ -150,38 +146,42 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 networkInputData._isJumpPressed = false;
             }
 
+            // Cache last input 
             if (networkInputData._InputAttackType != 0)
             {
                 _lastNetworkInput = networkInputData._InputAttackType;
             }
+
             StartAttackAnimation(_lastNetworkInput);
         }
     }
-    
-    
+
+
     private void StartAttackAnimation(InputAttackType inputAttackType)
     {
         _lastNetworkInput = 0;
         //Test with this
-        
+
         if (inputAttackType is InputAttackType.None or InputAttackType.Block)
         {
             Block(inputAttackType == InputAttackType.Block);
             return;
         }
 
-        if (!isAllowedToAttack) return;
 
         switch (inputAttackType)
         {
             case InputAttackType.Jab:
                 JabCount++;
+                Debug.Log($"Increased Jab from {JabCount -1 } to {JabCount}");
                 break;
             case InputAttackType.Sidekick:
                 KickCount++;
+                Debug.Log($"Increased Kick from {KickCount -1 } to {KickCount}");
                 break;
             case InputAttackType.Hook:
                 HookCount++;
+                Debug.Log($"Increased Hook from {HookCount -1 } to {HookCount}");
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
@@ -213,6 +213,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     #endregion
 
     #region Cached
+
     private void CacheController()
     {
         if (Controller == null)
@@ -237,9 +238,9 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     }
 
     #endregion
-    
+
     #region Movement
-    
+
     /// <summary>
     /// Basic implementation of a jump impulse (immediately integrates a vertical component to Velocity).
     /// <param name="ignoreGrounded">Jump even if not in a grounded state.</param>
@@ -254,7 +255,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             newVel.y += overrideImpulse ?? jumpImpulse;
             Velocity = newVel;
             JumpCount++;
-            _networkAnimator.SetTrigger(JumpID,true);
+            _networkAnimator.SetTrigger(JumpID, true);
         }
     }
 
@@ -270,14 +271,14 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
         direction = direction.normalized;
 
-        
+
         if (IsGrounded && moveVelocity.y < 0)
         {
             moveVelocity.y = 0f;
         }
 
         direction.x *= -1;
-        
+
         moveVelocity.y += gravity * Runner.DeltaTime;
 
         var horizontalVel = default(Vector3);
@@ -303,22 +304,21 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     }
 
     #endregion
-    
+
     public void Rotate(float rotationY)
     {
         transform.Rotate(0, rotationY * Runner.DeltaTime * rotationSpeed, 0);
     }
-    
-    
-    
+
+
     #region Animations
 
     #region Start
-    
+
     public void AnimationStarted(InputAttackType attackType)
     {
         isAllowedToAttack = false;
-        
+
         switch (attackType)
         {
             case InputAttackType.Jab:
@@ -331,15 +331,14 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         //TODO: SOUND
     }
 
-    
     #endregion
-    
+
     #region ActivateHitBox
-    
+
     public void ActivateHitBox(InputAttackType inputAttackType)
     {
         #region Determine Physical HitArea and damage
-        
+
         Vector3 hitPoint = Vector3.zero;
         short damage = 0;
         switch (inputAttackType)
@@ -353,43 +352,45 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 damage = 100;
                 break;
             case InputAttackType.Sidekick:
+                hitPoint = leftLegAttackPoint.position;
                 damage = 200;
                 break;
             case InputAttackType.Hook:
+                hitPoint = rightHandAttackPoint.position;
                 damage = 100;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
         }
-        
+
         #endregion
-        
-        var hitTargets = Physics.OverlapSphere(hitPoint, .2f);
+
+        Collider[] hitTargets = new Collider[5];
+        Physics.OverlapSphereNonAlloc(hitPoint, .2f, hitTargets);
 
         for (var index = 0; index < hitTargets.Length && !_attackAlreadyHit; index++)
         {
             var hitTarget = hitTargets[index];
-            if (hitTarget.TryGetComponent(out HPHandler hpHandler) && _attackAlreadyHit)
+            if (hitTarget.TryGetComponent(out HPHandler hpHandler) && !_attackAlreadyHit)
             {
                 _attackAlreadyHit = true;
-                
+
                 //Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
 
                 hpHandler.OnHitTaken(damage);
 
                 //_fusionConnection.PlaySound(attackType, ref _soundEffects);
                 //_hitFreezeSystem.Freeze();
-                
+
                 break;
             }
         }
     }
-    
+
     #endregion
 
     #region Deactivate HitBox
 
-    
     public void DeactivateHitBox() => _attackAlreadyHit = false;
 
     #endregion
