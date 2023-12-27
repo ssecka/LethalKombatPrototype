@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using DefaultNamespace;
 using Fusion;
@@ -69,6 +70,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     #endregion
 
+    #region Character Specifications
+    
     [Header("Character Controller Settings")]
     public float gravity = -20.0f;
 
@@ -77,13 +80,22 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public float braking = 10.0f;
     public float maxSpeed = 2.0f;
     public float rotationSpeed = 15.0f;
+    
+    #endregion
+    
     public Transform leftHandAttackPoint, rightHandAttackPoint, leftLegAttackPoint, rightLegAttackPoint;
 
     private long _lastAttackQueued = 0;
-    public bool isAllowedToAttack { get; set; } = true;
+    public bool _canQueueAttack { get; set; } = true;
     private bool _attackAlreadyHit = false;
     private long _lastTimeCheck = 0;
     private InputAttackType _lastNetworkInput;
+
+    private List<LagCompensatedHit> _lagCompensatedHits = new List<LagCompensatedHit>();
+    private PlayerRef _thrownByPlayerRef;
+    Vector3 _currentActiveHitPoint = Vector3.zero;
+    private bool _checkForHits;
+
 
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
@@ -155,6 +167,24 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
             QueueAttackAnimation(_lastNetworkInput);
         }
+
+        if (!Object.HasStateAuthority) return;
+
+        if (_checkForHits)
+        {
+            var hitCount = Runner.LagCompensation.OverlapSphere(transform.position, 0.25f, _thrownByPlayerRef, _lagCompensatedHits);
+
+            for (int i = 0; i < hitCount; i++)
+            {
+                HPHandler hpHandler = _lagCompensatedHits[i].Hitbox.transform.root.GetComponentInChildren<HPHandler>();
+                if (hpHandler == null) continue;
+                
+                hpHandler.OnHitTaken(250);
+                _checkForHits = false;
+                break;
+            }
+        }
+
     }
 
 
@@ -172,7 +202,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         }
 
 
-        if (!isAllowedToAttack) return;
+        if (!_canQueueAttack) return;
 
         switch (inputAttackType)
         {
@@ -303,25 +333,21 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     #region Animations
 
-    #region Start
-
+    #region Start and end
+    
     public void AnimationStarted(InputAttackType attackType)
     {
-        isAllowedToAttack = false;
-
-        switch (attackType)
-        {
-            case InputAttackType.Jab:
-                break;
-            case InputAttackType.Hook:
-                break;
-            case InputAttackType.Sidekick:
-                break;
-        }
-        //TODO: SOUND
+        _canQueueAttack = false;
+    }
+    
+    public void DeactivateHitBox()
+    {
+        _attackAlreadyHit = false;
+        _checkForHits = false;
     }
 
     #endregion
+    
 
     #region ActivateHitBox
 
@@ -329,7 +355,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     {
         #region Determine Physical HitArea and damage
 
-        Vector3 hitPoint = Vector3.zero;
         short damage = 0;
         switch (inputAttackType)
         {
@@ -338,51 +363,26 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             case InputAttackType.Block:
                 break;
             case InputAttackType.Jab:
-                hitPoint = leftHandAttackPoint.position;
+                _currentActiveHitPoint = leftHandAttackPoint.position;
                 damage = 100;
                 break;
             case InputAttackType.Sidekick:
-                hitPoint = leftLegAttackPoint.position;
+                _currentActiveHitPoint = leftLegAttackPoint.position;
                 damage = 200;
                 break;
             case InputAttackType.Hook:
-                hitPoint = rightHandAttackPoint.position;
+                _currentActiveHitPoint = rightHandAttackPoint.position;
                 damage = 100;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
         }
 
+        _checkForHits = true;
+        
         #endregion
 
-        Collider[] hitTargets = new Collider[5];
-        Physics.OverlapSphereNonAlloc(hitPoint, .2f, hitTargets);
-
-        for (var index = 0; index < hitTargets.Length && !_attackAlreadyHit; index++)
-        {
-            var hitTarget = hitTargets[index];
-            if (hitTarget == null) return; // no targets remain...
-            if (hitTarget.TryGetComponent(out HPHandler hpHandler) && !_attackAlreadyHit)
-            {
-                _attackAlreadyHit = true;
-
-                //Instantiate(hitEffect, _lefthandAttackPoint.position, Quaternion.identity);
-
-                hpHandler.OnHitTaken(damage);
-
-                //_fusionConnection.PlaySound(attackType, ref _soundEffects);
-                //_hitFreezeSystem.Freeze();
-
-                break;
-            }
-        }
     }
-
-    #endregion
-
-    #region Deactivate HitBox
-
-    public void DeactivateHitBox() => _attackAlreadyHit = false;
 
     #endregion
 

@@ -57,8 +57,6 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
     {
-        Debug.Log(input);
-        Debug.Log(player);
     }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)

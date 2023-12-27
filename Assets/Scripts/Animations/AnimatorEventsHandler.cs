@@ -44,8 +44,8 @@ public class AnimatorEventsHandler : MonoBehaviour
 
     public void BlockAttack()
     {
-        networkCharacterControllerPrototypeCustom.isAllowedToAttack = true;
+        networkCharacterControllerPrototypeCustom._canQueueAttack = true;
     }
     
-    public void AttackFinished() => networkCharacterControllerPrototypeCustom.isAllowedToAttack = true;
+    public void AttackFinished() => networkCharacterControllerPrototypeCustom._canQueueAttack = true;
 }
