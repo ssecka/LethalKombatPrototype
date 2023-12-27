@@ -32,9 +32,7 @@ public class NetworkMovementHandler : NetworkBehaviour
 
     public override void Render()
     {
-
         UpdateAnimations();
-
     }
 
     public override void FixedUpdateNetwork()
