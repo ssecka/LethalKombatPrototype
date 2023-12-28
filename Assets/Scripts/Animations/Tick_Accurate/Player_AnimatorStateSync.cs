@@ -10,7 +10,7 @@ namespace Animations.AnimatorStateSynchronization
 
 		private NetworkCharacterControllerPrototypeCustom _controller;
 		private Animator _animator;
-		private int _lastVisibleJump;
+		private int _lastVisibleJump, _lastVisibleJab, _lastVisibleHook,_lastVisibleKick;
 
 		// NetworkBehaviour INTERFACE
 
@@ -36,6 +36,64 @@ namespace Animations.AnimatorStateSynchronization
 
 		private void UpdateAnimations()
 		{
+			// ADD HERE MORE ANIMATIONS IF NEEDED
+			
+			HandleJump();
+
+			HandleJab();
+
+			HandleHook();
+
+			HandleKick();
+
+
+			//_animator.SetFloat("Speed", _controller.InterpolatedSpeed);
+		}
+
+		private void HandleKick()
+		{
+			if (_lastVisibleKick < _controller.InterpolatedKickCount)
+			{
+				_animator.SetTrigger("SideKick");
+			}
+			else if (_lastVisibleKick < _controller.InterpolatedKickCount)
+			{
+				// canccel
+			}
+
+			_lastVisibleKick = _controller.InterpolatedKickCount;
+		}
+
+		private void HandleHook()
+		{
+			if (_lastVisibleHook < _controller.InterpolatedHookCount)
+			{
+				_animator.SetTrigger("Hook");
+			}
+			else if (_lastVisibleHook > _controller.InterpolatedHookCount)
+			{
+				// cancel
+			}
+
+			_lastVisibleHook = _controller.InterpolatedHookCount;
+		}
+
+		private void HandleJab()
+		{
+			if (_lastVisibleJab < _controller.InterpolatedJabCount)
+			{
+				_animator.SetTrigger("Jab");
+			}
+			else if (_lastVisibleJab > _controller.InterpolatedJabCount)
+			{
+				//Cancel Jab
+			}
+			_lastVisibleJab = _controller.InterpolatedJabCount;
+
+		}
+
+		private void HandleJump()
+		{
 			if (_lastVisibleJump < _controller.InterpolatedJumpCount)
 			{
 				_animator.SetTrigger("Jump");
@@ -46,8 +104,6 @@ namespace Animations.AnimatorStateSynchronization
 			}
 
 			_lastVisibleJump = _controller.InterpolatedJumpCount;
-
-			//_animator.SetFloat("Speed", _controller.InterpolatedSpeed);
 		}
 	}
 }
