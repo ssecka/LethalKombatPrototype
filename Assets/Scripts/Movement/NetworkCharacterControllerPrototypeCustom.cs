@@ -387,4 +387,10 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     #endregion
 
     #endregion
+
+    public void KnockOut()
+    {
+        // TODO: Despawn this entitiy and send restart request to host
+        
+    }
 }
