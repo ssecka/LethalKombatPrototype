@@ -5,5 +5,6 @@
     Jab = 2,
     Sidekick = 3,
     Hook = 4,
-    
+    Lowkick = 5,
+    FireBall = 6,
 }

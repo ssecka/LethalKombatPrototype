@@ -10,7 +10,7 @@ namespace Animations.AnimatorStateSynchronization
 
 		private NetworkCharacterControllerPrototypeCustom _controller;
 		private Animator _animator;
-		private int _lastVisibleJump, _lastVisibleJab, _lastVisibleHook,_lastVisibleKick;
+		private int _lastVisibleJump, _lastVisibleJab, _lastVisibleHook,_lastVisibleKick, _lastVisibleLowKick, _lastVisibleFireBall;
 
 		// NetworkBehaviour INTERFACE
 
@@ -45,6 +45,10 @@ namespace Animations.AnimatorStateSynchronization
 			HandleHook();
 
 			HandleKick();
+			
+			HandleLowKick();
+			
+			HandleFireBall();
 
 
 			//_animator.SetFloat("Speed", _controller.InterpolatedSpeed);
@@ -91,6 +95,33 @@ namespace Animations.AnimatorStateSynchronization
 			_lastVisibleJab = _controller.InterpolatedJabCount;
 
 		}
+		private void HandleLowKick()
+		{
+			if (_lastVisibleLowKick < _controller.InterpolatedLowKickCount)
+			{
+				_animator.SetTrigger("LowKic");
+			}
+			else if (_lastVisibleLowKick > _controller.InterpolatedLowKickCount)
+			{
+				//Cancel LowKick
+			}
+			_lastVisibleLowKick = _controller.InterpolatedLowKickCount;
+
+		}
+		private void HandleFireBall()
+		{
+			if (_lastVisibleFireBall < _controller.InterpolatedFireBallCount)
+			{
+				_animator.SetTrigger("FireBall");
+			}
+			else if (_lastVisibleFireBall > _controller.InterpolatedFireBallCount)
+			{
+				//Cancel FireBall
+			}
+			_lastVisibleFireBall = _controller.InterpolatedFireBallCount;
+
+		}
+		
 
 		private void HandleJump()
 		{

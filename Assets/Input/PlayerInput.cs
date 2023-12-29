@@ -89,6 +89,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LowKick"",
+                    ""type"": ""Button"",
+                    ""id"": ""451615e7-b9ff-4a66-83c3-57c7c03d479d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FireBall"",
+                    ""type"": ""Button"",
+                    ""id"": ""5a11848d-7e39-4b4f-9d3d-509cb7514a36"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -260,7 +278,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4e82b883-dd45-4be8-bbcf-e8e066b1df7e"",
-                    ""path"": ""<Joystick>/trigger"",
+                    ""path"": ""<Gamepad>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Joystick"",
@@ -348,7 +366,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""be9c55ad-f5e0-4bc9-9b60-eec881b4b7d0"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -397,6 +415,50 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Joystick"",
                     ""action"": ""Hook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cea1d2ae-0808-4981-9dfa-54b340efba4f"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LowKick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2eadcf2c-0fb0-4263-86c8-d3dbe850ad62"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LowKick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c158720-b4bd-4c90-ae39-e41a700dbfdc"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FireBall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""345c7fac-74a5-4245-9294-642a9ef754d7"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FireBall"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -991,6 +1053,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Hook = m_Player.FindAction("Hook", throwIfNotFound: true);
         m_Player_SideKick = m_Player.FindAction("SideKick", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
+        m_Player_LowKick = m_Player.FindAction("LowKick", throwIfNotFound: true);
+        m_Player_FireBall = m_Player.FindAction("FireBall", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1071,6 +1135,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Hook;
     private readonly InputAction m_Player_SideKick;
     private readonly InputAction m_Player_Block;
+    private readonly InputAction m_Player_LowKick;
+    private readonly InputAction m_Player_FireBall;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -1082,6 +1148,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Hook => m_Wrapper.m_Player_Hook;
         public InputAction @SideKick => m_Wrapper.m_Player_SideKick;
         public InputAction @Block => m_Wrapper.m_Player_Block;
+        public InputAction @LowKick => m_Wrapper.m_Player_LowKick;
+        public InputAction @FireBall => m_Wrapper.m_Player_FireBall;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1112,6 +1180,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Block.started += instance.OnBlock;
             @Block.performed += instance.OnBlock;
             @Block.canceled += instance.OnBlock;
+            @LowKick.started += instance.OnLowKick;
+            @LowKick.performed += instance.OnLowKick;
+            @LowKick.canceled += instance.OnLowKick;
+            @FireBall.started += instance.OnFireBall;
+            @FireBall.performed += instance.OnFireBall;
+            @FireBall.canceled += instance.OnFireBall;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1137,6 +1211,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Block.started -= instance.OnBlock;
             @Block.performed -= instance.OnBlock;
             @Block.canceled -= instance.OnBlock;
+            @LowKick.started -= instance.OnLowKick;
+            @LowKick.performed -= instance.OnLowKick;
+            @LowKick.canceled -= instance.OnLowKick;
+            @FireBall.started -= instance.OnFireBall;
+            @FireBall.performed -= instance.OnFireBall;
+            @FireBall.canceled -= instance.OnFireBall;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1326,6 +1406,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnHook(InputAction.CallbackContext context);
         void OnSideKick(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
+        void OnLowKick(InputAction.CallbackContext context);
+        void OnFireBall(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -40,6 +40,28 @@ public class AnimatorEventsHandler : MonoBehaviour
     public void HookDeactivateHitbox() => networkCharacterControllerPrototypeCustom.DeactivateHitBox();
     
     #endregion
+    
+    #region LowKick
+    
+    public void LowKickAnimationStarted() => networkCharacterControllerPrototypeCustom.AnimationStarted(InputAttackType.Lowkick);
+
+    public void LowKickActivateHitbox() => networkCharacterControllerPrototypeCustom.ActivateHitBox(InputAttackType.Lowkick);
+
+
+    public void LowKickDeActivateHitbox() => networkCharacterControllerPrototypeCustom.DeactivateHitBox();
+    
+    #endregion
+    
+    #region FireBall
+    
+    public void FireBallAnimationStarted() => networkCharacterControllerPrototypeCustom.AnimationStarted(InputAttackType.FireBall);
+
+    public void FireBallDamage() => networkCharacterControllerPrototypeCustom.ActivateHitBox(InputAttackType.FireBall);
+    
+    
+    #endregion
+    
+    
 
     public void BlockAttack()
     {

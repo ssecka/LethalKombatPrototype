@@ -67,6 +67,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "LowKick",
+                    "type": "Button",
+                    "id": "451615e7-b9ff-4a66-83c3-57c7c03d479d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FireBall",
+                    "type": "Button",
+                    "id": "5a11848d-7e39-4b4f-9d3d-509cb7514a36",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -238,7 +256,7 @@
                 {
                     "name": "",
                     "id": "4e82b883-dd45-4be8-bbcf-e8e066b1df7e",
-                    "path": "<Joystick>/trigger",
+                    "path": "<Gamepad>/dpad/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
@@ -326,7 +344,7 @@
                 {
                     "name": "",
                     "id": "be9c55ad-f5e0-4bc9-9b60-eec881b4b7d0",
-                    "path": "<Gamepad>/leftShoulder",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -375,6 +393,50 @@
                     "processors": "",
                     "groups": "Joystick",
                     "action": "Hook",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cea1d2ae-0808-4981-9dfa-54b340efba4f",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LowKick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2eadcf2c-0fb0-4263-86c8-d3dbe850ad62",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LowKick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0c158720-b4bd-4c90-ae39-e41a700dbfdc",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FireBall",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "345c7fac-74a5-4245-9294-642a9ef754d7",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FireBall",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

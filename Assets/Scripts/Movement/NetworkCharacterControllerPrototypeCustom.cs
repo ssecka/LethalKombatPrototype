@@ -44,6 +44,24 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private Interpolator<int> _hookCountInterpolator;
 
     #endregion
+    #region LowKick
+
+    [Networked, HideInInspector] public int LowKickCount { get; set; }
+
+    public int InterpolatedLowKickCount => _lowKickCountInterpolator.Value;
+
+    private Interpolator<int> _lowKickCountInterpolator;
+
+    #endregion
+    #region FireBall
+
+    [Networked, HideInInspector] public int FireBallCount { get; set; }
+
+    public int InterpolatedFireBallCount => _fireBallCountInterpolator.Value;
+
+    private Interpolator<int> _fireBallCountInterpolator;
+
+    #endregion
 
     #region Jump
 
@@ -66,6 +84,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private static readonly int FWalking = Animator.StringToHash("FWalking");
     private static readonly int BWalking = Animator.StringToHash("BWalking");
     private static readonly int BlockingID = Animator.StringToHash("Blocking");
+    private static readonly int LowKickID = Animator.StringToHash("LowKic");
+    private static readonly int FireBallID = Animator.StringToHash("FireBall");
     private static readonly int JumpID = Animator.StringToHash("Jump");
 
     #endregion
@@ -135,6 +155,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         _hookCountInterpolator = GetInterpolator<int>(nameof(HookCount));
         _kickCountInterpolator = GetInterpolator<int>(nameof(KickCount));
         _jumpCountInterpolator = GetInterpolator<int>(nameof(JumpCount));
+        _lowKickCountInterpolator = GetInterpolator<int>(nameof(LowKickCount));
+        _fireBallCountInterpolator = GetInterpolator<int>(nameof(FireBallCount));
     }
 
     public override void FixedUpdateNetwork()
@@ -217,6 +239,14 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             case InputAttackType.Hook:
                 HookCount++;
                 Debug.Log($"Increased Hook from {HookCount -1 } to {HookCount}");
+                break;
+            case InputAttackType.Lowkick:
+                LowKickCount++;
+                Debug.Log($"Increased LowKick from {LowKickCount -1 } to {LowKickCount}");
+                break;
+            case InputAttackType.FireBall:
+                FireBallCount++;
+                Debug.Log($"Increased FireBall from {FireBallCount -1 } to {FireBallCount}");
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
@@ -367,11 +397,15 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 damage = 100;
                 break;
             case InputAttackType.Sidekick:
-                _currentActiveHitPoint = leftLegAttackPoint.position;
+                _currentActiveHitPoint = rightLegAttackPoint.position;
                 damage = 200;
                 break;
             case InputAttackType.Hook:
                 _currentActiveHitPoint = rightHandAttackPoint.position;
+                damage = 100;
+                break;
+            case InputAttackType.Lowkick:
+                _currentActiveHitPoint = leftLegAttackPoint.position;
                 damage = 100;
                 break;
             default:

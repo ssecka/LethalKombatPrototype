@@ -10,13 +10,15 @@ public class NetworkMovementHandler : NetworkBehaviour
     private InputAttackType _lastAnimationInput = 0;
     private bool _proxyTiggered, _hostTriggered;
 
-    private int _lastVisibleJump, _lastVisibleJab, _lastVisibleKick, _lastVisibleHook;
+    private int _lastVisibleJump, _lastVisibleJab, _lastVisibleKick, _lastVisibleHook, _lastVisibleLowKick, _lastVisibleFireBall;
     
     #region AnimationIDs
 
     private static readonly int SideKickID = Animator.StringToHash("SideKick");
     private static readonly int HookID = Animator.StringToHash("Punch");
     private static readonly int JabID = Animator.StringToHash("Jab");
+    private static readonly int LowKickID = Animator.StringToHash("LowKic");
+    private static readonly int FireBallID = Animator.StringToHash("FireBall");
     private static readonly int FWalking = Animator.StringToHash("FWalking");
     private static readonly int BWalking = Animator.StringToHash("BWalking");
     private static readonly int BlockingID = Animator.StringToHash("Blocking");
@@ -49,6 +51,8 @@ public class NetworkMovementHandler : NetworkBehaviour
         var jabCount =  useInterpolation ?  controller.InterpolatedJabCount : controller.JabCount;
         var hookCount = useInterpolation ?  controller.InterpolatedHookCount : controller.HookCount;
         var kickCount = useInterpolation ?  controller.InterpolatedKickCount : controller.KickCount;
+        var lowKickCount = useInterpolation ?  controller.InterpolatedLowKickCount : controller.LowKickCount;
+        var fireBallCount = useInterpolation ? controller.InterpolatedFireBallCount : controller.FireBallCount;
         var jumpCount = useInterpolation ?  controller.InterpolatedJumpCount : controller.JumpCount;
         
         if (_lastVisibleJab < jabCount)
@@ -69,11 +73,15 @@ public class NetworkMovementHandler : NetworkBehaviour
             _lastVisibleKick = controller.KickCount;
         }
 
-        if (_lastVisibleJump < jumpCount)
+        if (_lastVisibleLowKick < lowKickCount)
         {
-            controller.Jump();
-            //_networkAnimator.SetTrigger(JumpID, true);
-            _lastVisibleJump = controller.JumpCount;
+            _networkAnimator.SetTrigger(LowKickID,true);
+            _lastVisibleLowKick = controller.LowKickCount;
+        }
+        if (_lastVisibleFireBall < fireBallCount)
+        {
+            _networkAnimator.SetTrigger(FireBallID,true);
+            _lastVisibleFireBall = controller.FireBallCount;
         }
     }
 }

@@ -1782,7 +1782,19 @@ MonoBehaviour:
     m_ActionId: 7b9f2bea-0e3b-453a-b542-3d03deba9995
     m_ActionName: Player/SideKick[/Mouse/rightButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4237744938786626837}
+        m_TargetAssemblyTypeName: CharacterInputHandler, Assembly-CSharp
+        m_MethodName: OnBlock
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: dc039c9e-2c87-485d-9e87-202f4f2751eb
     m_ActionName: Player/Block[/Keyboard/x]
   - m_PersistentCalls:
@@ -1825,6 +1837,38 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 3fa521f0-7238-4b27-bb8c-167b408e378a
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4237744938786626837}
+        m_TargetAssemblyTypeName: CharacterInputHandler, Assembly-CSharp
+        m_MethodName: OnLowKick
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 451615e7-b9ff-4a66-83c3-57c7c03d479d
+    m_ActionName: Player/LowKick
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4237744938786626837}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5a11848d-7e39-4b4f-9d3d-509cb7514a36
+    m_ActionName: Player/FireBall
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

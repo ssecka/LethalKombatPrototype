@@ -7,6 +7,7 @@ using DefaultNamespace;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using ThreadPriority = System.Threading.ThreadPriority;
 
 // ReSharper disable InconsistentNaming
@@ -56,6 +57,7 @@ public class Movement : MonoBehaviour
     #endregion
 
     public GameObject hitEffect;
+    [FormerlySerializedAs("fireBalll")] public GameObject fireBall;
     private HitFreezeSystem _hitFreezeSystem;
     private Vector2 _movDir = Vector2.zero;
     private List<InputAction> _toBeBlocked;
@@ -67,9 +69,10 @@ public class Movement : MonoBehaviour
     public static FusionConnection _fusionConnection;
     private bool _attackAllowed = true;
     private bool[] _allowTaskCreation = { true, true };
-    private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit;
+    private bool _jabAlreadyHit, _hookAlreadyHit, _sideKickAlreadyHit, _lowKickAlreadyHit;
     private int _layerIndex;
     private EAttackType _nextAttackType;
+    
 
     private Thread[] _threads;
     private bool[] _sleeps = {true, true};
@@ -502,6 +505,99 @@ public class Movement : MonoBehaviour
         _playerStats.IsBlocking = state;
     }
 
+    #endregion
+    
+    
+    #region LowKick
+
+    /// <summary>
+    /// Hotkey: Button East
+    /// </summary>
+    /// <param name="context"></param>
+    public void LowKick(InputAction.CallbackContext context)
+    {
+        //Blocking --> Dont allow other action meanwhile.
+        if (_isBlocking) return;
+
+        if (!IsNextAttackAllowed()) return;
+        _attackAllowed = false;
+
+        GeneralFunctions.PrintDebugStatement("SideKick");
+        _animator.SetTrigger(SideKickID);
+    }
+
+    public void LowKickAnimationStarted()
+    {
+        _fusionConnection.PlaySound(EAttackType.LowKick, ref _soundEffects);
+    }
+
+    public void LowKickActivateHitbox()
+    {
+        var hitTargets = Physics.OverlapSphere(_rightlegAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+        var attackType = EAttackType.LowKickHit;
+
+        for (var index = 0; index < hitTargets.Length && !_lowKickAlreadyHit; index++)
+        {
+            var hitTarget = hitTargets[index];
+            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
+                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
+            {
+                _lowKickAlreadyHit = true;
+                Instantiate(hitEffect, _leftlegAttackPoint.position, Quaternion.identity);
+                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
+
+                otherPlayer.TakeDamage(70, animator, ref attackType, 4f);
+
+                _fusionConnection.PlaySound(attackType, ref _soundEffects);
+
+                _hitFreezeSystem.Freeze();
+                break;
+            }
+        }
+    }
+
+    public void LowKickDeactivateHitbox()
+    {
+        _lowKickAlreadyHit = false;
+    }
+
+    #endregion
+    
+    #region FireBall
+    
+    public void FireBallAnimationStarted()
+    {
+        _fusionConnection.PlaySound(EAttackType.LowKick, ref _soundEffects);
+            Instantiate(fireBall, _righthandAttackPoint.position, Quaternion.identity);
+            fireBall.transform.Translate(Vector3.forward.x,0 , Time.deltaTime);
+    }
+
+    public void FireBallDamage()
+    {
+        var hitTargets = Physics.OverlapSphere(_righthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+        var attackType = EAttackType.FireBallHit;
+
+        for (var index = 0; index < hitTargets.Length; index++)
+        {
+            var hitTarget = hitTargets[index];
+            if (hitTarget.TryGetComponent(out PlayerStats otherPlayer) && (otherPlayer.GetTeam() != _playerNumber) &&
+                hitTarget.transform.gameObject.TryGetComponent(out Animator animator))
+            {
+                
+                Instantiate(hitEffect, fireBall.transform.position, Quaternion.identity);
+                Destroy(fireBall);
+                GeneralFunctions.PrintDebugStatement("We hit the other Player!");
+
+                otherPlayer.TakeDamage(70, animator, ref attackType, 4f);
+
+                _fusionConnection.PlaySound(attackType, ref _soundEffects);
+
+                _hitFreezeSystem.Freeze();
+                break;
+            }
+        }
+    }
+    
     #endregion
 
     #endregion

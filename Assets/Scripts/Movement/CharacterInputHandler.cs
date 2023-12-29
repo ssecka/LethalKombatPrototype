@@ -74,6 +74,14 @@ public class CharacterInputHandler : MonoBehaviour
         if (!context.started) return;
         _inputAttackType = InputAttackType.Hook;
     }
+    public void OnLowKick(InputAction.CallbackContext context)
+    {
+        // Only trigger on "keyDown"
+
+        if (!context.started) return;
+        _inputAttackType = InputAttackType.Lowkick;
+    }
+
 
     #endregion
 
