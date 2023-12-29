@@ -6,7 +6,6 @@ using UnityEngine.Serialization;
 
 public class AnimatorEventsHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
     public NetworkCharacterControllerPrototypeCustom networkCharacterControllerPrototypeCustom;
 
     #region Jab
