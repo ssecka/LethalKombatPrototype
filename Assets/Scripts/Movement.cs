@@ -567,14 +567,14 @@ public class Movement : MonoBehaviour
     
     public void FireBallAnimationStarted()
     {
-        _fusionConnection.PlaySound(EAttackType.LowKick, ref _soundEffects);
+        _fusionConnection.PlaySound(EAttackType.FireBall, ref _soundEffects);
             Instantiate(fireBall, _righthandAttackPoint.position, Quaternion.identity);
             fireBall.transform.Translate(Vector3.forward.x,0 , Time.deltaTime);
     }
 
     public void FireBallDamage()
     {
-        var hitTargets = Physics.OverlapSphere(_righthandAttackPoint.position, ATTACK_TOLERANCE_RANGE);
+        var hitTargets = Physics.OverlapSphere(fireBall.transform.position, ATTACK_TOLERANCE_RANGE);
         var attackType = EAttackType.FireBallHit;
 
         for (var index = 0; index < hitTargets.Length; index++)

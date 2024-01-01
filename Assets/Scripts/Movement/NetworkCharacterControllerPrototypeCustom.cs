@@ -127,7 +127,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     
     #endregion
     
-    public Transform leftHandAttackPoint, rightHandAttackPoint, leftLegAttackPoint, rightLegAttackPoint;
+    public Transform leftHandAttackPoint, rightHandAttackPoint, leftLegAttackPoint, rightLegAttackPoint, fireBallAttackPoint;
 
     private long _lastAttackQueued = 0;
     public bool _canQueueAttack { get; set; } = true;
@@ -444,6 +444,10 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 break;
             case InputAttackType.Lowkick:
                 _currentActiveHitPoint = leftLegAttackPoint.position;
+                damage = 100;
+                break;
+            case InputAttackType.FireBall:
+                _currentActiveHitPoint = fireBallAttackPoint.position;
                 damage = 100;
                 break;
             default:
