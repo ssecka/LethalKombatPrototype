@@ -10,7 +10,9 @@ public class NetworkMovementHandler : NetworkBehaviour
     private InputAttackType _lastAnimationInput = 0;
     private bool _proxyTiggered, _hostTriggered;
 
-    private int _lastVisibleJump, _lastVisibleJab, _lastVisibleKick, _lastVisibleHook, _lastVisibleLowKick, _lastVisibleFireBall;
+    private int _lastVisibleJump, _lastVisibleJab, _lastVisibleKick, _lastVisibleHook, _lastVisibleLowKick, _lastVisibleFireBall, _lastVisibleBlock;
+
+    private bool _isBlocking;
     
     #region AnimationIDs
 
@@ -83,5 +85,9 @@ public class NetworkMovementHandler : NetworkBehaviour
             _networkAnimator.SetTrigger(FireBallID,true);
             _lastVisibleFireBall = controller.FireBallCount;
         }
+        
+        
+        
+        
     }
 }

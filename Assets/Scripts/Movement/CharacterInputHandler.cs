@@ -31,12 +31,14 @@ public class CharacterInputHandler : MonoBehaviour
     {
         _moveInputVector = context.ReadValue<Vector2>();
         _moveInputVector.y = 0;
+        _inputAttackType = InputAttackType.None;
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
         if (!context.started) return;
         _jumpWasPressed = true;
+        _inputAttackType = InputAttackType.None;
     }
 
     #endregion
@@ -46,6 +48,7 @@ public class CharacterInputHandler : MonoBehaviour
     public void OnBlock(InputAction.CallbackContext context)
     {
         _inputAttackType = InputAttackType.Block;
+        if (context.canceled) _inputAttackType = InputAttackType.None;
     }
 
     #endregion
@@ -93,7 +96,7 @@ public class CharacterInputHandler : MonoBehaviour
         _jumpWasPressed = false;
 
         networkInputData._InputAttackType = _inputAttackType;
-        _inputAttackType = InputAttackType.None;
+        _inputAttackType = _inputAttackType == InputAttackType.Block ? InputAttackType.Block : InputAttackType.None;
 
         return networkInputData;
     }

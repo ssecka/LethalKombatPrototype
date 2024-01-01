@@ -83,7 +83,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Block"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""dc039c9e-2c87-485d-9e87-202f4f2751eb"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -381,6 +381,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Joystick"",
+                    ""action"": ""Block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f7c56f7-d507-40f3-b29b-23d09d0d94b6"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

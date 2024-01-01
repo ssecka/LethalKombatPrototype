@@ -50,8 +50,36 @@ namespace Animations.AnimatorStateSynchronization
 			
 			HandleFireBall();
 
+			HandleBlock();
+
+			HandleMovement();
 
 			//_animator.SetFloat("Speed", _controller.InterpolatedSpeed);
+		}
+
+		private void HandleMovement()
+		{
+			if (_controller.InterpolatedSpeed > 0)
+			{
+				_animator.SetBool("FWalking",true);
+				_animator.SetBool("BWalking",false);
+			}
+			if (_controller.InterpolatedSpeed < 0)
+			{
+				_animator.SetBool("FWalking",false);
+				_animator.SetBool("BWalking",true);
+			}
+
+			if (_controller.InterpolatedSpeed == 0)
+			{
+				_animator.SetBool("FWalking",false);
+				_animator.SetBool("BWalking",false);
+			}
+		}
+
+		private void HandleBlock()
+		{
+			_animator.SetBool("Blocking", _controller.BlockState);
 		}
 
 		private void HandleKick()
