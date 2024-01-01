@@ -72,7 +72,7 @@ namespace Animations.AnimatorStateSynchronization
 		{
 			if (_lastVisibleHook < _controller.InterpolatedHookCount)
 			{
-				_animator.SetTrigger("Hook");
+				_animator.SetTrigger("Punch");
 			}
 			else if (_lastVisibleHook > _controller.InterpolatedHookCount)
 			{
