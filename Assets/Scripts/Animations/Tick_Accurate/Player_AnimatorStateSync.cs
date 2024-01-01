@@ -99,7 +99,7 @@ namespace Animations.AnimatorStateSynchronization
 		{
 			if (_lastVisibleLowKick < _controller.InterpolatedLowKickCount)
 			{
-				_animator.SetTrigger("LowKic");
+				_animator.SetTrigger("LowKick");
 			}
 			else if (_lastVisibleLowKick > _controller.InterpolatedLowKickCount)
 			{
