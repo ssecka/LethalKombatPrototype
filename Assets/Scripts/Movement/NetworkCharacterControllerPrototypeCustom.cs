@@ -17,8 +17,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     #region Jab
 
-    [Networked, HideInInspector]
-    public int JabCount { get; set; }
+    [Networked, HideInInspector] public int JabCount { get; set; }
 
     public int InterpolatedJabCount => _jabCountInterpolator.Value;
 
@@ -44,7 +43,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private Interpolator<int> _hookCountInterpolator;
 
     #endregion
-    
+
     #region LowKick
 
     [Networked, HideInInspector] public int LowKickCount { get; set; }
@@ -54,7 +53,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private Interpolator<int> _lowKickCountInterpolator;
 
     #endregion
-    
+
     #region FireBall
 
     [Networked, HideInInspector] public int FireBallCount { get; set; }
@@ -73,26 +72,31 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private Interpolator<int> _jumpCountInterpolator;
 
     #endregion
-    
+
     #region Block
     
-    public bool BlockState { get; set; }
+    /*
+     * Fusion cant handle bool States so we need to use int  (1 is true and 0 is false)
+     * :)))))))))))))
+     */
     
-    public bool InterpolatedBlockState => _blockStateInterpolator.Value;
-    private Interpolator<bool> _blockStateInterpolator;
     
+    [Networked, HideInInspector] public int BlockState { get; set; } 
+
+    public int InterpolatedBlockState => _blockStateInterpolator.Value;
+    private Interpolator<int> _blockStateInterpolator;
+
     #endregion
-    
+
     #region Speed
-    
+
     [Networked, HideInInspector] public float SpeedValue { get; set; }
 
     public float InterpolatedSpeed => _speedInterpolator.Value;
     private Interpolator<float> _speedInterpolator;
 
-    
     #endregion
-    
+
 
     private InputAttackType _lastAnimationInput = 0;
 
@@ -113,7 +117,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     #endregion
 
     #region Character Specifications
-    
+
     [Header("Character Controller Settings")]
     public float gravity = -20.0f;
 
@@ -122,12 +126,14 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public float braking = 10.0f;
     public float maxSpeed = 2.0f;
     public float rotationSpeed = 15.0f;
-    
-    
-    
+
     #endregion
-    
-    public Transform leftHandAttackPoint, rightHandAttackPoint, leftLegAttackPoint, rightLegAttackPoint, fireBallAttackPoint;
+
+    public Transform leftHandAttackPoint,
+        rightHandAttackPoint,
+        leftLegAttackPoint,
+        rightLegAttackPoint,
+        fireBallAttackPoint;
 
     private long _lastAttackQueued = 0;
     public bool _canQueueAttack { get; set; } = true;
@@ -136,7 +142,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private InputAttackType _lastNetworkInput;
 
     private int _disableBlockCounter = 0;
-    
+
     private List<LagCompensatedHit> _lagCompensatedHits = new List<LagCompensatedHit>();
     private PlayerRef _thrownByPlayerRef;
     Vector3 _currentActiveHitPoint = Vector3.zero;
@@ -177,11 +183,13 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         // Caveat: this is needed to initialize the Controller's state and avoid unwanted spikes in its perceived velocity
         Controller.Move(transform.position);
 
+        SpeedValue = 0;
+        
         _jabCountInterpolator = GetInterpolator<int>(nameof(JabCount));
         _hookCountInterpolator = GetInterpolator<int>(nameof(HookCount));
         _kickCountInterpolator = GetInterpolator<int>(nameof(KickCount));
         _jumpCountInterpolator = GetInterpolator<int>(nameof(JumpCount));
-        _blockStateInterpolator = GetInterpolator<bool>(nameof(BlockState));
+        _blockStateInterpolator = GetInterpolator<int>(nameof(BlockState));
         _lowKickCountInterpolator = GetInterpolator<int>(nameof(LowKickCount));
         _fireBallCountInterpolator = GetInterpolator<int>(nameof(FireBallCount));
         _speedInterpolator = GetInterpolator<float>(nameof(SpeedValue));
@@ -222,19 +230,25 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
         if (_checkForHits)
         {
-            var hitCount = Runner.LagCompensation.OverlapSphere(transform.position, 0.25f, _thrownByPlayerRef, _lagCompensatedHits);
+            var hitCount = Runner.LagCompensation.OverlapSphere(
+                _currentActiveHitPoint,
+                0.25f,
+                _thrownByPlayerRef,
+                _lagCompensatedHits, options: HitOptions.IncludePhysX);
 
+
+            print("Hits LagCompenstation: " + hitCount);
             for (int i = 0; i < hitCount; i++)
             {
-                HPHandler hpHandler = _lagCompensatedHits[i].Hitbox.transform.root.GetComponentInChildren<HPHandler>();
+                HPHandler hpHandler = _lagCompensatedHits[i].GameObject.transform.root
+                    .GetComponentInChildren<HPHandler>();
                 if (hpHandler == null) continue;
-                
+
                 hpHandler.OnHitTaken(250);
                 _checkForHits = false;
                 break;
             }
         }
-
     }
 
 
@@ -248,15 +262,18 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             _disableBlockCounter++;
             if (_disableBlockCounter > 15)
             {
-                BlockState = false;
+                BlockState = 0;
             }
+
             return;
-        };
+        }
+
+        ;
 
         _disableBlockCounter = 0;
         if (inputAttackType is InputAttackType.Block)
         {
-            BlockState = true;
+            BlockState = 1;
             Debug.Log($"BlockState changed to true.");
             return;
         }
@@ -268,33 +285,30 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         {
             case InputAttackType.Jab:
                 JabCount++;
-                Debug.Log($"Increased Jab from {JabCount -1 } to {JabCount}");
+                Debug.Log($"Increased Jab from {JabCount - 1} to {JabCount}");
                 break;
             case InputAttackType.Sidekick:
                 KickCount++;
-                Debug.Log($"Increased Kick from {KickCount -1 } to {KickCount}");
+                Debug.Log($"Increased Kick from {KickCount - 1} to {KickCount}");
                 break;
             case InputAttackType.Hook:
                 HookCount++;
-                Debug.Log($"Increased Hook from {HookCount -1 } to {HookCount}");
+                Debug.Log($"Increased Hook from {HookCount - 1} to {HookCount}");
                 break;
             case InputAttackType.Lowkick:
                 LowKickCount++;
-                Debug.Log($"Increased LowKick from {LowKickCount -1 } to {LowKickCount}");
+                Debug.Log($"Increased LowKick from {LowKickCount - 1} to {LowKickCount}");
                 break;
             case InputAttackType.FireBall:
                 FireBallCount++;
-                Debug.Log($"Increased FireBall from {FireBallCount -1 } to {FireBallCount}");
+                Debug.Log($"Increased FireBall from {FireBallCount - 1} to {FireBallCount}");
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
         }
 
-        if (inputAttackType != InputAttackType.Block)
-        {
-            BlockState = false;
-            Debug.Log($"Blocking State changed to false");
-        }
+        BlockState = 0;
+        Debug.Log($"Blocking State changed to false");
     }
 
     #region Cached
@@ -340,7 +354,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             newVel.y += overrideImpulse ?? jumpImpulse;
             Velocity = newVel;
             JumpCount++;
-           // _networkAnimator.SetTrigger(JumpID, true);
+            // _networkAnimator.SetTrigger(JumpID, true);
         }
     }
 
@@ -385,8 +399,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         Controller.Move(moveVelocity * deltaTime);
 
         SpeedValue = moveVelocity.x * (transform.eulerAngles.y >= 269 ? -1 : 1);
-        
-        
+
+
         Velocity = (transform.position - previousPos) * Runner.Simulation.Config.TickRate;
         IsGrounded = Controller.isGrounded;
     }
@@ -402,12 +416,12 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     #region Animations
 
     #region Start and end
-    
+
     public void AnimationStarted(InputAttackType attackType)
     {
         _canQueueAttack = false;
     }
-    
+
     public void DeactivateHitBox()
     {
         _attackAlreadyHit = false;
@@ -415,7 +429,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     }
 
     #endregion
-    
+
 
     #region ActivateHitBox
 
@@ -455,9 +469,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         }
 
         _checkForHits = true;
-        
-        #endregion
 
+        #endregion
     }
 
     #endregion
@@ -467,6 +480,5 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public void KnockOut()
     {
         // TODO: Despawn this entitiy and send restart request to host
-        
     }
 }

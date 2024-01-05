@@ -79,7 +79,7 @@ namespace Animations.AnimatorStateSynchronization
 
 		private void HandleBlock()
 		{
-			_animator.SetBool("Blocking", _controller.BlockState);
+			_animator.SetBool("Blocking", _controller.BlockState == 1);
 		}
 
 		private void HandleKick()
