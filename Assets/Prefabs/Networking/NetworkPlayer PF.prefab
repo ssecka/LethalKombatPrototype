@@ -1647,7 +1647,10 @@ MonoBehaviour:
   _JabCount: 0
   _KickCount: 0
   _HookCount: 0
+  _LowKickCount: 0
+  _FireBallCount: 0
   _JumpCount: 0
+  _SpeedValue: 0
   gravity: -20
   jumpImpulse: 8
   acceleration: 50
@@ -1658,6 +1661,7 @@ MonoBehaviour:
   rightHandAttackPoint: {fileID: 402390604025359787}
   leftLegAttackPoint: {fileID: 2440968017602588883}
   rightLegAttackPoint: {fileID: 3570434938185981218}
+  fireBallAttackPoint: {fileID: 8359245155246472833, guid: 404041cb678c9394d86b4203b6c97e0b, type: 3}
   _IsGrounded: 0
   _Velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &4237744938786626837
@@ -1856,12 +1860,12 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4237744938786626837}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+        m_TargetAssemblyTypeName: CharacterInputHandler, Assembly-CSharp
+        m_MethodName: OnFireBall
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1935,6 +1939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  fireBall: {fileID: 42436067684880362, guid: 404041cb678c9394d86b4203b6c97e0b, type: 3}
 --- !u!1 &4506338734718176353
 GameObject:
   m_ObjectHideFlags: 0

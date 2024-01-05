@@ -47,6 +47,7 @@ public class Movement : MonoBehaviour
     #region AnimationIDs
 
     private static readonly int SideKickID = Animator.StringToHash("SideKick");
+    private static readonly int FireBallID = Animator.StringToHash("FireBall");
     private static readonly int HookID = Animator.StringToHash("Punch");
     private static readonly int PunchID = Animator.StringToHash("Jab");
     private static readonly int FWalking = Animator.StringToHash("FWalking");
@@ -57,7 +58,7 @@ public class Movement : MonoBehaviour
     #endregion
 
     public GameObject hitEffect;
-    [FormerlySerializedAs("fireBalll")] public GameObject fireBall;
+    public GameObject fireBall;
     private HitFreezeSystem _hitFreezeSystem;
     private Vector2 _movDir = Vector2.zero;
     private List<InputAction> _toBeBlocked;
@@ -565,11 +566,24 @@ public class Movement : MonoBehaviour
     
     #region FireBall
     
-    public void FireBallAnimationStarted()
+    
+    public void FireBall(InputAction.CallbackContext context)
+    {
+        //Blocking --> Dont allow other action meanwhile.
+        if (_isBlocking) return;
+
+        if (!IsNextAttackAllowed()) return;
+        _attackAllowed = false;
+
+        GeneralFunctions.PrintDebugStatement("FireBall");
+        _animator.SetTrigger(FireBallID);
+    }
+    public void SpawnFireBall()
     {
         _fusionConnection.PlaySound(EAttackType.FireBall, ref _soundEffects);
             Instantiate(fireBall, _righthandAttackPoint.position, Quaternion.identity);
             fireBall.transform.Translate(Vector3.forward.x,0 , Time.deltaTime);
+            Debug.Log("Spawned Fireball");
     }
 
     public void FireBallDamage()
