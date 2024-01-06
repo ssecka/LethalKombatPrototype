@@ -1896,6 +1896,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  healthBarP1: {fileID: 3267286589678619930, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
+  healthBarP2: {fileID: 8925583856559373486, guid: e1cbc8c7dffc16c4a97e516c126c6d2c, type: 3}
 --- !u!114 &4497482234332226813
 MonoBehaviour:
   m_ObjectHideFlags: 0

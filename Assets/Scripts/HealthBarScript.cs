@@ -9,7 +9,7 @@ public class HealthBarScript : MonoBehaviour
     public Image Fill;
     private Gradient _gradient;
 
-    public void SetMaxHealth(int health, int playerNum)
+    public void SetMaxHealth(int health, string playerName)
     {
         _gradient ??= new();
 
@@ -25,11 +25,11 @@ public class HealthBarScript : MonoBehaviour
 
         _gradient.SetKeys(colors, alphas);
 
-        if (playerNum == 1)
+        if (playerName == "Host")
         {
             _healthBarObject = GameObject.Find("Canvas").transform.GetChild(0).gameObject;
         }
-        else if (playerNum == 2)
+        else if (playerName == "Client")
         {
             _healthBarObject = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
         }
@@ -53,14 +53,14 @@ public class HealthBarScript : MonoBehaviour
     }
 
 
-    public void SetHealth(int health, int playerNum)
+    public void SetHealth(int health, string playerName)
     {
         
-        if (playerNum == 1)
+        if (playerName == "Host")
         {
             _healthBarObject = GameObject.Find("Canvas").transform.GetChild(0).gameObject;
         }
-        else if (playerNum == 2)
+        else if (playerName == "Client")
         {
             _healthBarObject = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
         }

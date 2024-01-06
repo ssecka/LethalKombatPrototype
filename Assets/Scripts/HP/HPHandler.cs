@@ -21,7 +21,7 @@ public class HPHandler : NetworkBehaviour
     private void Start()
     {
         healthbBarScript = GetComponent<HealthBarScript>();
-        healthbBarScript.SetMaxHealth(STARTING_HP,_playerNum);
+        healthbBarScript.SetMaxHealth(STARTING_HP,transform.name);
         HP = STARTING_HP;
         isDead = false;
     }
@@ -40,7 +40,7 @@ public class HPHandler : NetworkBehaviour
         HP -= amount;
 
         Debug.Log($"{transform.name} took damage, HP left: {HP}");
-        healthbBarScript.SetHealth(HP, _playerNum);
+        healthbBarScript.SetHealth(HP, transform.name);
 
         if (HP <= 0)
         {
