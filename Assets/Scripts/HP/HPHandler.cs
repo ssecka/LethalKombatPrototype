@@ -14,14 +14,14 @@ public class HPHandler : NetworkBehaviour
     public bool isDead { get; set; }
     private bool isInit = false;
 
-    public HealthBarScript healthbBarScript;
+    public HealthBarScript healthBarScript;
     
     
 
     private void Start()
     {
-        healthbBarScript = GetComponent<HealthBarScript>();
-        healthbBarScript.SetMaxHealth(STARTING_HP,transform.name);
+        healthBarScript = GetComponent<HealthBarScript>();
+        healthBarScript.SetMaxHealth(STARTING_HP,transform.name);
         HP = STARTING_HP;
         isDead = false;
     }
@@ -40,7 +40,6 @@ public class HPHandler : NetworkBehaviour
         HP -= amount;
 
         Debug.Log($"{transform.name} took damage, HP left: {HP}");
-        healthbBarScript.SetHealth(HP, transform.name);
 
         if (HP <= 0)
         {
@@ -53,7 +52,10 @@ public class HPHandler : NetworkBehaviour
 
     private static void OnHPChanged(Changed<HPHandler> changed)
     {
+        //healthbBarScript.SetHealth(changed.Behaviour.HP, transform.name);
         Debug.Log($"OnHPChanged value {changed.Behaviour.HP}");
+        changed.Behaviour.healthBarScript.SetHealth(changed.Behaviour.HP, changed.Behaviour.transform.name);
+
     }
 
     private static void OnStateChanged(Changed<HPHandler> changed)
