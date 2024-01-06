@@ -11,6 +11,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 {
+    private const bool PRINT_COUNTERS = false;
+    
     #region Networked stuff
 
     private NetworkMecanimAnimator _networkAnimator;
@@ -244,23 +246,23 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 _lagCompensatedHits, options: HitOptions.IncludePhysX);
 
 
-            print("Hits LagCompenstation: " + hitCount);
+           // print("Hits LagCompenstation: " + hitCount);
             for (int i = 0; i < hitCount; i++)
             {
                 HPHandler hpHandler = _lagCompensatedHits[i].GameObject.transform.root
                     .GetComponentInChildren<HPHandler>();
                 if (hpHandler == null) continue;
 
-                var currentTime = DateTime.UtcNow.Ticks;
-                if (LastHitTimestamp + IMMUNITY_DURATION > currentTime)
-                {
-                    // print(LastHitTimestamp);
-                    // print(IMMUNITY_DURATION);
-                    // print(currentTime);
-                    break;
-                }
-
-                LastHitTimestamp = currentTime;
+                // var currentTime = DateTime.UtcNow.Ticks;
+                // if (LastHitTimestamp + IMMUNITY_DURATION > currentTime)
+                // {
+                //     // print(LastHitTimestamp);
+                //     // print(IMMUNITY_DURATION);
+                //     // print(currentTime);
+                //     break;
+                // }
+                //
+                // LastHitTimestamp = currentTime;
                 
                 hpHandler.OnHitTaken(250);
                 _checkForHits = false;
@@ -292,7 +294,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         if (inputAttackType is InputAttackType.Block)
         {
             BlockState = 1;
-            Debug.Log($"BlockState changed to true.");
+            if(PRINT_COUNTERS)Debug.Log($"BlockState changed to true.");
             return;
         }
 
@@ -303,30 +305,30 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         {
             case InputAttackType.Jab:
                 JabCount++;
-                Debug.Log($"Increased Jab from {JabCount - 1} to {JabCount}");
+                if(PRINT_COUNTERS)Debug.Log($"Increased Jab from {JabCount - 1} to {JabCount}");
                 break;
             case InputAttackType.Sidekick:
                 KickCount++;
-                Debug.Log($"Increased Kick from {KickCount - 1} to {KickCount}");
+                if(PRINT_COUNTERS)Debug.Log($"Increased Kick from {KickCount - 1} to {KickCount}");
                 break;
             case InputAttackType.Hook:
                 HookCount++;
-                Debug.Log($"Increased Hook from {HookCount - 1} to {HookCount}");
+                if(PRINT_COUNTERS)Debug.Log($"Increased Hook from {HookCount - 1} to {HookCount}");
                 break;
             case InputAttackType.Lowkick:
                 LowKickCount++;
-                Debug.Log($"Increased LowKick from {LowKickCount - 1} to {LowKickCount}");
+                if(PRINT_COUNTERS)Debug.Log($"Increased LowKick from {LowKickCount - 1} to {LowKickCount}");
                 break;
             case InputAttackType.FireBall:
                 FireBallCount++;
-                Debug.Log($"Increased FireBall from {FireBallCount - 1} to {FireBallCount}");
+                if(PRINT_COUNTERS)Debug.Log($"Increased FireBall from {FireBallCount - 1} to {FireBallCount}");
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
         }
 
         BlockState = 0;
-        Debug.Log($"Blocking State changed to false");
+        if(PRINT_COUNTERS)Debug.Log($"Blocking State changed to false");
     }
 
     #region Cached
@@ -455,6 +457,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     {
         #region Determine Physical HitArea and damage
 
+        print("Activating hitbox for: " + inputAttackType);
+        
         short damage = 0;
         switch (inputAttackType)
         {
