@@ -5,15 +5,14 @@ using Fusion;
 public class HPHandler : NetworkBehaviour
 {
     private const short STARTING_HP = 1_000;
-    
     [Networked(OnChanged = nameof(OnHPChanged))]
     private short HP { get; set; } // We only use short for performance
     
-    [Networked(OnChanged = nameof(OnStateChanged))]
+    [Networked(OnChanged = nameof(OnStateChanged)), HideInInspector]
     public bool isDead { get; set; }
-
     private bool isInit = false;
-
+    
+    
 
     private void Start()
     {

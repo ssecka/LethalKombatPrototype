@@ -1548,6 +1548,7 @@ GameObject:
   - component: {fileID: 4497482234332226813}
   - component: {fileID: -3851714367499324959}
   - component: {fileID: 4824950906500580323}
+  - component: {fileID: -154143930971649953}
   m_Layer: 0
   m_Name: NetworkPlayer PF
   m_TagString: Player1
@@ -1615,6 +1616,7 @@ MonoBehaviour:
   - {fileID: 2586309976803595032}
   - {fileID: -3851714367499324959}
   - {fileID: 4824950906500580323}
+  - {fileID: -154143930971649953}
   SimulationBehaviours: []
 --- !u!114 &-2744353675627411790
 MonoBehaviour:
@@ -1650,6 +1652,7 @@ MonoBehaviour:
   _LowKickCount: 0
   _FireBallCount: 0
   _JumpCount: 0
+  _BlockState: 0
   _SpeedValue: 0
   gravity: -20
   jumpImpulse: 8
@@ -1939,7 +1942,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  fireBall: {fileID: 42436067684880362, guid: 404041cb678c9394d86b4203b6c97e0b, type: 3}
+--- !u!114 &-154143930971649953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4417418228734897978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b152d77ed5b14fbeab9e33adbe1bc358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  _isDead: 0
 --- !u!1 &4506338734718176353
 GameObject:
   m_ObjectHideFlags: 0

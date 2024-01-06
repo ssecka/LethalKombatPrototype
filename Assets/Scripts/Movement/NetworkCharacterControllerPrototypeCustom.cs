@@ -15,6 +15,9 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     private NetworkMecanimAnimator _networkAnimator;
 
+    [Networked]
+    public long LastHitTimestamp { get; set; }  
+    
     #region Jab
 
     [Networked, HideInInspector] public int JabCount { get; set; }
@@ -146,6 +149,9 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private List<LagCompensatedHit> _lagCompensatedHits = new List<LagCompensatedHit>();
     private PlayerRef _thrownByPlayerRef;
     Vector3 _currentActiveHitPoint = Vector3.zero;
+
+    private const long IMMUNITY_DURATION = 50 * TimeSpan.TicksPerMillisecond;
+    
     private bool _checkForHits;
 
 
@@ -184,6 +190,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         Controller.Move(transform.position);
 
         SpeedValue = 0;
+        LastHitTimestamp = 0;
         
         _jabCountInterpolator = GetInterpolator<int>(nameof(JabCount));
         _hookCountInterpolator = GetInterpolator<int>(nameof(HookCount));
@@ -244,6 +251,17 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                     .GetComponentInChildren<HPHandler>();
                 if (hpHandler == null) continue;
 
+                var currentTime = DateTime.UtcNow.Ticks;
+                if (LastHitTimestamp + IMMUNITY_DURATION > currentTime)
+                {
+                    // print(LastHitTimestamp);
+                    // print(IMMUNITY_DURATION);
+                    // print(currentTime);
+                    break;
+                }
+
+                LastHitTimestamp = currentTime;
+                
                 hpHandler.OnHitTaken(250);
                 _checkForHits = false;
                 break;
