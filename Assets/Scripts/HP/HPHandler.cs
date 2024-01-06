@@ -27,25 +27,25 @@ public class HPHandler : NetworkBehaviour
 
         HP -= amount;
 
-        Debug.Log($"{Time.time} {transform.name} took damage, HP left: {HP}");
+        Debug.Log($"{transform.name} took damage, HP left: {HP}");
 
         if (HP <= 0)
         {
             isDead = true;
             
-            Debug.Log($"{Time.time} {transform.name} is dead.");
+            Debug.Log($"{transform.name} is dead.");
 
         }
     }
 
     private static void OnHPChanged(Changed<HPHandler> changed)
     {
-        Debug.Log($"{Time.time} OnHPChanged value {changed.Behaviour.HP}");
+        Debug.Log($"OnHPChanged value {changed.Behaviour.HP}");
     }
 
     private static void OnStateChanged(Changed<HPHandler> changed)
     {
-        Debug.Log($"{Time.time} OnStateChanged value {changed.Behaviour.isDead}");
+        Debug.Log($"OnStateChanged value {changed.Behaviour.isDead}");
 
     }
     
