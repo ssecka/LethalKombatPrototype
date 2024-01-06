@@ -25,6 +25,12 @@ public class HPHandler : NetworkBehaviour
     {
         if (isDead) return; // -> we deadge
 
+        if (isBlocking)
+        {
+            amount /= 10;
+            print("BLOCKED!");
+        }
+        
         HP -= amount;
 
         Debug.Log($"{transform.name} took damage, HP left: {HP}");

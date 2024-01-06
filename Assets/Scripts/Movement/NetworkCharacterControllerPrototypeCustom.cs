@@ -11,7 +11,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 {
-    private const bool PRINT_COUNTERS = false;
+    private const bool PRINT_DEBUGS = false;
     
     #region Networked stuff
 
@@ -228,7 +228,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             // Cache last input 
             if (networkInputData._InputAttackType != 0)
             {
-                Debug.Log($"Changed last input from {_lastNetworkInput} to {networkInputData._InputAttackType}");
+                if(PRINT_DEBUGS)Debug.Log($"Changed last input from {_lastNetworkInput} to {networkInputData._InputAttackType}");
                 _lastNetworkInput = networkInputData._InputAttackType;
             }
 
@@ -249,22 +249,19 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
            // print("Hits LagCompenstation: " + hitCount);
             for (int i = 0; i < hitCount; i++)
             {
-                HPHandler hpHandler = _lagCompensatedHits[i].GameObject.transform.root
+                var transformRoot = _lagCompensatedHits[i].GameObject.transform.root;
+                HPHandler hpHandler = transformRoot
                     .GetComponentInChildren<HPHandler>();
                 if (hpHandler == null) continue;
 
-                // var currentTime = DateTime.UtcNow.Ticks;
-                // if (LastHitTimestamp + IMMUNITY_DURATION > currentTime)
-                // {
-                //     // print(LastHitTimestamp);
-                //     // print(IMMUNITY_DURATION);
-                //     // print(currentTime);
-                //     break;
-                // }
-                //
-                // LastHitTimestamp = currentTime;
+                var otherPlayer = transformRoot.GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
                 
-                hpHandler.OnHitTaken(250);
+                if(otherPlayer == null) continue;
+                
+                var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
+                
+                
+                hpHandler.OnHitTaken(250,otherPlayerIsBlocking);
                 _checkForHits = false;
                 break;
             }
@@ -294,7 +291,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         if (inputAttackType is InputAttackType.Block)
         {
             BlockState = 1;
-            if(PRINT_COUNTERS)Debug.Log($"BlockState changed to true.");
+            if(PRINT_DEBUGS)Debug.Log($"BlockState changed to true.");
             return;
         }
 
@@ -305,30 +302,30 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         {
             case InputAttackType.Jab:
                 JabCount++;
-                if(PRINT_COUNTERS)Debug.Log($"Increased Jab from {JabCount - 1} to {JabCount}");
+                if(PRINT_DEBUGS)Debug.Log($"Increased Jab from {JabCount - 1} to {JabCount}");
                 break;
             case InputAttackType.Sidekick:
                 KickCount++;
-                if(PRINT_COUNTERS)Debug.Log($"Increased Kick from {KickCount - 1} to {KickCount}");
+                if(PRINT_DEBUGS)Debug.Log($"Increased Kick from {KickCount - 1} to {KickCount}");
                 break;
             case InputAttackType.Hook:
                 HookCount++;
-                if(PRINT_COUNTERS)Debug.Log($"Increased Hook from {HookCount - 1} to {HookCount}");
+                if(PRINT_DEBUGS)Debug.Log($"Increased Hook from {HookCount - 1} to {HookCount}");
                 break;
             case InputAttackType.Lowkick:
                 LowKickCount++;
-                if(PRINT_COUNTERS)Debug.Log($"Increased LowKick from {LowKickCount - 1} to {LowKickCount}");
+                if(PRINT_DEBUGS)Debug.Log($"Increased LowKick from {LowKickCount - 1} to {LowKickCount}");
                 break;
             case InputAttackType.FireBall:
                 FireBallCount++;
-                if(PRINT_COUNTERS)Debug.Log($"Increased FireBall from {FireBallCount - 1} to {FireBallCount}");
+                if(PRINT_DEBUGS)Debug.Log($"Increased FireBall from {FireBallCount - 1} to {FireBallCount}");
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
         }
 
         BlockState = 0;
-        if(PRINT_COUNTERS)Debug.Log($"Blocking State changed to false");
+        if(PRINT_DEBUGS)Debug.Log($"Blocking State changed to false");
     }
 
     #region Cached
