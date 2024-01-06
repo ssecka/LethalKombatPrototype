@@ -1549,6 +1549,7 @@ GameObject:
   - component: {fileID: -3851714367499324959}
   - component: {fileID: 4824950906500580323}
   - component: {fileID: -154143930971649953}
+  - component: {fileID: -8783100583632169692}
   m_Layer: 0
   m_Name: NetworkPlayer PF
   m_TagString: Player1
@@ -1646,6 +1647,7 @@ MonoBehaviour:
     RotTeleportRadians: 1.5
   UseLegacySharedModeInterpolation: 0
   TargetInterpolationDelay: 0.03
+  _LastHitTimestamp: 0
   _JabCount: 0
   _KickCount: 0
   _HookCount: 0
@@ -1955,7 +1957,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  _playerNum: 1
   _isDead: 0
+  healthbBarScript: {fileID: 3267286590115415261, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
+--- !u!114 &-8783100583632169692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4417418228734897978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9990363cc6c1b647acbe6a94008971c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HealthSlider: {fileID: 3267286590115415260, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
+  Fill: {fileID: 1960207496168637172, guid: 88634783ab105ef4ca9a43056122addf, type: 3}
 --- !u!1 &4506338734718176353
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,17 +5,23 @@ using Fusion;
 public class HPHandler : NetworkBehaviour
 {
     private const short STARTING_HP = 1_000;
+    public short _playerNum;
     [Networked(OnChanged = nameof(OnHPChanged))]
+    
     private short HP { get; set; } // We only use short for performance
     
     [Networked(OnChanged = nameof(OnStateChanged)), HideInInspector]
     public bool isDead { get; set; }
     private bool isInit = false;
+
+    public HealthBarScript healthbBarScript;
     
     
 
     private void Start()
     {
+        healthbBarScript = GetComponent<HealthBarScript>();
+        healthbBarScript.SetMaxHealth(STARTING_HP,_playerNum);
         HP = STARTING_HP;
         isDead = false;
     }
@@ -34,6 +40,7 @@ public class HPHandler : NetworkBehaviour
         HP -= amount;
 
         Debug.Log($"{transform.name} took damage, HP left: {HP}");
+        healthbBarScript.SetHealth(HP, _playerNum);
 
         if (HP <= 0)
         {
