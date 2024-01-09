@@ -54,7 +54,7 @@ public class AnimatorEventsHandler : MonoBehaviour
     
     #region FireBall
 
-    public void SpawnFireBall() => networkCharacterControllerPrototypeCustom.AnimationStarted(InputAttackType.FireBall);
+    public void SpawnFireBall() => networkCharacterControllerPrototypeCustom.LaunchFireball();
 
     public void FireBallDamage() => networkCharacterControllerPrototypeCustom.ActivateHitBox(InputAttackType.FireBall);
     

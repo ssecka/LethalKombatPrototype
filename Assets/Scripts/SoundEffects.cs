@@ -7,7 +7,7 @@ using UnityEngine;
 public class SoundEffects : MonoBehaviour
 {
     public AudioSource AudioSrc;
-    public AudioClip Jab, JabHit, Kick, KickHit, Block;
+    public AudioClip Jab, JabHit, Kick, KickHit, Block,Fireball;
 
     public EAttackType _currentSound;
     
@@ -45,6 +45,14 @@ public class SoundEffects : MonoBehaviour
         AudioSrc.clip = Block;
         AudioSrc.Play();
     }
+
+    public void PlayFireball()
+    {
+        if (_checkForNull) InitSource();
+        AudioSrc.clip = Fireball;
+        AudioSrc.Play();
+    }
+    
 
     public void PlayCurrentSound()
     {

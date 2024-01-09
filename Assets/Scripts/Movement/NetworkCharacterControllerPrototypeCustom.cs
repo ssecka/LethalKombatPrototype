@@ -139,15 +139,15 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public Transform leftHandAttackPoint,
         rightHandAttackPoint,
         leftLegAttackPoint,
-        rightLegAttackPoint,
-        fireBallAttackPoint;
+        rightLegAttackPoint;
 
+    public GameObject fireBall;
+    
     private long _lastAttackQueued = 0;
     public bool _canQueueAttack { get; set; } = true;
     private bool _attackAlreadyHit = false;
     private long _lastTimeCheck = 0;
     private InputAttackType _lastNetworkInput;
-
     private InputAttackType _currentActiveAttack;
     
     private int _disableBlockCounter = 0;
@@ -159,7 +159,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private const long IMMUNITY_DURATION = 50 * TimeSpan.TicksPerMillisecond;
     
     private bool _checkForHits;
-
+    private NetworkObject _networkObject;
+    
 
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
@@ -184,6 +185,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     {
         _soundEffects = GetComponentInChildren<SoundEffects>();
         _networkAnimator = GetComponentInChildren<NetworkMecanimAnimator>();
+        _networkObject = GetComponentInChildren<NetworkObject>();
         base.Awake();
         CacheController();
     }
@@ -266,24 +268,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 
                 hpHandler.OnHitTaken(250,otherPlayerIsBlocking);
 
-                // Own hit sound added, so no longer needed (for now...)
-                // if (otherPlayer.BlockState == 1)
-                // {
-                //     _soundEffects.PlayBlockSound();
-                // }
-                // else
-                // {
-                //     if (_currentActiveAttack == InputAttackType.Jab || _currentActiveAttack == InputAttackType.Hook)
-                //     {
-                //         _soundEffects.PlayJabSound(true);
-                //     }
-                //     else if (_currentActiveAttack == InputAttackType.Lowkick ||
-                //              _currentActiveAttack == InputAttackType.Sidekick)
-                //     {
-                //         _soundEffects.PlayKickSound(true);
-                //     }
-                //     // Fireball is handeled elsewhere due to traveling....
-                // }
                 _checkForHits = false;
                 break;
             }
@@ -511,10 +495,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 _currentActiveHitPoint = leftLegAttackPoint.position;
                 damage = 100;
                 break;
-            case InputAttackType.FireBall:
-                _currentActiveHitPoint = fireBallAttackPoint.position;
-                damage = 100;
-                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
         }
@@ -532,5 +512,22 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public void KnockOut()
     {
         // TODO: Despawn this entitiy and send restart request to host
+    }
+
+    public void LaunchFireball()
+    {
+        print("Launching Fireball");
+        
+        var rotation = transform.rotation;
+        var pos = transform.position;
+        float addedX = Math.Abs(transform.rotation.eulerAngles.y - 90) < 0.002 ? 0.75f : -0.75f;
+        pos = new(pos.x + addedX, pos.y + 0.7f, pos.z);
+
+        Runner.Spawn(fireBall, pos, rotation, Object.InputAuthority, (runner, spawnedFireball) =>
+        {
+            spawnedFireball.GetComponent<FireballHandler>().Fire(Object.InputAuthority, _networkObject, this.name, this);
+        });
+        
+        _soundEffects.PlayFireball();
     }
 }
