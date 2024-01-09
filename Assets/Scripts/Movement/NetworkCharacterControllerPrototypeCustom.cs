@@ -134,6 +134,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     #endregion
 
+    private SoundEffects _soundEffects;
+
     public Transform leftHandAttackPoint,
         rightHandAttackPoint,
         leftLegAttackPoint,
@@ -146,6 +148,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private long _lastTimeCheck = 0;
     private InputAttackType _lastNetworkInput;
 
+    private InputAttackType _currentActiveAttack;
+    
     private int _disableBlockCounter = 0;
 
     private List<LagCompensatedHit> _lagCompensatedHits = new List<LagCompensatedHit>();
@@ -178,6 +182,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     protected override void Awake()
     {
+        _soundEffects = GetComponentInChildren<SoundEffects>();
         _networkAnimator = GetComponentInChildren<NetworkMecanimAnimator>();
         base.Awake();
         CacheController();
@@ -257,11 +262,28 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 var otherPlayer = transformRoot.GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
                 
                 if(otherPlayer == null) continue;
-                
                 var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
                 
-                
                 hpHandler.OnHitTaken(250,otherPlayerIsBlocking);
+
+                // Own hit sound added, so no longer needed (for now...)
+                // if (otherPlayer.BlockState == 1)
+                // {
+                //     _soundEffects.PlayBlockSound();
+                // }
+                // else
+                // {
+                //     if (_currentActiveAttack == InputAttackType.Jab || _currentActiveAttack == InputAttackType.Hook)
+                //     {
+                //         _soundEffects.PlayJabSound(true);
+                //     }
+                //     else if (_currentActiveAttack == InputAttackType.Lowkick ||
+                //              _currentActiveAttack == InputAttackType.Sidekick)
+                //     {
+                //         _soundEffects.PlayKickSound(true);
+                //     }
+                //     // Fireball is handeled elsewhere due to traveling....
+                // }
                 _checkForHits = false;
                 break;
             }
@@ -437,10 +459,20 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public void AnimationStarted(InputAttackType attackType)
     {
         _canQueueAttack = false;
+        
+        if (attackType is InputAttackType.Jab or InputAttackType.Hook)
+        {
+            _soundEffects.PlayJabSound(false);
+        }
+        else if (attackType is InputAttackType.Lowkick or InputAttackType.Sidekick)
+        {
+            _soundEffects.PlayKickSound(false);
+        }
     }
 
     public void DeactivateHitBox()
     {
+        
         _attackAlreadyHit = false;
         _checkForHits = false;
     }
@@ -487,6 +519,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
         }
 
+        _currentActiveAttack = inputAttackType;
         _checkForHits = true;
 
         #endregion
