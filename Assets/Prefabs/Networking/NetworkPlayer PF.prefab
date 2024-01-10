@@ -1666,7 +1666,7 @@ MonoBehaviour:
   rightHandAttackPoint: {fileID: 402390604025359787}
   leftLegAttackPoint: {fileID: 2440968017602588883}
   rightLegAttackPoint: {fileID: 3570434938185981218}
-  fireBall: {fileID: 42436067684880362, guid: 404041cb678c9394d86b4203b6c97e0b, type: 3}
+  fireBall: {fileID: 1975959190090480, guid: 47947efab731c844ba694715a65813aa, type: 3}
   _IsGrounded: 0
   _Velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &4237744938786626837
@@ -1916,7 +1916,7 @@ MonoBehaviour:
   Kick: {fileID: 8300000, guid: 41500b51213d94143913042b13dd5c82, type: 3}
   KickHit: {fileID: 8300000, guid: a7754d195c3fcd345bacf8f1ca58a0e8, type: 3}
   Block: {fileID: 8300000, guid: b6d4f04ccfc49814090e7f14d2c38682, type: 3}
-  Fireball: {fileID: 8300000, guid: 96065be42fcc8474e9fa58a26377dade, type: 3}
+  Fireball: {fileID: 8300000, guid: f5c611dd61f0c4c49971f3281730c61d, type: 3}
   _currentSound: 0
 --- !u!114 &-3851714367499324959
 MonoBehaviour:
