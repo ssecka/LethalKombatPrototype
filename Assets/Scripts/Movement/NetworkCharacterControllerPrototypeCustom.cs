@@ -525,7 +525,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
         Runner.Spawn(fireBall, pos, rotation, Object.InputAuthority, (runner, spawnedFireball) =>
         {
-            spawnedFireball.GetComponent<FireballHandler>().Fire(Object.InputAuthority, _networkObject, this.name, this);
+            spawnedFireball.GetComponent<FireballHandler>().Fire(Object.InputAuthority, _networkObject, this.name, this,Math.Abs(transform.rotation.eulerAngles.y - 90) < 0.002);
         });
         
         _soundEffects.PlayFireball();

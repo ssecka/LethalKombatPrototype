@@ -16,6 +16,8 @@ public class FireballHandler : NetworkBehaviour
     private NetworkObject _firedByNetworkObject;
     public Transform attackPoint;
 
+    private bool _shootRight = false;
+    
     private NetworkCharacterControllerPrototypeCustom _owner;
 
     private TickTimer _maxLiveTimer = TickTimer.None;
@@ -24,24 +26,38 @@ public class FireballHandler : NetworkBehaviour
 
     private NetworkObject _networkObject;
 
-    public void Fire(PlayerRef firedByPlayerRef, NetworkObject firedByNetworkObject, string firedByPlayerName, NetworkCharacterControllerPrototypeCustom owner)
+    public void Fire(PlayerRef firedByPlayerRef, NetworkObject firedByNetworkObject, string firedByPlayerName, NetworkCharacterControllerPrototypeCustom owner, bool shotRight)
     {
         this._firedByPlayer = firedByPlayerRef;
         this._firedByPlayerName = firedByPlayerName;
         this._firedByNetworkObject = firedByNetworkObject;
 
+        this._shootRight = shotRight;
         this._owner = owner;
         
         _networkObject = GetComponent<NetworkObject>();
 
         _maxLiveTimer = TickTimer.CreateFromSeconds(Runner, 7);
 
+        var rotation = Quaternion.identity;
+        
+        if (shotRight)
+        {
+            rotation.eulerAngles = new(-90, -90, 0);
+        }
+        else
+        {
+            rotation.eulerAngles = new(90, 90, 0);
+        }
+
+        this.transform.rotation = rotation;
+
     }
 
     public override void FixedUpdateNetwork()
     {
         
-        transform.position += transform.forward * Runner.DeltaTime * SPEED;
+        transform.position += new Vector3(_shootRight ? 1 : -1 ,0,0) * Runner.DeltaTime * SPEED;
 
         if (Object.HasStateAuthority)
         {
