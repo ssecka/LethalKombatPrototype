@@ -1960,9 +1960,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  _playerNum: 1
   _isDead: 0
-  healthBarScript: {fileID: 0}
+  healthBarScript: {fileID: -8783100583632169692}
   hitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
   blockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
   hitPoint: {fileID: 9096895000718894727}
