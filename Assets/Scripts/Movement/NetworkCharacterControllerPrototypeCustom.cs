@@ -268,8 +268,14 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 
                 var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
                 
-                hpHandler.OnHitTaken(250,otherPlayerIsBlocking);
+                var fatal = hpHandler.OnHitTaken(250,otherPlayerIsBlocking);
 
+                if (fatal)
+                {
+                    //reset our HP
+                    this.gameObject.transform.root.GetComponentInChildren<HPHandler>().ResetHp();
+                }
+                
                 _checkForHits = false;
                 break;
             }

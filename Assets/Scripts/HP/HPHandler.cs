@@ -29,10 +29,10 @@ public class HPHandler : NetworkBehaviour
     }
 
     // Only called by server
-    public void OnHitTaken(short amount, bool isBlocking = false)
+    public bool OnHitTaken(short amount, bool isBlocking = false)
     {
-        if (isDead) return; // -> we deadge
-        Runner.Spawn(hitEffect, hitPoint.transform.position);
+        if (isDead) return true; // -> we deadge
+//        Runner.Spawn(hitEffect, hitPoint.transform.position);
 
 
         if (isBlocking)
@@ -63,11 +63,14 @@ public class HPHandler : NetworkBehaviour
             Debug.Log($"{transform.name} is dead.");
             
         }
+
+        return isDead;
     }
 
     public void ResetHp()
     {
         HP = STARTING_HP;
+        isDead = false;
     }
 
     private static void OnHPChanged(Changed<HPHandler> changed)
