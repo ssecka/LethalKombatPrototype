@@ -19,11 +19,14 @@ public class HPHandler : NetworkBehaviour
     public GameObject hitEffect;
     public GameObject blockEffect;
     public Transform hitPoint;
+    public Rigidbody rb;
+    
     
     
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         healthBarScript = GetComponent<HealthBarScript>();
         healthBarScript.SetMaxHealth(STARTING_HP,transform.name);
         Round = 0;
@@ -42,6 +45,7 @@ public class HPHandler : NetworkBehaviour
             amount /= 10;
             print("BLOCKED!");
             Runner.Spawn(blockEffect, hitPoint.position);
+            rb.AddForce(2f, 0 , 0, ForceMode.Impulse);
         }
         
         HP -= amount;
