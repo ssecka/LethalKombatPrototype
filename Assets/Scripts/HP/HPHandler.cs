@@ -5,26 +5,22 @@ using Fusion;
 public class HPHandler : NetworkBehaviour
 {
     private const short STARTING_HP = 1_000;
-    public short _playerNum;
     [Networked(OnChanged = nameof(OnHPChanged))]
     
     private short HP { get; set; } // We only use short for performance
-    private short Round { get; set; }
+
+    private short Round = 0;
     
     [Networked(OnChanged = nameof(OnStateChanged)), HideInInspector]
     public bool isDead { get; set; }
     private bool isInit = false;
 
     public HealthBarScript healthBarScript;
-    public GameObject hitEffect;
-    public GameObject blockEffect;
-    public Transform hitPoint;
     
     private void Start()
     {
         healthBarScript = GetComponent<HealthBarScript>();
-        healthBarScript.SetMaxHealth(STARTING_HP,transform.name);
-        Round = 0;
+        healthBarScript.SetMaxHealth(STARTING_HP, transform.name);
         HP = STARTING_HP;
         isDead = false;
     }
@@ -33,24 +29,11 @@ public class HPHandler : NetworkBehaviour
     public void OnHitTaken(short amount, bool isBlocking = false)
     {
         if (isDead) return; // -> we deadge
-        
-        Runner.Spawn(hitEffect, hitPoint.position);
-        
+
         if (isBlocking)
         {
             amount /= 10;
             print("BLOCKED!");
-            Runner.Spawn(blockEffect, hitPoint.position);
-            
-            int yRotation = Convert.ToInt32(transform.eulerAngles.y);
-            if (yRotation == 90)
-            {
-                transform.Translate(Vector3.back * .5f);
-            }
-            else
-            {
-                transform.Translate(Vector3.forward * .5f);
-            }
         }
         
         HP -= amount;
@@ -61,29 +44,35 @@ public class HPHandler : NetworkBehaviour
         {
             Round++;
             isDead = true;
-            
             Debug.Log($"{transform.name} is dead.");
-
+            
         }
+    }
+
+    public void ResetHp()
+    {
+        HP = STARTING_HP;
     }
 
     private static void OnHPChanged(Changed<HPHandler> changed)
     {
-        //healthbBarScript.SetHealth(changed.Behaviour.HP, transform.name);
         Debug.Log($"OnHPChanged value {changed.Behaviour.HP}");
         changed.Behaviour.healthBarScript.SetHealth(changed.Behaviour.HP, changed.Behaviour.transform.name);
         if (changed.Behaviour.HP <= 0)
         {
             changed.Behaviour.healthBarScript.SetRound(changed.Behaviour.Round,changed.Behaviour.transform.name);
-            changed.Behaviour.healthBarScript.SetMaxHealth(1000, changed.Behaviour.transform.name);
+            changed.Behaviour.healthBarScript.ResetHealthBarHost(STARTING_HP); 
+            changed.Behaviour.healthBarScript.ResetHealthBarClient(STARTING_HP);
+            
+            if (changed.Behaviour.Round <= 2)
+            {
+                changed.Behaviour.ResetHp();
+            }
         }
-
     }
 
     private static void OnStateChanged(Changed<HPHandler> changed)
     {
         Debug.Log($"OnStateChanged value {changed.Behaviour.isDead}");
-
     }
-    
 }
