@@ -18,7 +18,7 @@ public class HPHandler : NetworkBehaviour
     public HealthBarScript healthBarScript;
     public GameObject hitEffect;
     public GameObject blockEffect;
-    public Transform hitPoint;
+    public GameObject hitPoint;
     
     private void Start()
     {
@@ -32,23 +32,23 @@ public class HPHandler : NetworkBehaviour
     public void OnHitTaken(short amount, bool isBlocking = false)
     {
         if (isDead) return; // -> we deadge
-        Runner.Spawn(hitEffect, hitPoint.position);
+        Runner.Spawn(hitEffect, hitPoint.transform.position);
 
 
         if (isBlocking)
         {
             amount /= 10;
             print("BLOCKED!");
-            Runner.Spawn(blockEffect, hitPoint.position);
+            Runner.Spawn(blockEffect, hitPoint.transform.position);
             
             int yRotation = Convert.ToInt32(transform.eulerAngles.y);
             if (yRotation == 90)
             {
-                transform.Translate(Vector3.back * .5f);
+                transform.Translate(Vector3.forward * .5f);
             }
             else
             {
-                transform.Translate(Vector3.forward * .5f);
+                transform.Translate(Vector3.back * .5f);
             }
         }
         
