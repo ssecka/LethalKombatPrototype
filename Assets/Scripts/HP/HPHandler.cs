@@ -16,6 +16,9 @@ public class HPHandler : NetworkBehaviour
     private bool isInit = false;
 
     public HealthBarScript healthBarScript;
+    public GameObject hitEffect;
+    public GameObject blockEffect;
+    public Transform hitPoint;
     
     
 
@@ -33,10 +36,12 @@ public class HPHandler : NetworkBehaviour
     {
         if (isDead) return; // -> we deadge
 
+        Runner.Spawn(hitEffect, hitPoint.position);
         if (isBlocking)
         {
             amount /= 10;
             print("BLOCKED!");
+            Runner.Spawn(blockEffect, hitPoint.position);
         }
         
         HP -= amount;

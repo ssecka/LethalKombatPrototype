@@ -14667,6 +14667,7 @@ GameObject:
   - component: {fileID: 5024009746357069193}
   - component: {fileID: 5024009746357069192}
   - component: {fileID: 5024009746357069195}
+  - component: {fileID: 7022407630334396427}
   m_Layer: 0
   m_Name: Hit_Effect
   m_TagString: Untagged
@@ -19550,3 +19551,26 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &7022407630334396427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5024009746357069194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2305
+  NetworkGuid:
+    RawGuidValue: 25ba8294e30815c4899c230cddfd4f93
+  NestedObjects: []
+  NetworkedBehaviours: []
+  SimulationBehaviours: []
