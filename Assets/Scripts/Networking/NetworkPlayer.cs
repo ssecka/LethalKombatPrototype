@@ -15,8 +15,12 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
 
     public override void Spawned()
     {
-        if (Object.HasInputAuthority)
+        NetworkId desiredId;
+        desiredId.Raw = 2;
+        
+        if (Object.Id == desiredId)
         {
+            Debug.Log("Object ID: " + desiredId);
             Local = this;
             this.transform.name = "Host";
             
@@ -29,6 +33,7 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
         }
         else
         {
+            Debug.Log("Object ID: " + desiredId);
             this.transform.name = "Client";
             
             // Set Health Bar P1 to "Client"
@@ -38,7 +43,6 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
             
             Debug.Log("Spawned remote player");
         }
-        
     }
 
     public void PlayerLeft(PlayerRef player)
