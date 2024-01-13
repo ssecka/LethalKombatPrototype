@@ -263,7 +263,9 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
                 var otherPlayer = transformRoot.GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
                 
-                if(otherPlayer == null) continue;
+                if(otherPlayer == null || otherPlayer == this) continue;
+                
+                
                 var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
                 
                 hpHandler.OnHitTaken(250,otherPlayerIsBlocking);
