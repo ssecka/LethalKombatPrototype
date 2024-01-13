@@ -21,8 +21,6 @@ public class HPHandler : NetworkBehaviour
     public GameObject blockEffect;
     public GameObject hitPoint;
 
-    private static byte _snafu = 0;
-    
     
     private void Start()
     {
@@ -87,11 +85,9 @@ public class HPHandler : NetworkBehaviour
             changed.Behaviour.healthBarScript.SetRound(changed.Behaviour.Round,changed.Behaviour.transform.name);
             changed.Behaviour.healthBarScript.ResetHealthBarHost(STARTING_HP); 
             changed.Behaviour.healthBarScript.ResetHealthBarClient(STARTING_HP);
-            _snafu++;
             print(changed.Behaviour.Round);
-            if (changed.Behaviour.Round <= 2 && _snafu == 2)
+            if (changed.Behaviour.Round <= 2)
             {
-                _snafu = 0;
                 changed.Behaviour.ResetHp();
             }
         }
