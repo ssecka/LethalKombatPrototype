@@ -274,6 +274,38 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 {
                     //reset our HP
                     this.gameObject.transform.root.GetComponentInChildren<HPHandler>().ResetHp();
+                    
+                    
+                    //Reset Position
+                    
+                    // We need to call GetSpawnPoint 2 Times since its a STATIC funciton and gives different results
+                    if (otherPlayer.Object.Id.Raw == 2) //P1
+                    {
+                        var spawns = SpawnPointHandler.GetSpawnPoint();
+                        otherPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                        otherPlayer.transform.rotation = spawns.Item2;
+                    }
+                    else if (this.Object.Id.Raw == 2)
+                    {
+                        var spawns = SpawnPointHandler.GetSpawnPoint();
+                        this.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                        this.transform.rotation = spawns.Item2;
+                    }
+
+                    if (otherPlayer.Object.Id.Raw == 3)
+                    {
+                        var spawns = SpawnPointHandler.GetSpawnPoint();
+                        otherPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                        otherPlayer.transform.rotation = spawns.Item2;
+                    }
+                    else if (this.Object.Id.Raw == 3)
+                    {
+                        var spawns = SpawnPointHandler.GetSpawnPoint();
+                        this.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                        this.transform.rotation = spawns.Item2;
+                    }
+                    
+
                 }
                 
                 _checkForHits = false;
