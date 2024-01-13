@@ -160,8 +160,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     
     private bool _checkForHits;
     private NetworkObject _networkObject;
+    private short _damage = 42;
     
-
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
     [Networked] [HideInInspector] public Vector3 Velocity { get; set; }
@@ -268,7 +268,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 
                 var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
                 
-                var fatal = hpHandler.OnHitTaken(250,otherPlayerIsBlocking);
+                var fatal = hpHandler.OnHitTaken(_damage,otherPlayerIsBlocking);
 
                 if (fatal)
                 {
@@ -279,6 +279,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                     //Reset Position
                     
                     // We need to call GetSpawnPoint 2 Times since its a STATIC funciton and gives different results
+                    
                     if (otherPlayer.Object.Id.Raw == 2) //P1
                     {
                         var spawns = SpawnPointHandler.GetSpawnPoint();
@@ -512,7 +513,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
         print("Activating hitbox for: " + inputAttackType);
         
-        short damage = 0;
         switch (inputAttackType)
         {
             case InputAttackType.None:
@@ -521,19 +521,19 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 break;
             case InputAttackType.Jab:
                 _currentActiveHitPoint = leftHandAttackPoint.position;
-                damage = 100;
+                _damage = 100;
                 break;
             case InputAttackType.Sidekick:
                 _currentActiveHitPoint = rightLegAttackPoint.position;
-                damage = 200;
+                _damage = 200;
                 break;
             case InputAttackType.Hook:
                 _currentActiveHitPoint = rightHandAttackPoint.position;
-                damage = 100;
+                _damage = 100;
                 break;
             case InputAttackType.Lowkick:
                 _currentActiveHitPoint = leftLegAttackPoint.position;
-                damage = 100;
+                _damage = 100;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);

@@ -9,7 +9,8 @@ public class HPHandler : NetworkBehaviour
     
     private short HP { get; set; } // We only use short for performance
 
-    private short Round = 0;
+    [Networked]
+    public short Round { get; set; } = 0;
     
     [Networked(OnChanged = nameof(OnStateChanged)), HideInInspector]
     public bool isDead { get; set; }
@@ -19,6 +20,9 @@ public class HPHandler : NetworkBehaviour
     public GameObject hitEffect;
     public GameObject blockEffect;
     public GameObject hitPoint;
+
+    private static byte _snafu = 0;
+    
     
     private void Start()
     {
@@ -79,12 +83,15 @@ public class HPHandler : NetworkBehaviour
         changed.Behaviour.healthBarScript.SetHealth(changed.Behaviour.HP, changed.Behaviour.transform.name);
         if (changed.Behaviour.HP <= 0)
         {
+
             changed.Behaviour.healthBarScript.SetRound(changed.Behaviour.Round,changed.Behaviour.transform.name);
             changed.Behaviour.healthBarScript.ResetHealthBarHost(STARTING_HP); 
             changed.Behaviour.healthBarScript.ResetHealthBarClient(STARTING_HP);
-            
-            if (changed.Behaviour.Round <= 2)
+            _snafu++;
+            print(changed.Behaviour.Round);
+            if (changed.Behaviour.Round <= 2 && _snafu == 2)
             {
+                _snafu = 0;
                 changed.Behaviour.ResetHp();
             }
         }
