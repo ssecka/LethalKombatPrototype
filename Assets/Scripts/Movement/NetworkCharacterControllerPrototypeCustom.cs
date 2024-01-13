@@ -523,7 +523,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         var rotation = transform.rotation;
         var pos = transform.position;
         float addedX = Math.Abs(transform.rotation.eulerAngles.y - 90) < 0.002 ? 0.75f : -0.75f;
-        pos = new(pos.x + addedX, pos.y + 0.7f, pos.z);
+        pos = new(pos.x + addedX, pos.y + 0.925f, pos.z);
 
         Runner.Spawn(fireBall, pos, rotation, Object.InputAuthority, (runner, spawnedFireball) =>
         {
