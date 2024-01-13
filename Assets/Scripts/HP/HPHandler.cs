@@ -21,6 +21,8 @@ public class HPHandler : NetworkBehaviour
     public GameObject blockEffect;
     public GameObject hitPoint;
 
+    private static byte _cntHlp = 0;
+
     
     private void Start()
     {
@@ -79,22 +81,16 @@ public class HPHandler : NetworkBehaviour
     {
         Debug.Log($"OnHPChanged value {changed.Behaviour.HP}");
         changed.Behaviour.healthBarScript.SetHealth(changed.Behaviour.HP, changed.Behaviour.transform.name);
-        if (changed.Behaviour.HP <= 0)
-        {
-
-            changed.Behaviour.healthBarScript.SetRound(changed.Behaviour.Round,changed.Behaviour.transform.name);
-            changed.Behaviour.healthBarScript.ResetHealthBarHost(STARTING_HP); 
-            changed.Behaviour.healthBarScript.ResetHealthBarClient(STARTING_HP);
-            print(changed.Behaviour.Round);
-            if (changed.Behaviour.Round <= 2)
-            {
-                changed.Behaviour.ResetHp();
-            }
-        }
     }
 
     private static void OnStateChanged(Changed<HPHandler> changed)
     {
         Debug.Log($"OnStateChanged value {changed.Behaviour.isDead}");
+        _cntHlp++;       
+        changed.Behaviour.healthBarScript.SetRound(changed.Behaviour.Round,changed.Behaviour.transform.name);
+        changed.Behaviour.healthBarScript.ResetHealthBarHost(STARTING_HP); 
+        changed.Behaviour.healthBarScript.ResetHealthBarClient(STARTING_HP);
+
+        
     }
 }

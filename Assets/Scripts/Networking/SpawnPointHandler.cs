@@ -25,8 +25,6 @@ public class SpawnPointHandler
             default:
                 throw new InvalidEnumArgumentException("UNSUPPORTED PLAYER COUNT");
         }
-
-        Debug.Log(spawnCounter);
         spawnCounter %= 2;
 
         return (vector3, quaternion);

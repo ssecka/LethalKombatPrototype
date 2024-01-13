@@ -161,6 +161,9 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private bool _checkForHits;
     private NetworkObject _networkObject;
     private short _damage = 42;
+
+    private bool _isResetRequested = false;
+    private byte _rstCnt = 0;
     
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
@@ -244,6 +247,55 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
         if (!Object.HasStateAuthority) return;
 
+        if (_isResetRequested)
+        {
+            // We need to call GetSpawnPoint 2 Times since its a STATIC funciton and gives different results
+
+            var clientPlayer = GameObject.Find("Client").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
+            var hostPlayer = GameObject.Find("Host").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
+
+            var cHP = clientPlayer.GetComponentInChildren<HPHandler>();
+            var hHP = hostPlayer.GetComponentInChildren<HPHandler>();
+            
+            
+            if (clientPlayer.Object.Id.Raw == 2) //P1
+            {
+                var spawns = SpawnPointHandler.GetSpawnPoint();
+                clientPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                clientPlayer.transform.rotation = spawns.Item2;
+            }
+            else if (hostPlayer.Object.Id.Raw == 2)
+            {
+                var spawns = SpawnPointHandler.GetSpawnPoint();
+                hostPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                hostPlayer.transform.rotation = spawns.Item2;
+            }
+
+            if (clientPlayer.Object.Id.Raw == 3)
+            {
+                var spawns = SpawnPointHandler.GetSpawnPoint();
+                clientPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                clientPlayer.transform.rotation = spawns.Item2;
+            }
+            else if (hostPlayer.Object.Id.Raw == 3)
+            {
+                var spawns = SpawnPointHandler.GetSpawnPoint();
+                hostPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                hostPlayer.transform.rotation = spawns.Item2;
+            }
+
+            _rstCnt++;
+
+            if (_rstCnt < 5) return; // this is need, but i dont know why
+            
+            cHP.ResetHp();
+            hHP.ResetHp();
+            _isResetRequested = false;
+            _rstCnt = 0;
+
+
+        }
+        
         if (_checkForHits)
         {
             var hitCount = Runner.LagCompensation.OverlapSphere(
@@ -274,39 +326,10 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 {
                     //reset our HP
                     this.gameObject.transform.root.GetComponentInChildren<HPHandler>().ResetHp();
-                    
-                    
+                    _isResetRequested = true;
+                    otherPlayer._isResetRequested = true;
+
                     //Reset Position
-                    
-                    // We need to call GetSpawnPoint 2 Times since its a STATIC funciton and gives different results
-                    
-                    if (otherPlayer.Object.Id.Raw == 2) //P1
-                    {
-                        var spawns = SpawnPointHandler.GetSpawnPoint();
-                        otherPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
-                        otherPlayer.transform.rotation = spawns.Item2;
-                    }
-                    else if (this.Object.Id.Raw == 2)
-                    {
-                        var spawns = SpawnPointHandler.GetSpawnPoint();
-                        this.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
-                        this.transform.rotation = spawns.Item2;
-                    }
-
-                    if (otherPlayer.Object.Id.Raw == 3)
-                    {
-                        var spawns = SpawnPointHandler.GetSpawnPoint();
-                        otherPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
-                        otherPlayer.transform.rotation = spawns.Item2;
-                    }
-                    else if (this.Object.Id.Raw == 3)
-                    {
-                        var spawns = SpawnPointHandler.GetSpawnPoint();
-                        this.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
-                        this.transform.rotation = spawns.Item2;
-                    }
-                    
-
                 }
                 
                 _checkForHits = false;
