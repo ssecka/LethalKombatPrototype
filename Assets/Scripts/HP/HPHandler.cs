@@ -9,6 +9,7 @@ public class HPHandler : NetworkBehaviour
     [Networked(OnChanged = nameof(OnHPChanged))]
     
     private short HP { get; set; } // We only use short for performance
+    private short Round { get; set; }
     
     [Networked(OnChanged = nameof(OnStateChanged)), HideInInspector]
     public bool isDead { get; set; }
@@ -22,6 +23,7 @@ public class HPHandler : NetworkBehaviour
     {
         healthBarScript = GetComponent<HealthBarScript>();
         healthBarScript.SetMaxHealth(STARTING_HP,transform.name);
+        Round = 0;
         HP = STARTING_HP;
         isDead = false;
     }
@@ -43,6 +45,7 @@ public class HPHandler : NetworkBehaviour
 
         if (HP <= 0)
         {
+            Round++;
             isDead = true;
             
             Debug.Log($"{transform.name} is dead.");
@@ -55,6 +58,11 @@ public class HPHandler : NetworkBehaviour
         //healthbBarScript.SetHealth(changed.Behaviour.HP, transform.name);
         Debug.Log($"OnHPChanged value {changed.Behaviour.HP}");
         changed.Behaviour.healthBarScript.SetHealth(changed.Behaviour.HP, changed.Behaviour.transform.name);
+        if (changed.Behaviour.HP <= 0)
+        {
+            changed.Behaviour.healthBarScript.SetRound(changed.Behaviour.Round,changed.Behaviour.transform.name);
+            changed.Behaviour.healthBarScript.SetMaxHealth(1000, changed.Behaviour.transform.name);
+        }
 
     }
 
