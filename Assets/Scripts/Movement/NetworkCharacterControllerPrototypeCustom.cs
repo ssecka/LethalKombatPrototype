@@ -12,14 +12,13 @@ using UnityEngine;
 public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 {
     private const bool PRINT_DEBUGS = false;
-    
+
     #region Networked stuff
 
     private NetworkMecanimAnimator _networkAnimator;
 
-    [Networked]
-    public long LastHitTimestamp { get; set; }  
-    
+    [Networked] public long LastHitTimestamp { get; set; }
+
     #region Jab
 
     [Networked, HideInInspector] public int JabCount { get; set; }
@@ -79,14 +78,14 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     #endregion
 
     #region Block
-    
+
     /*
      * Fusion cant handle bool States so we need to use int  (1 is true and 0 is false)
      * :)))))))))))))
      */
-    
-    
-    [Networked, HideInInspector] public int BlockState { get; set; } 
+
+
+    [Networked, HideInInspector] public int BlockState { get; set; }
 
     public int InterpolatedBlockState => _blockStateInterpolator.Value;
     private Interpolator<int> _blockStateInterpolator;
@@ -101,14 +100,14 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private Interpolator<float> _speedInterpolator;
 
     #endregion
-    
+
     #region KnockOut
-    
+
     [Networked, HideInInspector] public int KnockOutCount { get; set; }
 
     public int InterpolatedKnockOutCount => _knockOutInterpolator.Value;
     private Interpolator<int> _knockOutInterpolator;
-    
+
     #endregion
 
 
@@ -145,22 +144,25 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     private SoundEffects _soundEffects;
     private NetworkCharacterControllerPrototypeCustom _loser;
-    
-    
+
+
     public Transform leftHandAttackPoint,
         rightHandAttackPoint,
         leftLegAttackPoint,
         rightLegAttackPoint;
 
     public GameObject fireBall;
-    
+
     private long _lastAttackQueued = 0;
     public bool _canQueueAttack { get; set; } = true;
     private bool _attackAlreadyHit = false;
     private long _lastTimeCheck = 0;
     private InputAttackType _lastNetworkInput;
     private InputAttackType _currentActiveAttack;
-    
+
+    public GameObject HitEffect;
+    public GameObject BlockEffect;
+
     private int _disableBlockCounter = 0;
 
     private List<LagCompensatedHit> _lagCompensatedHits = new List<LagCompensatedHit>();
@@ -173,7 +175,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     private bool _isResetRequested = false;
     private byte _rstCnt = 0;
-    
+
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
     [Networked] [HideInInspector] public Vector3 Velocity { get; set; }
@@ -212,7 +214,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
         SpeedValue = 0;
         LastHitTimestamp = 0;
-        
+
         _jabCountInterpolator = GetInterpolator<int>(nameof(JabCount));
         _hookCountInterpolator = GetInterpolator<int>(nameof(HookCount));
         _kickCountInterpolator = GetInterpolator<int>(nameof(KickCount));
@@ -248,7 +250,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             // Cache last input 
             if (networkInputData._InputAttackType != 0)
             {
-                if(PRINT_DEBUGS)Debug.Log($"Changed last input from {_lastNetworkInput} to {networkInputData._InputAttackType}");
+                if (PRINT_DEBUGS)
+                    Debug.Log($"Changed last input from {_lastNetworkInput} to {networkInputData._InputAttackType}");
                 _lastNetworkInput = networkInputData._InputAttackType;
             }
 
@@ -261,55 +264,55 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         {
             // We need to call GetSpawnPoint 2 Times since its a STATIC funciton and gives different results
 
-            var clientPlayer = GameObject.Find("Client").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
-            var hostPlayer = GameObject.Find("Host").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
+            var clientPlayer = GameObject.Find("Client")
+                .GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
+            var hostPlayer = GameObject.Find("Host")
+                .GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
 
             var cHP = clientPlayer.GetComponentInChildren<HPHandler>();
             var hHP = hostPlayer.GetComponentInChildren<HPHandler>();
-            
-            
+
+
             if (clientPlayer.Object.Id.Raw == 2) //P1
             {
                 var spawns = SpawnPointHandler.GetSpawnPoint();
-                clientPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                clientPlayer.transform.position = new(spawns.Item1.x * 2, spawns.Item1.y, 0);
                 clientPlayer.transform.rotation = spawns.Item2;
             }
             else if (hostPlayer.Object.Id.Raw == 2)
             {
                 var spawns = SpawnPointHandler.GetSpawnPoint();
-                hostPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                hostPlayer.transform.position = new(spawns.Item1.x * 2, spawns.Item1.y, 0);
                 hostPlayer.transform.rotation = spawns.Item2;
             }
 
             if (clientPlayer.Object.Id.Raw == 3)
             {
                 var spawns = SpawnPointHandler.GetSpawnPoint();
-                clientPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                clientPlayer.transform.position = new(spawns.Item1.x * 2, spawns.Item1.y, 0);
                 clientPlayer.transform.rotation = spawns.Item2;
             }
             else if (hostPlayer.Object.Id.Raw == 3)
             {
                 var spawns = SpawnPointHandler.GetSpawnPoint();
-                hostPlayer.transform.position = new(spawns.Item1.x * 2,spawns.Item1.y,0);
+                hostPlayer.transform.position = new(spawns.Item1.x * 2, spawns.Item1.y, 0);
                 hostPlayer.transform.rotation = spawns.Item2;
             }
 
             _rstCnt++;
 
             if (_rstCnt < 5) return; // this is need, but i dont know why.
-            
+
             cHP.ResetHp();
             hHP.ResetHp();
-            
-            if(_loser != null)_loser.GetComponentInChildren<HPHandler>().ResetHpTrigger++;
+
+            if (_loser != null) _loser.GetComponentInChildren<HPHandler>().ResetHpTrigger++;
             _loser = null;
-            
+
             _isResetRequested = false;
             _rstCnt = 0;
-
-
         }
-        
+
         if (_checkForHits)
         {
             var hitCount = Runner.LagCompensation.OverlapSphere(
@@ -319,7 +322,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 _lagCompensatedHits, options: HitOptions.IncludePhysX);
 
 
-           // print("Hits LagCompenstation: " + hitCount);
+            // print("Hits LagCompenstation: " + hitCount);
             for (int i = 0; i < hitCount; i++)
             {
                 var transformRoot = _lagCompensatedHits[i].GameObject.transform.root;
@@ -328,32 +331,54 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 if (hpHandler == null) continue;
 
                 var otherPlayer = transformRoot.GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
-                
-                if(otherPlayer == null || otherPlayer == this) continue;
-                
-                
+
+                if (otherPlayer == null || otherPlayer == this) continue;
+
+
                 var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
-                
-                var fatal = hpHandler.OnHitTaken(_damage,otherPlayerIsBlocking);
+
+                var fatal = hpHandler.OnHitTaken(_damage, otherPlayerIsBlocking);
+
+                var rotation = transform.rotation;
+                var pos = transform.position;
+                float addedX = Math.Abs(transform.rotation.eulerAngles.y - 90) < 0.002 ? 0.75f : -0.75f;
+                pos = new(pos.x + addedX, pos.y - .15f + 0.925f, pos.z);
+
+                if (otherPlayerIsBlocking)
+                {
+                    Runner.Spawn(HitEffect, pos, rotation, Object.InputAuthority,
+                        (runner, spawnedBlockEffect) =>
+                        {
+                            spawnedBlockEffect.GetComponent<BlockEffectHandler>().SpawnIn(Object.InputAuthority,
+                                _networkObject, this.name, this);
+                        });
+                }
+                else
+                {
+                    Runner.Spawn(HitEffect, pos, rotation, Object.InputAuthority,
+                        (runner, spawnedHitEffect) =>
+                        {
+                            spawnedHitEffect.GetComponent<HitEffectHandler>().SpawnIn(Object.InputAuthority,
+                                _networkObject, this.name, this);
+                        });
+                }
 
                 if (fatal)
                 {
                     otherPlayer.KnockOutCount++;
                 }
-                
+
                 _checkForHits = false;
                 break;
             }
         }
-        
+
         // Check if Rotation required
         var host = GameObject.Find("Host").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
         var client = GameObject.Find("Client").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
 
         if (host != null && client != null)
         {
-            
-            
             if (host.transform.position.x < client.transform.position.x)
             {
                 // host is leftmost, thereforce Y rotation must be 90 and client must be 270
@@ -362,7 +387,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 client.transform.rotation = Quaternion.Euler(client.transform.rotation.eulerAngles.x, 270,
                     client.transform.rotation.eulerAngles.z);
             }
-            else if(host.transform.position.x > client.transform.position.x)
+            else if (host.transform.position.x > client.transform.position.x)
             {
                 host.transform.rotation = Quaternion.Euler(host.transform.rotation.eulerAngles.x, 270,
                     host.transform.rotation.eulerAngles.z);
@@ -370,8 +395,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                     client.transform.rotation.eulerAngles.z);
             }
         }
-
-
     }
 
 
@@ -397,7 +420,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         if (inputAttackType is InputAttackType.Block)
         {
             BlockState = 1;
-            if(PRINT_DEBUGS)Debug.Log($"BlockState changed to true.");
+            if (PRINT_DEBUGS) Debug.Log($"BlockState changed to true.");
             return;
         }
 
@@ -408,30 +431,30 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         {
             case InputAttackType.Jab:
                 JabCount++;
-                if(PRINT_DEBUGS)Debug.Log($"Increased Jab from {JabCount - 1} to {JabCount}");
+                if (PRINT_DEBUGS) Debug.Log($"Increased Jab from {JabCount - 1} to {JabCount}");
                 break;
             case InputAttackType.Sidekick:
                 KickCount++;
-                if(PRINT_DEBUGS)Debug.Log($"Increased Kick from {KickCount - 1} to {KickCount}");
+                if (PRINT_DEBUGS) Debug.Log($"Increased Kick from {KickCount - 1} to {KickCount}");
                 break;
             case InputAttackType.Hook:
                 HookCount++;
-                if(PRINT_DEBUGS)Debug.Log($"Increased Hook from {HookCount - 1} to {HookCount}");
+                if (PRINT_DEBUGS) Debug.Log($"Increased Hook from {HookCount - 1} to {HookCount}");
                 break;
             case InputAttackType.Lowkick:
                 LowKickCount++;
-                if(PRINT_DEBUGS)Debug.Log($"Increased LowKick from {LowKickCount - 1} to {LowKickCount}");
+                if (PRINT_DEBUGS) Debug.Log($"Increased LowKick from {LowKickCount - 1} to {LowKickCount}");
                 break;
             case InputAttackType.FireBall:
                 FireBallCount++;
-                if(PRINT_DEBUGS)Debug.Log($"Increased FireBall from {FireBallCount - 1} to {FireBallCount}");
+                if (PRINT_DEBUGS) Debug.Log($"Increased FireBall from {FireBallCount - 1} to {FireBallCount}");
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(inputAttackType), inputAttackType, null);
         }
 
         BlockState = 0;
-        if(PRINT_DEBUGS)Debug.Log($"Blocking State changed to false");
+        if (PRINT_DEBUGS) Debug.Log($"Blocking State changed to false");
     }
 
     #region Cached
@@ -543,7 +566,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public void AnimationStarted(InputAttackType attackType)
     {
         _canQueueAttack = false;
-        
+
         if (attackType is InputAttackType.Jab or InputAttackType.Hook)
         {
             _soundEffects.PlayJabSound(false);
@@ -556,7 +579,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     public void DeactivateHitBox()
     {
-        
         _attackAlreadyHit = false;
         _checkForHits = false;
     }
@@ -571,7 +593,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         #region Determine Physical HitArea and damage
 
         print("Activating hitbox for: " + inputAttackType);
-        
+
         switch (inputAttackType)
         {
             case InputAttackType.None:
@@ -610,8 +632,10 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     public void KnockOut()
     {
-        GameObject.Find("Client").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>()._isResetRequested = true;
-        GameObject.Find("Host").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>()._isResetRequested = true;
+        GameObject.Find("Client").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>()
+            ._isResetRequested = true;
+        GameObject.Find("Host").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>()._isResetRequested =
+            true;
 
         _loser = this;
     }
@@ -619,17 +643,19 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     public void LaunchFireball()
     {
         print("Launching Fireball");
-        
+
         var rotation = transform.rotation;
         var pos = transform.position;
         float addedX = Math.Abs(transform.rotation.eulerAngles.y - 90) < 0.002 ? 0.75f : -0.75f;
-        pos = new(pos.x + addedX, pos.y-.15f + 0.925f, pos.z);
+        pos = new(pos.x + addedX, pos.y - .15f + 0.925f, pos.z);
 
-        Runner.Spawn(fireBall, pos, rotation, Object.InputAuthority, (runner, spawnedFireball) =>
-        {
-            spawnedFireball.GetComponent<FireballHandler>().Fire(Object.InputAuthority, _networkObject, this.name, this,Math.Abs(transform.rotation.eulerAngles.y - 90) < 0.002);
-        });
-        
+        Runner.Spawn(fireBall, pos, rotation, Object.InputAuthority,
+            (runner, spawnedFireball) =>
+            {
+                spawnedFireball.GetComponent<FireballHandler>().Fire(Object.InputAuthority, _networkObject, this.name,
+                    this, Math.Abs(transform.rotation.eulerAngles.y - 90) < 0.002);
+            });
+
         _soundEffects.PlayFireball();
     }
 }

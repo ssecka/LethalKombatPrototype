@@ -42,15 +42,15 @@ public class HPHandler : NetworkBehaviour
     public bool OnHitTaken(short amount, bool isBlocking = false)
     {
         if (isDead) return true; // -> we deadge
+     //   Runner.Spawn(hitEffect, hitPoint.gameObject.transform.position);
         
         _animator.SetTrigger("Hit");
-       Runner.Spawn(hitEffect, hitPoint.gameObject.transform.position);
 
        if (isBlocking)
         {
             amount /= 10;
             print("BLOCKED!");
-            Runner.Spawn(blockEffect, hitPoint.transform.position);
+           // Runner.Spawn(blockEffect, hitPoint.transform.position);
             
             int yRotation = Convert.ToInt32(transform.eulerAngles.y);
             if (yRotation == 90)
@@ -88,6 +88,7 @@ public class HPHandler : NetworkBehaviour
     {
         Debug.Log($"OnHPChanged value {changed.Behaviour.HP}");
         changed.Behaviour.healthBarScript.SetHealth(changed.Behaviour.HP, changed.Behaviour.transform.name);
+
     }
 
     private static void OnStateChanged(Changed<HPHandler> changed)

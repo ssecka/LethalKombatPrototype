@@ -1658,6 +1658,7 @@ MonoBehaviour:
   _JumpCount: 0
   _BlockState: 0
   _SpeedValue: 0
+  _KnockOutCount: 0
   gravity: -20
   jumpImpulse: 8
   acceleration: 50
@@ -1669,6 +1670,8 @@ MonoBehaviour:
   leftLegAttackPoint: {fileID: 2440968017602588883}
   rightLegAttackPoint: {fileID: 3570434938185981218}
   fireBall: {fileID: 1975959190090480, guid: 47947efab731c844ba694715a65813aa, type: 3}
+  HitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
+  BlockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
   _IsGrounded: 0
   _Velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &4237744938786626837
@@ -1964,6 +1967,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   _Round: 0
   _isDead: 0
+  _ResetHpTrigger: 0
   healthBarScript: {fileID: -8783100583632169692}
   hitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
   blockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
