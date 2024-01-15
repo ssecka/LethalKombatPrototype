@@ -101,6 +101,15 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private Interpolator<float> _speedInterpolator;
 
     #endregion
+    
+    #region KnockOut
+    
+    [Networked, HideInInspector] public int KnockOutCount { get; set; }
+
+    public int InterpolatedKnockOutCount => _knockOutInterpolator.Value;
+    private Interpolator<int> _knockOutInterpolator;
+    
+    #endregion
 
 
     private InputAttackType _lastAnimationInput = 0;
@@ -158,8 +167,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private PlayerRef _thrownByPlayerRef;
     Vector3 _currentActiveHitPoint = Vector3.zero;
 
-    private const long IMMUNITY_DURATION = 50 * TimeSpan.TicksPerMillisecond;
-    
     private bool _checkForHits;
     private NetworkObject _networkObject;
     private short _damage = 42;
@@ -213,6 +220,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         _blockStateInterpolator = GetInterpolator<int>(nameof(BlockState));
         _lowKickCountInterpolator = GetInterpolator<int>(nameof(LowKickCount));
         _fireBallCountInterpolator = GetInterpolator<int>(nameof(FireBallCount));
+        _knockOutInterpolator = GetInterpolator<int>(nameof(KnockOutCount));
         _speedInterpolator = GetInterpolator<float>(nameof(SpeedValue));
     }
 
@@ -326,8 +334,12 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 
                 var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
                 
-                var _ = hpHandler.OnHitTaken(_damage,otherPlayerIsBlocking);
+                var fatal = hpHandler.OnHitTaken(_damage,otherPlayerIsBlocking);
 
+                if (fatal)
+                {
+                    otherPlayer.KnockOutCount++;
+                }
                 
                 _checkForHits = false;
                 break;

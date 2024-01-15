@@ -71,7 +71,6 @@ public class HPHandler : NetworkBehaviour
         {
             Round++;
             isDead = true;
-            _animator.SetTrigger("Die");
             Debug.Log($"{transform.name} is dead.");
             
         }

@@ -10,7 +10,7 @@ namespace Animations.AnimatorStateSynchronization
 
 		private NetworkCharacterControllerPrototypeCustom _controller;
 		private Animator _animator;
-		private int _lastVisibleJump, _lastVisibleJab, _lastVisibleHook,_lastVisibleKick, _lastVisibleLowKick, _lastVisibleFireBall;
+		private int _lastVisibleJump, _lastVisibleJab, _lastVisibleHook,_lastVisibleKick, _lastVisibleLowKick, _lastVisibleFireBall, _lastVisibleKnockOut;
 
 		// NetworkBehaviour INTERFACE
 
@@ -54,7 +54,23 @@ namespace Animations.AnimatorStateSynchronization
 
 			HandleMovement();
 
+			HandleKnockOut();
+
 			//_animator.SetFloat("Speed", _controller.InterpolatedSpeed);
+		}
+
+		private void HandleKnockOut()
+		{
+			if (_lastVisibleKnockOut < _controller.InterpolatedKnockOutCount)
+			{
+				_animator.SetTrigger("Die");
+			}
+			else if (_lastVisibleKnockOut > _controller.InterpolatedKnockOutCount)
+			{
+				// Cancel
+			}
+
+			_lastVisibleKnockOut = _controller.InterpolatedKnockOutCount;
 		}
 
 		private void HandleMovement()
@@ -88,7 +104,7 @@ namespace Animations.AnimatorStateSynchronization
 			{
 				_animator.SetTrigger("SideKick");
 			}
-			else if (_lastVisibleKick < _controller.InterpolatedKickCount)
+			else if (_lastVisibleKick > _controller.InterpolatedKickCount)
 			{
 				// canccel
 			}
