@@ -22,10 +22,12 @@ public class HPHandler : NetworkBehaviour
     public GameObject hitPoint;
 
     private static byte _cntHlp = 0;
+    private Animator _animator;
 
     
     private void Start()
     {
+        _animator = GetComponentInChildren<Animator>();
         healthBarScript = GetComponent<HealthBarScript>();
         healthBarScript.SetMaxHealth(STARTING_HP, transform.name);
         HP = STARTING_HP;
@@ -36,10 +38,11 @@ public class HPHandler : NetworkBehaviour
     public bool OnHitTaken(short amount, bool isBlocking = false)
     {
         if (isDead) return true; // -> we deadge
-//        Runner.Spawn(hitEffect, hitPoint.transform.position);
+        
+        _animator.SetTrigger("Hit");
+       Runner.Spawn(hitEffect, hitPoint.gameObject.transform.position);
 
-
-        if (isBlocking)
+       if (isBlocking)
         {
             amount /= 10;
             print("BLOCKED!");
@@ -64,6 +67,7 @@ public class HPHandler : NetworkBehaviour
         {
             Round++;
             isDead = true;
+            _animator.SetTrigger("Die");
             Debug.Log($"{transform.name} is dead.");
             
         }

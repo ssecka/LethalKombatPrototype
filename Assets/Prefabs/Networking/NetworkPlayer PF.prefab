@@ -1960,11 +1960,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  _Round: 0
   _isDead: 0
-  healthBarScript: {fileID: -8783100583632169692}
+  healthBarScript: {fileID: 0}
   hitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
   blockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
-  hitPoint: {fileID: 9096895000718894727}
+  hitPoint: {fileID: 5932830902639443499}
+  animator: {fileID: 580777354271473791}
 --- !u!114 &-8783100583632169692
 MonoBehaviour:
   m_ObjectHideFlags: 0
