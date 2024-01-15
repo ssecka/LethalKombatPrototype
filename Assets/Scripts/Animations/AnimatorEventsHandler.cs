@@ -70,7 +70,7 @@ public class AnimatorEventsHandler : MonoBehaviour
     
     public void AttackFinished() => networkCharacterControllerPrototypeCustom._canQueueAttack = true;
 
-    public void RemovePlayer_KnockOut()
+    public void KnockOut_RemovePlayer()
     {
         networkCharacterControllerPrototypeCustom.KnockOut();
     }

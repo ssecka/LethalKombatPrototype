@@ -286,10 +286,11 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
             _rstCnt++;
 
-            if (_rstCnt < 5) return; // this is need, but i dont know why
+            if (_rstCnt < 5) return; // this is need, but i dont know why.
             
             cHP.ResetHp();
             hHP.ResetHp();
+            
             _isResetRequested = false;
             _rstCnt = 0;
 
@@ -320,17 +321,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 
                 var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
                 
-                var fatal = hpHandler.OnHitTaken(_damage,otherPlayerIsBlocking);
+                var _ = hpHandler.OnHitTaken(_damage,otherPlayerIsBlocking);
 
-                if (fatal)
-                {
-                    //reset our HP
-                    this.gameObject.transform.root.GetComponentInChildren<HPHandler>().ResetHp();
-                    _isResetRequested = true;
-                    otherPlayer._isResetRequested = true;
-
-                    //Reset Position
-                }
                 
                 _checkForHits = false;
                 break;
@@ -574,7 +566,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     public void KnockOut()
     {
-        // TODO: Despawn this entitiy and send restart request to host
+        GameObject.Find("Client").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>()._isResetRequested = true;
+        GameObject.Find("Host").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>()._isResetRequested = true;
     }
 
     public void LaunchFireball()

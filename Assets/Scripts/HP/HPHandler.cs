@@ -14,6 +14,10 @@ public class HPHandler : NetworkBehaviour
     
     [Networked(OnChanged = nameof(OnStateChanged)), HideInInspector]
     public bool isDead { get; set; }
+
+    [Networked(OnChanged = nameof(TriggerResetHP))]
+    public int ResetHpTrigger { get; set; }
+    
     private bool isInit = false;
 
     public HealthBarScript healthBarScript;
@@ -79,6 +83,7 @@ public class HPHandler : NetworkBehaviour
     {
         HP = STARTING_HP;
         isDead = false;
+        ResetHpTrigger++;
     }
 
     private static void OnHPChanged(Changed<HPHandler> changed)
@@ -90,11 +95,12 @@ public class HPHandler : NetworkBehaviour
     private static void OnStateChanged(Changed<HPHandler> changed)
     {
         Debug.Log($"OnStateChanged value {changed.Behaviour.isDead}");
-        _cntHlp++;       
+    }
+
+    private static void TriggerResetHP(Changed<HPHandler> changed)
+    {
         changed.Behaviour.healthBarScript.SetRound(changed.Behaviour.Round,changed.Behaviour.transform.name);
         changed.Behaviour.healthBarScript.ResetHealthBarHost(STARTING_HP); 
         changed.Behaviour.healthBarScript.ResetHealthBarClient(STARTING_HP);
-
-        
     }
 }
