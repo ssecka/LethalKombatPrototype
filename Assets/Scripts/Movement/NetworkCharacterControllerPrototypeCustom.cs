@@ -345,6 +345,33 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 break;
             }
         }
+        
+        // Check if Rotation required
+        var host = GameObject.Find("Host").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
+        var client = GameObject.Find("Client").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
+
+        if (host != null && client != null)
+        {
+            
+            
+            if (host.transform.position.x < client.transform.position.x)
+            {
+                // host is leftmost, thereforce Y rotation must be 90 and client must be 270
+                host.transform.rotation = Quaternion.Euler(host.transform.rotation.eulerAngles.x, 90,
+                    host.transform.rotation.eulerAngles.z);
+                client.transform.rotation = Quaternion.Euler(client.transform.rotation.eulerAngles.x, 270,
+                    client.transform.rotation.eulerAngles.z);
+            }
+            else if(host.transform.position.x > client.transform.position.x)
+            {
+                host.transform.rotation = Quaternion.Euler(host.transform.rotation.eulerAngles.x, 270,
+                    host.transform.rotation.eulerAngles.z);
+                client.transform.rotation = Quaternion.Euler(client.transform.rotation.eulerAngles.x, 90,
+                    client.transform.rotation.eulerAngles.z);
+            }
+        }
+
+
     }
 
 
