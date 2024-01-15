@@ -13,6 +13,6 @@ public class GameOver : MonoBehaviour
         _background = GameObject.Find("Canvas").transform.GetChild(2).gameObject;
         _background.SetActive(true);
         winnerText = _background.transform.GetChild(1).GetComponent<Text>();
-        winnerText.text = playerName + " Wins";
+        winnerText.text = playerName + " has won!";
     }
 }
