@@ -5,7 +5,9 @@ public class HealthBarScript : MonoBehaviour
 {
 
     private GameObject _healthBarObject;
-    public Text winnerText;
+    //private GameObject _backgroundObject;
+    //public Text winnerText;
+    public GameOver gameOverScript;
 
     public Slider HealthSlider;
     public Image Fill;
@@ -77,7 +79,6 @@ public class HealthBarScript : MonoBehaviour
     
     public void SetRound(int round, string playerName)
     {
-
         //Host lost so we paint "Client" rounds as yellow
         if (playerName == "Host")
         {
@@ -92,10 +93,9 @@ public class HealthBarScript : MonoBehaviour
             {
                 Fill = _healthBarObject.transform.GetChild(3).GetComponent<Image>();
                 Fill.color = Color.yellow;
-                //Get the Background
-                _healthBarObject = GameObject.Find("Canvas").transform.GetChild(2).gameObject;
-                _healthBarObject.SetActive(true);
-                Update(playerName);
+             
+                gameOverScript.Setup("Client");
+
             }    
         }
         //Client lost so we paint "Host" rounds as yellow
@@ -112,10 +112,8 @@ public class HealthBarScript : MonoBehaviour
             {
                 Fill = _healthBarObject.transform.GetChild(3).GetComponent<Image>();
                 Fill.color = Color.yellow;
-                //Get the Background
-                _healthBarObject = GameObject.Find("Canvas").transform.GetChild(2).gameObject;
-                _healthBarObject.SetActive(true);
-                Update(playerName);
+                
+                gameOverScript.Setup("Host");
             }     
         }
     }
@@ -191,9 +189,5 @@ public class HealthBarScript : MonoBehaviour
 
         Fill.color = _gradient.Evaluate(1f);
     }
-
-    public void Update(string playerName)
-    {
-        winnerText.text = playerName + "Wins";
-    }   
+    
 }

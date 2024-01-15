@@ -621,7 +621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9990363cc6c1b647acbe6a94008971c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winnerText: {fileID: 0}
+  gameOverScript: {fileID: 0}
   HealthSlider: {fileID: 7857105767639406745}
   Fill: {fileID: 1960207496168637172, guid: 88634783ab105ef4ca9a43056122addf, type: 3}
 --- !u!1 &1147849033379978151
@@ -1551,6 +1551,7 @@ GameObject:
   - component: {fileID: 4824950906500580323}
   - component: {fileID: -154143930971649953}
   - component: {fileID: -8783100583632169692}
+  - component: {fileID: 5190708572821847898}
   m_Layer: 0
   m_Name: NetworkPlayer PF
   m_TagString: Player1
@@ -1979,9 +1980,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9990363cc6c1b647acbe6a94008971c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winnerText: {fileID: 4280343478582402062, guid: 5bfac009e12359b469f9831156ad32e4, type: 3}
+  gameOverScript: {fileID: 5190708572821847898}
   HealthSlider: {fileID: 3267286590115415260, guid: d8d6f140d8c6eb045bbf443f6aa3a761, type: 3}
   Fill: {fileID: 1960207496168637172, guid: 88634783ab105ef4ca9a43056122addf, type: 3}
+--- !u!114 &5190708572821847898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4417418228734897978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53f2e78761d1d534eb73686f2ab955b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4506338734718176353
 GameObject:
   m_ObjectHideFlags: 0
