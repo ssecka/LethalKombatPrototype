@@ -5,6 +5,7 @@ public class HealthBarScript : MonoBehaviour
 {
 
     private GameObject _healthBarObject;
+    public Text winnerText;
 
     public Slider HealthSlider;
     public Image Fill;
@@ -91,6 +92,10 @@ public class HealthBarScript : MonoBehaviour
             {
                 Fill = _healthBarObject.transform.GetChild(3).GetComponent<Image>();
                 Fill.color = Color.yellow;
+                //Get the Background
+                _healthBarObject = GameObject.Find("Canvas").transform.GetChild(2).gameObject;
+                _healthBarObject.SetActive(true);
+                Update(playerName);
             }    
         }
         //Client lost so we paint "Host" rounds as yellow
@@ -107,6 +112,10 @@ public class HealthBarScript : MonoBehaviour
             {
                 Fill = _healthBarObject.transform.GetChild(3).GetComponent<Image>();
                 Fill.color = Color.yellow;
+                //Get the Background
+                _healthBarObject = GameObject.Find("Canvas").transform.GetChild(2).gameObject;
+                _healthBarObject.SetActive(true);
+                Update(playerName);
             }     
         }
     }
@@ -182,4 +191,9 @@ public class HealthBarScript : MonoBehaviour
 
         Fill.color = _gradient.Evaluate(1f);
     }
+
+    public void Update(string playerName)
+    {
+        winnerText.text = playerName + "Wins";
+    }   
 }
