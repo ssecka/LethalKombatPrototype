@@ -83,7 +83,6 @@ public class HPHandler : NetworkBehaviour
     {
         HP = STARTING_HP;
         isDead = false;
-        ResetHpTrigger++;
     }
 
     private static void OnHPChanged(Changed<HPHandler> changed)

@@ -135,7 +135,9 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     #endregion
 
     private SoundEffects _soundEffects;
-
+    private NetworkCharacterControllerPrototypeCustom _loser;
+    
+    
     public Transform leftHandAttackPoint,
         rightHandAttackPoint,
         leftLegAttackPoint,
@@ -290,6 +292,9 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             
             cHP.ResetHp();
             hHP.ResetHp();
+            
+            if(_loser != null)_loser.GetComponentInChildren<HPHandler>().ResetHpTrigger++;
+            _loser = null;
             
             _isResetRequested = false;
             _rstCnt = 0;
@@ -568,6 +573,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     {
         GameObject.Find("Client").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>()._isResetRequested = true;
         GameObject.Find("Host").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>()._isResetRequested = true;
+
+        _loser = this;
     }
 
     public void LaunchFireball()

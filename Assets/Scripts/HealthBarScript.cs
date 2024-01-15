@@ -80,6 +80,9 @@ public class HealthBarScript : MonoBehaviour
     public void SetRound(int round, string playerName)
     {
         //Host lost so we paint "Client" rounds as yellow
+        
+        print(round);
+        
         if (playerName == "Host")
         {
             _healthBarObject = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
