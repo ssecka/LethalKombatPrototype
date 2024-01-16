@@ -176,6 +176,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private bool _isResetRequested = false;
     private byte _rstCnt = 0;
 
+    public Material MatP1, MatP2;
+
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
     [Networked] [HideInInspector] public Vector3 Velocity { get; set; }
@@ -212,6 +214,21 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         // Caveat: this is needed to initialize the Controller's state and avoid unwanted spikes in its perceived velocity
         Controller.Move(transform.position);
 
+        foreach (var child in transform)
+        {
+            foreach (var grandchild in (Transform)child)
+            {
+                if (grandchild.ToString() == "Alpha_Surface (UnityEngine.Transform)")
+                {
+                    var t = (Transform)grandchild;
+                    var c = t.GetComponent<SkinnedMeshRenderer>();
+                    //Name may not be set correctly yet, we need to use the position
+                    
+                    c.material = this.transform.position.x > 0 ? MatP1 : MatP2;
+                }
+            }
+        }
+        
         SpeedValue = 0;
         LastHitTimestamp = 0;
 
@@ -374,8 +391,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         }
 
         // Check if Rotation required
-        var host = GameObject.Find("Host").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
-        var client = GameObject.Find("Client").GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
+        var host = GameObject.Find("Host")?.GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
+        var client = GameObject.Find("Client")?.GetComponentInChildren<NetworkCharacterControllerPrototypeCustom>();
 
         if (host != null && client != null)
         {
