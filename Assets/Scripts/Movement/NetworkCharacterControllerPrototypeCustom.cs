@@ -384,7 +384,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                         });
                 }
 
-                if (fatal)
+                if (fatal && !otherPlayer._blockMovement)
                 {
                     otherPlayer.KnockOutCount++;
                     otherPlayer._blockMovement = true;
