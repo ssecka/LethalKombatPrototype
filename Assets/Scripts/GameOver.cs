@@ -1,6 +1,7 @@
 
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -14,5 +15,10 @@ public class GameOver : MonoBehaviour
         _background.SetActive(true);
         winnerText = _background.transform.GetChild(1).GetComponent<Text>();
         winnerText.text = playerName + " has won!";
+    }
+
+    public void PlayAgainButton()
+    {
+        SceneManager.LoadScene("SampleScene");
     }
 }

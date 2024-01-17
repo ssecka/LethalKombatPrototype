@@ -5,8 +5,6 @@ public class HealthBarScript : MonoBehaviour
 {
 
     private GameObject _healthBarObject;
-    //private GameObject _backgroundObject;
-    //public Text winnerText;
     public GameOver gameOverScript;
 
     public Slider HealthSlider;
