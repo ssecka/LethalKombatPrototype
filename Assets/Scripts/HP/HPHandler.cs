@@ -98,7 +98,7 @@ public class HPHandler : NetworkBehaviour
 
     private static void TriggerResetHP(Changed<HPHandler> changed)
     {
-        changed.Behaviour.healthBarScript.SetRound(changed.Behaviour.Round,changed.Behaviour.transform.name, changed.Behaviour);
+        changed.Behaviour.healthBarScript.SetRound(changed.Behaviour.Round,changed.Behaviour.transform.name);
         changed.Behaviour.healthBarScript.ResetHealthBarHost(STARTING_HP); 
         changed.Behaviour.healthBarScript.ResetHealthBarClient(STARTING_HP);
     }

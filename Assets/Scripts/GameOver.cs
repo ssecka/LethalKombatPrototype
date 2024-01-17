@@ -8,7 +8,7 @@ public class GameOver : MonoBehaviour
     private GameObject _background;
     private HPHandler _hpHandler;
     
-    public void Setup(string playerName, HPHandler hpHandler)
+    public void Setup(string playerName)
     {
         _background = GameObject.Find("Canvas").transform.GetChild(2).gameObject;
         _background.SetActive(true);
