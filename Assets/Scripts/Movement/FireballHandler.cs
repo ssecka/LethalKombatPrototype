@@ -114,7 +114,7 @@ public class FireballHandler : NetworkBehaviour
                     
                     var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
                     
-                    var fatal = hpHandler.OnHitTaken(100,otherPlayer.transform,otherPlayerIsBlocking);
+                    var fatal = hpHandler.OnHitTaken(100,otherPlayer.transform,otherPlayerIsBlocking,haduken:true);
 
                     if (fatal)
                     {

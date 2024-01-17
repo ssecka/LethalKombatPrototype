@@ -39,7 +39,7 @@ public class HPHandler : NetworkBehaviour
     }
 
     // Only called by server
-    public bool OnHitTaken(short amount, Transform playerHit,bool isBlocking = false)
+    public bool OnHitTaken(short amount, Transform playerHit,bool isBlocking = false, bool haduken = false)
     {
         if (isDead) return true; // -> we deadge
      //   Runner.Spawn(hitEffect, hitPoint.gameObject.transform.position);
@@ -55,12 +55,30 @@ public class HPHandler : NetworkBehaviour
             if (Math.Abs(playerHit.rotation.eulerAngles.y - (-90)) < 0.002)
             {
                 print("block 1");
-                transform.Translate(Vector3.forward * .5f);
+                if (haduken)
+                {
+                    transform.Translate(Vector3.back * .5f);
+
+                }
+                else
+                {
+                    transform.Translate(Vector3.forward * .5f);
+                    
+                }
             }
             else
             {
                 print("block 2");
-                transform.Translate(Vector3.back * .5f);
+                if (haduken)
+                {
+                    transform.Translate(Vector3.forward * .5f);
+
+                }
+                else
+                {
+                    transform.Translate(Vector3.back * .5f);
+                    
+                }
             }
         }
         
