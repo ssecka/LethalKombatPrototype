@@ -75,7 +75,7 @@ public class HealthBarScript : MonoBehaviour
         Fill.color = _gradient.Evaluate(HealthSlider.normalizedValue);
     }
     
-    public void SetRound(int round, string playerName)
+    public void SetRound(int round, string playerName, HPHandler hphandler)
     {
         //Host lost so we paint "Client" rounds as yellow
         
@@ -94,9 +94,8 @@ public class HealthBarScript : MonoBehaviour
             {
                 Fill = _healthBarObject.transform.GetChild(3).GetComponent<Image>();
                 Fill.color = Color.yellow;
-             
-                gameOverScript.Setup("Client");
 
+                gameOverScript.Setup("Client",hphandler);
             }    
         }
         //Client lost so we paint "Host" rounds as yellow
@@ -114,7 +113,7 @@ public class HealthBarScript : MonoBehaviour
                 Fill = _healthBarObject.transform.GetChild(3).GetComponent<Image>();
                 Fill.color = Color.yellow;
                 
-                gameOverScript.Setup("Host");
+                gameOverScript.Setup("Host", hphandler);
             }     
         }
     }

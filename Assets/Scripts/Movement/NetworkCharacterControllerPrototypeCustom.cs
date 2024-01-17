@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using DefaultNamespace;
 using Fusion;
 using UnityEngine;
 
@@ -16,6 +14,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     #region Networked stuff
 
     private NetworkMecanimAnimator _networkAnimator;
+    private HPHandler _hpHandler;
 
     [Networked] public long LastHitTimestamp { get; set; }
 
@@ -173,7 +172,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private NetworkObject _networkObject;
     private short _damage = 42;
 
-    private bool _isResetRequested = false;
+    public bool _isResetRequested = false;
     private byte _rstCnt = 0;
 
     public Material MatP1, MatP2;
@@ -413,7 +412,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
             }
         }
     }
-
 
     private void QueueAttackAnimation(InputAttackType inputAttackType)
     {
