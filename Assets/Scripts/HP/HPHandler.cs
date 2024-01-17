@@ -52,7 +52,7 @@ public class HPHandler : NetworkBehaviour
             print("BLOCKED!");
            // Runner.Spawn(blockEffect, hitPoint.transform.position);
             
-            if (transform.rotation.eulerAngles.y - 90 < 0.002)
+            if ((Math.Abs(transform.rotation.eulerAngles.y - 90) < 0.002))
             {
                 transform.Translate(Vector3.back * .5f);
             }
