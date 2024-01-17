@@ -45,7 +45,7 @@ public class NetworkRunnerHandler : MonoBehaviour
             Address = address,
             Scene = scene,
             PlayerCount = 2,
-            SessionName = "LethalKombat123",
+            SessionName = "LethalKombat",
             Initialized = initialized,
             SceneManager = sceneManager
         });
