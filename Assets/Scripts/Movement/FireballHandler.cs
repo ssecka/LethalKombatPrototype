@@ -15,7 +15,6 @@ public class FireballHandler : NetworkBehaviour
     private string _firedByPlayerName;
     private NetworkObject _firedByNetworkObject;
     public Transform attackPoint;
-
     private bool _shootRight = false;
     
     private NetworkCharacterControllerPrototypeCustom _owner;
@@ -116,8 +115,9 @@ public class FireballHandler : NetworkBehaviour
                     
                     var fatal = hpHandler.OnHitTaken(100,otherPlayer.transform,otherPlayerIsBlocking,haduken:true);
 
-                    if (fatal)
+                    if (fatal && !otherPlayer._knockoutInit)
                     {
+                        otherPlayer._knockoutInit = true;
                         otherPlayer.KnockOutCount++;
                     }
 

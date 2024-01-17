@@ -143,6 +143,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     private SoundEffects _soundEffects;
     private NetworkCharacterControllerPrototypeCustom _loser;
+    public bool _knockoutInit = false;
 
 
     public Transform leftHandAttackPoint,
@@ -177,6 +178,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
     public Material MatP1, MatP2;
 
+    private bool _blockMovement = false;
+    
     [Networked] [HideInInspector] public bool IsGrounded { get; set; }
 
     [Networked] [HideInInspector] public Vector3 Velocity { get; set; }
@@ -250,7 +253,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
         }
 
 
-        if (GetInput(out NetworkInputData networkInputData))
+        if (GetInput(out NetworkInputData networkInputData) && !_isResetRequested && !_knockoutInit && !_blockMovement)
         {
             var moveDir = networkInputData._movementInput;
             moveDir.Normalize();
@@ -321,10 +324,12 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
             cHP.ResetHp();
             hHP.ResetHp();
-
+            _knockoutInit = false;
+            hostPlayer._knockoutInit = false;
+            clientPlayer._knockoutInit = false;
             if (_loser != null) _loser.GetComponentInChildren<HPHandler>().ResetHpTrigger++;
             _loser = null;
-
+            _blockMovement = false;
             _isResetRequested = false;
             _rstCnt = 0;
         }
@@ -382,6 +387,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
                 if (fatal)
                 {
                     otherPlayer.KnockOutCount++;
+                    otherPlayer._blockMovement = true;
                 }
 
                 _checkForHits = false;
