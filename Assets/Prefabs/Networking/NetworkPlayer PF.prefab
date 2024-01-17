@@ -1672,6 +1672,7 @@ MonoBehaviour:
   fireBall: {fileID: 1975959190090480, guid: 47947efab731c844ba694715a65813aa, type: 3}
   HitEffect: {fileID: 5024009746357069194, guid: 25ba8294e30815c4899c230cddfd4f93, type: 3}
   BlockEffect: {fileID: 5024009746357069194, guid: 50141081c04f5bc47889e0f823143193, type: 3}
+  _isResetRequested: 0
   MatP1: {fileID: 2100000, guid: 8f878bf478ec1c7428cd13d5512f3cc3, type: 2}
   MatP2: {fileID: 2100000, guid: 0a5f541d60feeb94b9cda2d3ac8a8c13, type: 2}
   _IsGrounded: 0
@@ -1885,8 +1886,8 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5a11848d-7e39-4b4f-9d3d-509cb7514a36
     m_ActionName: Player/FireBall
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
