@@ -8,8 +8,10 @@ using UnityEngine.Serialization;
 public class FighterCamera : MonoBehaviour
 {
 
-    private const string PLAYER_ONE_TAG_SEARCH_NAME = "Player1";
-    private const string PLAYER_TWO_TAG_SEARCH_NAME = "Player2";
+    private const string PLAYER_ONE_TAG_SEARCH_NAME = "Host";
+    private const string PLAYER_TWO_TAG_SEARCH_NAME = "Client";
+
+    private bool areBothSet = false;
     
     private Transform[] _playerTransforms;
     public float YOffset = 1.5f;
@@ -28,24 +30,31 @@ public class FighterCamera : MonoBehaviour
         _playerTransforms ??= new Transform[2];
     }
 
-    public void SpawnInPlayer2(Transform t1, Transform t2)
-    {
-        _playerTransforms ??= new Transform[2];
-        _playerTransforms[0] = t1;
-        _playerTransforms[1] = t2;
-
-        _playerRotationScript ??= new(_playerTransforms[0], _playerTransforms[1]);
-
-
-    }
-
     private void Update()
     {
 
-        Player1 = GameObject.FindGameObjectWithTag(PLAYER_ONE_TAG_SEARCH_NAME);
-        Player2 = GameObject.FindGameObjectWithTag(PLAYER_TWO_TAG_SEARCH_NAME);
+        //if (areBothSet) return;
+        
+        var p1 = GameObject.Find(PLAYER_ONE_TAG_SEARCH_NAME);
+        var p2 = GameObject.Find(PLAYER_TWO_TAG_SEARCH_NAME);
+
+        if (p1 != null)
+        {
+            _playerTransforms[0] = p1.transform;
+        }
+
+        if (p2 != null)
+        {
+            _playerTransforms[1] = p2.transform;
+        }
+
+        if (p1 != null && p2 != null)
+        {
+            areBothSet = true;
+        }
         
         // falls errors den expensive != null operator usen!
+        return;
         
         if(Player1?.transform is not null ) _playerTransforms[0] = Player1.transform;
         if(Player2?.transform is not null ) _playerTransforms[1] = Player2.transform;
@@ -58,6 +67,8 @@ public class FighterCamera : MonoBehaviour
            _playerTransforms[1] is null ||
            _playerTransforms.Length == 0)
             return;
+
+        if (!areBothSet) return;
         
         _xMin = _xMax = _playerTransforms[0].position.x;
         _yMin = _yMax = _playerTransforms[0].position.y;
