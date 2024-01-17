@@ -173,6 +173,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
     private NetworkObject _networkObject;
     private short _damage = 42;
 
+    
+    // DO NOT CHANGE THE NAME OF THIS OR THINGS WILL BREAK!
     private bool _isResetRequested = false;
     private byte _rstCnt = 0;
 
@@ -277,6 +279,8 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
         if (!Object.HasStateAuthority) return;
 
+        
+        
         if (_isResetRequested)
         {
             // We need to call GetSpawnPoint 2 Times since its a STATIC funciton and gives different results

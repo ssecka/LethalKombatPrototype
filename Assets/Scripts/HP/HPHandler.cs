@@ -4,7 +4,7 @@ using Fusion;
 
 public class HPHandler : NetworkBehaviour
 {
-    private const short STARTING_HP = 1_000;
+    private const short STARTING_HP = 100;
     [Networked(OnChanged = nameof(OnHPChanged))]
     
     private short HP { get; set; } // We only use short for performance

@@ -1,15 +1,18 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class HealthBarScript : MonoBehaviour
 {
 
     private GameObject _healthBarObject;
-    public GameOver gameOverScript;
+    [FormerlySerializedAs("gameOverScript")] public GameOverHandler gameOverHandlerScript;
 
     public Slider HealthSlider;
     public Image Fill;
     private Gradient _gradient;
+
+    private const int ROUND_LIMIT = 10;
 
     public void SetMaxHealth(int health, string playerName)
     {
@@ -79,13 +82,11 @@ public class HealthBarScript : MonoBehaviour
     {
         //Host lost so we paint "Client" rounds as yellow
         
-        print(round);
-        
         if (playerName == "Host")
         {
             _healthBarObject = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
 
-            if (round == 1)
+            if (round == ROUND_LIMIT)
             {
                 Fill = _healthBarObject.transform.GetChild(2).GetComponent<Image>();
                 Fill.color = Color.yellow;
@@ -95,7 +96,7 @@ public class HealthBarScript : MonoBehaviour
                 Fill = _healthBarObject.transform.GetChild(3).GetComponent<Image>();
                 Fill.color = Color.yellow;
              
-                gameOverScript.Setup("Client");
+                gameOverHandlerScript.Setup("Client");
 
             }    
         }
@@ -104,7 +105,7 @@ public class HealthBarScript : MonoBehaviour
         {
             _healthBarObject = GameObject.Find("Canvas").transform.GetChild(0).gameObject;
 
-            if (round == 1)
+            if (round == ROUND_LIMIT)
             {
                 Fill = _healthBarObject.transform.GetChild(2).GetComponent<Image>();
                 Fill.color = Color.yellow;
@@ -114,7 +115,7 @@ public class HealthBarScript : MonoBehaviour
                 Fill = _healthBarObject.transform.GetChild(3).GetComponent<Image>();
                 Fill.color = Color.yellow;
                 
-                gameOverScript.Setup("Host");
+                gameOverHandlerScript.Setup("Host");
             }     
         }
     }
