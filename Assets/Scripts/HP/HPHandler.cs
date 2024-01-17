@@ -54,7 +54,7 @@ public class HPHandler : NetworkBehaviour
             
             if (transform.rotation.eulerAngles.y - 90 < 0.002)
             {
-                transform.Translate(Vector3.forward * .5f);
+                transform.Translate(Vector3.back * .5f);
             }
             else
             {
