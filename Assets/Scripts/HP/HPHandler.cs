@@ -39,7 +39,7 @@ public class HPHandler : NetworkBehaviour
     }
 
     // Only called by server
-    public bool OnHitTaken(short amount, bool isBlocking = false)
+    public bool OnHitTaken(short amount, Transform playerHit,bool isBlocking = false)
     {
         if (isDead) return true; // -> we deadge
      //   Runner.Spawn(hitEffect, hitPoint.gameObject.transform.position);
@@ -51,13 +51,15 @@ public class HPHandler : NetworkBehaviour
             amount /= 10;
             print("BLOCKED!");
            // Runner.Spawn(blockEffect, hitPoint.transform.position);
-            
-            if ( Math.Abs(transform.rotation.eulerAngles.y - 90) < 0.002)
+           
+            if (Math.Abs(playerHit.rotation.eulerAngles.y - (-90)) < 0.002)
             {
+                print("block 1");
                 transform.Translate(Vector3.forward * .5f);
             }
             else
             {
+                print("block 2");
                 transform.Translate(Vector3.back * .5f);
             }
         }

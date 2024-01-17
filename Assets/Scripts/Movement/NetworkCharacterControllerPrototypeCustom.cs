@@ -353,7 +353,7 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform
 
                 var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
 
-                var fatal = hpHandler.OnHitTaken(_damage, otherPlayerIsBlocking);
+                var fatal = hpHandler.OnHitTaken(_damage, otherPlayer.transform,otherPlayerIsBlocking);
 
                 var rotation = transform.rotation;
                 var pos = transform.position;
