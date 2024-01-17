@@ -57,7 +57,7 @@ public class FireballHandler : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         
-        transform.position += new Vector3(_shootRight ? 1 : -1 ,0,0) * Runner.DeltaTime * SPEED;
+        transform.position += new Vector3(_shootRight ? -1 : 1 ,0,0) * Runner.DeltaTime * SPEED;
 
         if (Object.HasStateAuthority)
         {
