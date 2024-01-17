@@ -43,11 +43,11 @@ public class FireballHandler : NetworkBehaviour
         
         if (shotRight)
         {
-            rotation.eulerAngles = new(-90, -90, 0);
+            rotation.eulerAngles = new(90, 0, -90);
         }
         else
         {
-            rotation.eulerAngles = new(90, 90, 0);
+            rotation.eulerAngles = new(-90, 0, 90);
         }
 
         this.transform.rotation = rotation;
@@ -57,7 +57,7 @@ public class FireballHandler : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         
-        transform.position += new Vector3(_shootRight ? 1 : -1 ,0,0) * Runner.DeltaTime * SPEED;
+        transform.position += new Vector3(_shootRight ? -1 : 1 ,0,0) * Runner.DeltaTime * SPEED;
 
         if (Object.HasStateAuthority)
         {
@@ -114,7 +114,7 @@ public class FireballHandler : NetworkBehaviour
                     
                     var otherPlayerIsBlocking = otherPlayer.BlockState == 1;
                     
-                    var fatal = hpHandler.OnHitTaken(100,otherPlayerIsBlocking);
+                    var fatal = hpHandler.OnHitTaken(100,otherPlayer.transform,otherPlayerIsBlocking,haduken:true);
 
                     if (fatal)
                     {
