@@ -38,3 +38,8 @@ https://www.youtube.com/watch?v=gxhG9BHcxmc&list=PLyDa4NP_nvPfHhPuumJylSj8jXyULs
 
 https://www.youtube.com/watch?v=Dn6pzf8scco&list=PLyDa4NP_nvPfHhPuumJylSj8jXyULsT1X&index=7
 - Im Tutorial wird gezeigt wie eine Rackete für Fusion erzeugt wird im Bereich eines First Person Shooters. Wir haben die Idee dahinter auf den Fireball angewendet
+
+Mixamo Animationen:
+- Knockout
+- Walking Animations
+- Fireball
