@@ -21,6 +21,8 @@ Bei Lethal Kombat handelt es sich um ein Player versus Player Fighter, indem 2 S
 - Haduken / Fireball (K)
 - Block (SHIFT)
 
+![ControllerLayout](ControllerSVG.png)
+
 
 ### Benutzte Dateien / Tutorials:
 
