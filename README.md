@@ -43,3 +43,7 @@ Mixamo Animationen:
 - Knockout
 - Walking Animations
 - Fireball
+
+Sounds
+- Hadouken Sound von Street Fighter
+- Jab / Punch / SideKick / Kick von Diablo 2
