@@ -3,9 +3,9 @@
 
 
 ### Gruppenmitglieder:
-Salif Secka 208959
-Telmo Santos Carneiro 208947
-Stefan Kurz 208904
+- Salif Secka 208959
+- Telmo Santos Carneiro 208947
+- Stefan Kurz 208904
 
 
 ### Beschreibung
