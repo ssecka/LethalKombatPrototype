@@ -8,9 +8,13 @@
 - Stefan Kurz 208904
 
 
-### Beschreibung
+### How to Start Playing
+Die erste Instanz kann in Unity einfach durch Drücken von Play gestartet werden.
+- Wenn Sie eine zweite Instanz auf Ihrem Computer starten möchten, können Sie dies ebenfalls tun.
+    - Dazu müssen Sie das Projekt builden und die daraus resultierende .exe-Datei ausführen.
 
-Bei Lethal Kombat handelt es sich um ein Player versus Player Fighter, indem 2 Spieler gegeneinander anreten. Lethal Kombat ist von der Street Fighter Series inspiriert. Es sind folgende Aktionen verfügbar:
+### Beschreibung
+Bei Lethal Kombat handelt es sich um ein Player versus Player Fighter, indem 2 Spieler gegeneinander antreten. Lethal Kombat ist von der Street Fighter Series inspiriert. Es sind folgende Aktionen verfügbar:
 
 - Movement (wsad)
 - Jump (Space)
@@ -23,6 +27,22 @@ Bei Lethal Kombat handelt es sich um ein Player versus Player Fighter, indem 2 S
 
 ![ControllerLayout](ControllerSVG.png)
 
+### Herausforderungen
+- Die Umstellung von Local Multiplayer auf Online Multiplayer mit Fusion war der schwierigste Teil unseres Projekts, da die Dokumentation nicht sehr hilfreich war und wir sehr wenig Erfahrung mit Fusion hatten.
+- Es war schwierig, Server und Client zu synchronisieren.  
+    - Anfangs wurde die UI nur beim Host aktualisiert.
+    - Die Animationen und auch die VFX wurden nur beim Host abgespielt.
+
+### Lessons Learned
+- Eigene Animationen mit [Cascadeur](https://cascadeur.com/) erstellen
+- Networking Synchronisierung
+
+### Inspirationen
+ - [Mortal Kombat](https://www.youtube.com/watch?v=0HEE78L_CnA)
+ - [Street Figter](https://youtu.be/Tb521YYYkaE?si=BafHJbBSefCwxCjg&t=44)    
+
+### Prefabs
+- [HealthSystem](https://assetstore.unity.com/packages/tools/utilities/health-system-for-dummies-215755#description)
 
 ### Benutzte Dateien / Tutorials:
 
