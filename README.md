@@ -2,7 +2,8 @@
 2.5D Fighting game
 
 Repo: https://github.com/ssecka/LethalKombatPrototype
-Video: 
+Video: https://www.youtube.com/watch?v=g2JY8QZeDH4
+
 
 ### Gruppenmitglieder:
 - Salif Secka 208959
