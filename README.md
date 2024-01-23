@@ -49,6 +49,9 @@ Bei Lethal Kombat handelt es sich um ein Player versus Player Fighter, indem 2 S
 
 ### Benutzte Dateien / Tutorials:
 
+Assets/Scripts/Movment/NetworkCharacterControllerPrototypeCustom:
+- basierend auf NetworkCharacterControllerPrototype von Fusion. Hierbei handelt es sich um das gerüst eines Character Controllers. Dieser wurde für unsere Anforderungen eingenständig stark abgeändert.
+
 Assets/Scripts/Animations/Tick_Accurate/AnimatorStateSync.cs: 
 - größtenteils aus dem Tutorial: https://doc.photonengine.com/fusion/current/technical-samples/animations#example-3---state-synchronization-with-animator | Example 3
 übernommen
@@ -70,3 +73,12 @@ Mixamo Animationen:
 Sounds
 - Hadouken Sound von Street Fighter
 - Jab / Punch / SideKick / Kick von Diablo 2
+
+### Einzelne Netzwerkschritte:
+
+#NETWORKREOWRK
+Zuerst haben wir versucht die Animationen über das hochzählen eines Counter zu syncen. Dieser Counter war [Networked] was bewirkt, dass der Wert auf dem Client und dem Server gesynct wird und somit den gleichen Wert hat. Nach Recherche haben wir herausgefunden, dass diese Counter oft über einen generic Interpolator umgesetzt wird, wesshalb wir dies auf getestet haben. Da der Interpolator bessere Consitency hatte, haben wir uns für diesen entschieden.
+Diese Probleme von dieser Implementierung wurde uns jedoch sehr schnell klar: Die Animationen waren nicht gut genug gesync. Bei anderen Arten von Spielen (z.B. FPS) wär dies kein größeres Problem, da jedoch unsere Attacken animation based getriggered werden, haben wir uns nach einer besseren alternativev umgesehen.
+
+#ANIMTICK
+Wir haben ein Beispiel von Fusion gefunden, indem die mehrere Implementierungen aufgezeigt wurden, und wie stark der Delay von client-Server ist. Wir haben dann die "Animaton-State-Sync" dann in diesem Branch implementiert, indem wir die Datej "AnimationStateSync" kopiert haben und Player_AnimatorStateSync von dem Beispiel übernommen und für unsere Animationen angepasst haben. Der Nachteil von dieser Herangehensweise ist, dass es mehr Traffic erzeugt (was bei 2 Objekten jedoch vernachlässigbar ist). Der Vorteil ist, dass der Delay einer Animation von Client-Server nur noch teilweise wahrnehmbar ist, falls man Client und Server nebeneinander öffnet und die Animations vergleicht. 
