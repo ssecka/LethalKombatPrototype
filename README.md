@@ -1,8 +1,8 @@
 # LethalKombatPrototype
 2.5D Fighting game
 
-Repo: https://github.com/ssecka/LethalKombatPrototype
-Video: https://www.youtube.com/watch?v=g2JY8QZeDH4
+- Repo: https://github.com/ssecka/LethalKombatPrototype
+- Video: https://www.youtube.com/watch?v=g2JY8QZeDH4
 
 
 ### Gruppenmitglieder:
