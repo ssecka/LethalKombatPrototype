@@ -76,6 +76,7 @@ Sounds
 
 ## Einzelne Netzwerkschritte:
 
+
 ### main
 
 Dieser Branch ist der erste Versuch Lethal Kombat über das Internet gegeneinander spielen zu können. Da dieser Branch unter anderem keine State Authority berücksichtigt, haben wir sehr schnell einen desync zwischen Server und Client feststellen können. Dieser behinhalteten unter anderem:
