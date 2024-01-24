@@ -76,7 +76,7 @@ Sounds
 
 ### Einzelne Netzwerkschritte:
 
-# NETWORKREOWRK
+# NETWORKREWORK
 
 Zuerst haben wir versucht die Animationen über das hochzählen eines Counter zu syncen. Dieser Counter war [Networked] was bewirkt, dass der Wert auf dem Client und dem Server gesynct wird und somit den gleichen Wert hat. Nach Recherche haben wir herausgefunden, dass diese Counter oft über einen generic Interpolator umgesetzt wird, wesshalb wir dies auf getestet haben. Da der Interpolator bessere Consitency hatte, haben wir uns für diesen entschieden.
 Diese Probleme von dieser Implementierung wurde uns jedoch sehr schnell klar: Die Animationen waren nicht gut genug gesync. Bei anderen Arten von Spielen (z.B. FPS) wär dies kein größeres Problem, da jedoch unsere Attacken animation based getriggered werden, haben wir uns nach einer besseren alternativev umgesehen. Wichtig: Dieser Branch besitzt nicht alle Features, da wir mit dem besser Funktionierenden weitergearbeitet haben.
