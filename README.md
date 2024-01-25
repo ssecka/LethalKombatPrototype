@@ -3,6 +3,7 @@
 
 - Repo: https://github.com/ssecka/LethalKombatPrototype
 - Video: https://www.youtube.com/watch?v=g2JY8QZeDH4
+- Doku: https://docs.google.com/document/d/1Zig0xtx9IFOYtQlJjk0ZK496nqcRVO0-p5scnIO8aPk/edit?hl=de
 
 
 ## Gruppenmitglieder:
@@ -73,7 +74,7 @@ Mixamo Animationen:
 
 Sounds
 - Hadouken Sound von Street Fighter
-- Jab / Punch / SideKick / Kick von Diablo 2
+- Jab / Punch / SideKick / Kick von Diablo II
 
 ## Einzelne Netzwerkschritte:
 
