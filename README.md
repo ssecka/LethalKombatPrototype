@@ -96,7 +96,7 @@ Diese Probleme von dieser Implementierung wurde uns jedoch sehr schnell klar: Di
 
 ### NetworkAnimTick
 
-Wir haben ein Beispiel von Fusion gefunden, indem die mehrere Implementierungen aufgezeigt wurden, und wie stark der Delay von client-Server ist. Wir haben dann die "Animaton-State-Sync" dann in diesem Branch implementiert, indem wir die Datej "AnimationStateSync" kopiert haben und Player_AnimatorStateSync von dem Beispiel übernommen und für unsere Animationen angepasst haben. Der Nachteil von dieser Herangehensweise ist, dass es mehr Traffic erzeugt (was bei 2 Objekten jedoch vernachlässigbar ist). Der Vorteil ist, dass der Delay einer Animation von Client-Server nur noch teilweise wahrnehmbar ist, falls man Client und Server nebeneinander öffnet und die Animations vergleicht. 
+Wir haben ein Beispiel von Fusion gefunden(https://doc.photonengine.com/fusion/current/technical-samples/animations#example-3---state-synchronization-with-animator), indem die mehrere Implementierungen aufgezeigt wurden, und wie stark der Delay von client-Server ist. Wir haben dann die "Animaton-State-Sync" dann in diesem Branch implementiert, indem wir die Datej "AnimationStateSync" kopiert haben und Player_AnimatorStateSync von dem Beispiel übernommen und für unsere Animationen angepasst haben. Der Nachteil von dieser Herangehensweise ist, dass es mehr Traffic erzeugt (was bei 2 Objekten jedoch vernachlässigbar ist). Der Vorteil ist, dass der Delay einer Animation von Client-Server nur noch teilweise wahrnehmbar ist, falls man Client und Server nebeneinander öffnet und die Animations vergleicht. 
 
 ### feature/ReplayButton
 
