@@ -35,6 +35,7 @@ Bei Lethal Kombat handelt es sich um ein Player versus Player Fighter, indem 2 S
 - Es war schwierig, Server und Client zu synchronisieren.  
     - Anfangs wurde die UI nur beim Host aktualisiert.
     - Die Animationen und auch die VFX wurden nur beim Host abgespielt.
+    - Die Animationen wurden nicht richtig gesynct
 
 ## Lessons Learned
 - Eigene Animationen mit [Cascadeur](https://cascadeur.com/) erstellen
