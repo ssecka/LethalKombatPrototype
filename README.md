@@ -31,7 +31,7 @@ Bei Lethal Kombat handelt es sich um ein Player versus Player Fighter, indem 2 S
 ![ControllerLayout](ControllerSVG.png)
 
 ## Herausforderungen
-- Die Umstellung von Local Multiplayer auf Online Multiplayer mit Fusion war der schwierigste Teil unseres Projekts, da die Dokumentation nicht sehr hilfreich war und wir sehr wenig Erfahrung mit Fusion hatten.
+- Die Umstellung von Local Multiplayer auf Online Multiplayer mit Fusion war der schwierigste Teil unseres Projekts, da die Dokumentation nicht sehr hilfreich war und wir sehr wenig Erfahrung mit Fusion hatten. Des Weiteren musst fast alle bereits vorhandene Scripts neu für Networking geschrieben werden.
 - Es war schwierig, Server und Client zu synchronisieren.  
     - Anfangs wurde die UI nur beim Host aktualisiert.
     - Die Animationen und auch die VFX wurden nur beim Host abgespielt.
