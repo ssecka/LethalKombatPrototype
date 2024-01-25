@@ -100,4 +100,4 @@ Wir haben ein Beispiel von Fusion gefunden(https://doc.photonengine.com/fusion/c
 
 ### feature/ReplayButton
 
-Aufgrund von Merge Conflicts haben wir einen neuen Branch erstellt umtk Zeit zu sparen und Fehler durch einen manuellen Merge zu vermeiden.
+Aufgrund von Merge Conflicts haben wir einen neuen Branch erstellt um mögliche Bug durch einen manuellen Merge zu vermeiden.
